@@ -6,10 +6,13 @@ import com.flc.config.Theme;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.image.BufferedImage;
+import java.net.URL;
 
 /**
  * Home screen — first impression when the app opens.
- * Design: refined minimalism, generous whitespace, calm and intentional.
+ * Uses image assets from src/main/resources/assets/
+ * No special characters, dashes, or emoji.
  */
 public class HomeScreen extends JPanel {
 
@@ -88,28 +91,30 @@ public class HomeScreen extends JPanel {
 
         JPanel brand = new JPanel(new FlowLayout(FlowLayout.LEFT, Theme.SPACE_SM, 0));
         brand.setOpaque(false);
-        brand.add(buildSmallLogo(36));
+        brand.add(buildLogoImage());
         brand.add(buildWordmark());
         bar.add(brand, BorderLayout.WEST);
         bar.add(buildVersionPill(), BorderLayout.EAST);
         return bar;
     }
 
-    private JLabel buildSmallLogo(int sz) {
+    private JLabel buildLogoImage() {
+        ImageIcon icon = loadIcon("assets/logo.png", 36, 36);
+        if (icon != null) {
+            JLabel l = new JLabel(icon);
+            l.setPreferredSize(new Dimension(36, 36));
+            return l;
+        }
+        // Fallback — plain green circle if image missing
         return new JLabel() {
             @Override public void paintComponent(Graphics g) {
                 Graphics2D g2 = (Graphics2D) g.create();
                 g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
                 g2.setColor(Theme.ACCENT);
-                g2.fillOval(0, 0, sz, sz);
-                g2.setColor(Color.WHITE);
-                g2.setFont(new Font("SansSerif", Font.BOLD, sz / 3));
-                FontMetrics fm = g2.getFontMetrics();
-                String t = AppConfig.APP_SHORT;
-                g2.drawString(t, (sz - fm.stringWidth(t)) / 2, sz / 2 + fm.getAscent() / 2 - 2);
+                g2.fillOval(0, 0, 36, 36);
                 g2.dispose();
             }
-            @Override public Dimension getPreferredSize() { return new Dimension(sz, sz); }
+            @Override public Dimension getPreferredSize() { return new Dimension(36, 36); }
         };
     }
 
@@ -139,7 +144,7 @@ public class HomeScreen extends JPanel {
     }
 
     // ═══════════════════════════════════════════════════════════════════════
-    // BODY — true centre via GridBagLayout
+    // BODY
     // ═══════════════════════════════════════════════════════════════════════
 
     private JPanel buildBody() {
@@ -156,19 +161,14 @@ public class HomeScreen extends JPanel {
 
         hero.add(centreX(buildEyebrow()));
         hero.add(Box.createVerticalStrut(Theme.SPACE_XL));
-
         hero.add(centreX(buildHeadline()));
         hero.add(Box.createVerticalStrut(Theme.SPACE_LG));
-
         hero.add(centreX(buildSubtitle()));
         hero.add(Box.createVerticalStrut(Theme.SPACE_XXXL));
-
         hero.add(centreX(buildCTA()));
         hero.add(Box.createVerticalStrut(Theme.SPACE_MD));
-
         hero.add(centreX(buildReassurance()));
         hero.add(Box.createVerticalStrut(Theme.SPACE_XXL));
-
         hero.add(centreX(buildFeatureRow()));
 
         return hero;
@@ -176,7 +176,7 @@ public class HomeScreen extends JPanel {
 
     // ── Eyebrow tag ────────────────────────────────────────────────────────
     private JLabel buildEyebrow() {
-        JLabel l = new JLabel("● " + AppConfig.APP_BADGE, SwingConstants.CENTER) {
+        JLabel l = new JLabel(AppConfig.APP_BADGE, SwingConstants.CENTER) {
             @Override protected void paintComponent(Graphics g) {
                 Graphics2D g2 = (Graphics2D) g.create();
                 g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
@@ -193,7 +193,7 @@ public class HomeScreen extends JPanel {
         return l;
     }
 
-    // ── Main headline ──────────────────────────────────────────────────────
+    // ── Headline ───────────────────────────────────────────────────────────
     private JLabel buildHeadline() {
         String html = "<html><div style='text-align:center; line-height:1.15;'>"
                 + "Furzefield<br>Leisure Centre"
@@ -214,7 +214,7 @@ public class HomeScreen extends JPanel {
 
     // ── CTA Button ─────────────────────────────────────────────────────────
     private JButton buildCTA() {
-        JButton btn = new JButton("Open Dashboard   →") {
+        JButton btn = new JButton("Open Dashboard") {
             private boolean hovered = false;
             private boolean pressed = false;
             {
@@ -233,21 +233,14 @@ public class HomeScreen extends JPanel {
                          : Theme.BTN_PRIMARY;
                 g2.setColor(bg);
                 g2.fillRoundRect(0, 0, getWidth(), getHeight(), Theme.RADIUS_BTN, Theme.RADIUS_BTN);
-                // Subtle right-section highlight for arrow
-                if (!pressed) {
-                    g2.setColor(new Color(255, 255, 255, hovered ? 25 : 15));
-                    int split = getWidth() - 52;
-                    g2.fillRect(split, 0, 10, getHeight());
-                    g2.fillRoundRect(split, 0, 52, getHeight(), Theme.RADIUS_BTN, Theme.RADIUS_BTN);
-                }
                 g2.dispose();
                 super.paintComponent(g);
             }
         };
         btn.setFont(Theme.FONT_BTN);
         btn.setForeground(Theme.BTN_TEXT);
-        btn.setPreferredSize(new Dimension(240, 54));
-        btn.setMaximumSize  (new Dimension(240, 54));
+        btn.setPreferredSize(new Dimension(220, 54));
+        btn.setMaximumSize(new Dimension(220, 54));
         btn.setContentAreaFilled(false);
         btn.setBorderPainted(false);
         btn.setFocusPainted(false);
@@ -259,25 +252,25 @@ public class HomeScreen extends JPanel {
     // ── Reassurance line ───────────────────────────────────────────────────
     private JLabel buildReassurance() {
         JLabel l = new JLabel(
-                "Self-contained  ·  No login required  ·  All data stored locally",
+                "Self-contained    No login required    All data stored locally",
                 SwingConstants.CENTER);
         l.setFont(Theme.FONT_TINY);
         l.setForeground(Theme.TEXT_LIGHT);
         return l;
     }
 
-    // ── Feature chips ──────────────────────────────────────────────────────
+    // ── Feature chips — icon + label ───────────────────────────────────────
     private JPanel buildFeatureRow() {
         JPanel row = new JPanel(new FlowLayout(FlowLayout.CENTER, Theme.SPACE_SM, 0));
         row.setOpaque(false);
-        row.add(buildChip("Bookings"));
-        row.add(buildChip("Members"));
-        row.add(buildChip("Reviews"));
-        row.add(buildChip("Reports"));
+        row.add(buildChip("bookings.png", "Bookings"));
+        row.add(buildChip("members.png",  "Members"));
+        row.add(buildChip("reviews.png",  "Reviews"));
+        row.add(buildChip("reports.png",  "Reports"));
         return row;
     }
 
-    private JPanel buildChip(String text) {
+    private JPanel buildChip(String iconFile, String label) {
         JPanel chip = new JPanel() {
             @Override protected void paintComponent(Graphics g) {
                 Graphics2D g2 = (Graphics2D) g.create();
@@ -292,12 +285,21 @@ public class HomeScreen extends JPanel {
             }
         };
         chip.setOpaque(false);
-        chip.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 0));
-        chip.setBorder(BorderFactory.createEmptyBorder(8, 18, 8, 18));
-        JLabel l = new JLabel(text);
-        l.setFont(Theme.FONT_SMALL);
-        l.setForeground(Theme.TEXT_MID);
-        chip.add(l);
+        chip.setLayout(new FlowLayout(FlowLayout.CENTER, Theme.SPACE_XS, 0));
+        chip.setBorder(BorderFactory.createEmptyBorder(8, 14, 8, 14));
+
+        // Icon — tinted to accent colour
+        ImageIcon icon = loadIcon("assets/" + iconFile, 18, 18);
+        if (icon != null) {
+            chip.add(new JLabel(tintIcon(icon, Theme.ACCENT)));
+        }
+
+        // Label
+        JLabel text = new JLabel(label);
+        text.setFont(Theme.FONT_SMALL);
+        text.setForeground(Theme.TEXT_MID);
+        chip.add(text);
+
         return chip;
     }
 
@@ -316,6 +318,41 @@ public class HomeScreen extends JPanel {
         footer.add(footerLabel(AppConfig.APP_FOOTER_L), BorderLayout.WEST);
         footer.add(footerLabel(AppConfig.APP_FOOTER_R), BorderLayout.EAST);
         return footer;
+    }
+
+    // ═══════════════════════════════════════════════════════════════════════
+    // IMAGE HELPERS
+    // ═══════════════════════════════════════════════════════════════════════
+
+    /**
+     * Loads an image from src/main/resources/ via classpath and scales it.
+     * Returns null gracefully if the file is not found.
+     */
+    private ImageIcon loadIcon(String path, int w, int h) {
+        URL url = getClass().getClassLoader().getResource(path);
+        if (url == null) {
+            System.err.println("[HomeScreen] Image not found: " + path);
+            return null;
+        }
+        Image scaled = new ImageIcon(url).getImage().getScaledInstance(w, h, Image.SCALE_SMOOTH);
+        return new ImageIcon(scaled);
+    }
+
+    /**
+     * Tints a transparent-background PNG to the given colour.
+     * Draws the image then overlays the colour using SrcAtop compositing.
+     */
+    private ImageIcon tintIcon(ImageIcon source, Color tint) {
+        int w = source.getIconWidth();
+        int h = source.getIconHeight();
+        BufferedImage result = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g2 = result.createGraphics();
+        g2.drawImage(source.getImage(), 0, 0, null);
+        g2.setComposite(AlphaComposite.SrcAtop);
+        g2.setColor(tint);
+        g2.fillRect(0, 0, w, h);
+        g2.dispose();
+        return new ImageIcon(result);
     }
 
     // ═══════════════════════════════════════════════════════════════════════
