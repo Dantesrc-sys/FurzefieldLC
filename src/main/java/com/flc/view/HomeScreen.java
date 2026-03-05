@@ -11,17 +11,12 @@ import java.awt.event.*;
  * Home screen — first impression when the app opens.
  * Design: refined minimalism, generous whitespace, calm and intentional.
  */
-public class HomeScreen extends JFrame {
+public class HomeScreen extends JPanel {
 
     public HomeScreen() {
-        setTitle(AppConfig.APP_NAME);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setMinimumSize(Theme.WINDOW_MIN);
-        setPreferredSize(Theme.WINDOW_SIZE);
         setBackground(Theme.BG);
-        setContentPane(buildRoot());
-        pack();
-        setLocationRelativeTo(null);
+        setLayout(new BorderLayout());
+        add(buildRoot(), BorderLayout.CENTER);
     }
 
     // ═══════════════════════════════════════════════════════════════════════
@@ -346,8 +341,6 @@ public class HomeScreen extends JFrame {
     // ═══════════════════════════════════════════════════════════════════════
 
     private void onGetStarted() {
-        // TODO: swap to dashboard
-        JOptionPane.showMessageDialog(this,
-                "Dashboard coming next!", AppConfig.APP_NAME, JOptionPane.INFORMATION_MESSAGE);
+        AppFrame.get().showDashboard();
     }
 }

@@ -1,6 +1,6 @@
 package com.flc;
 
-import com.flc.view.HomeScreen;
+import com.flc.view.AppFrame;
 import javax.swing.*;
 
 /**
@@ -12,8 +12,7 @@ public class Main {
             try {
                 UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
             } catch (Exception ignored) {}
-
-            new HomeScreen().setVisible(true);
+            new AppFrame().setVisible(true);
         });
     }
 }
