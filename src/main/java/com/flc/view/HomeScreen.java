@@ -2,16 +2,15 @@ package com.flc.view;
 
 import com.flc.config.AppConfig;
 import com.flc.config.Theme;
+import com.flc.util.ImageUtil;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.awt.image.BufferedImage;
-import java.net.URL;
 
 /**
  * Home screen — first impression when the app opens.
- * Uses image assets from src/main/resources/assets/
+ * Uses ImageUtil for all image loading and tinting.
  * No special characters, dashes, or emoji.
  */
 public class HomeScreen extends JPanel {
@@ -36,7 +35,6 @@ public class HomeScreen extends JPanel {
                 g2.setRenderingHint(RenderingHints.KEY_RENDERING,         RenderingHints.VALUE_RENDER_QUALITY);
                 g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 
-                // Solid background
                 g2.setColor(Theme.BG);
                 g2.fillRect(0, 0, getWidth(), getHeight());
 
@@ -62,7 +60,7 @@ public class HomeScreen extends JPanel {
                     for (int y = getHeight() - 260; y < getHeight() - 40; y += 20)
                         g2.fillOval(x, y, 3, 3);
 
-                // Thin rule just below top bar
+                // Thin rule below top bar
                 int ruleY = Theme.TOPBAR_HEIGHT + Theme.SPACE_XL;
                 g2.setColor(Theme.BORDER_LIGHT);
                 g2.setStroke(Theme.STROKE_THIN);
@@ -99,13 +97,14 @@ public class HomeScreen extends JPanel {
     }
 
     private JLabel buildLogoImage() {
-        ImageIcon icon = loadIcon("assets/logo.png", 36, 36);
+        // ImageUtil.iconLabel returns an empty JLabel gracefully if not found
+        ImageIcon icon = ImageUtil.load("assets/logo.png", 36, 36);
         if (icon != null) {
             JLabel l = new JLabel(icon);
             l.setPreferredSize(new Dimension(36, 36));
             return l;
         }
-        // Fallback — plain green circle if image missing
+        // Fallback — painted green circle
         return new JLabel() {
             @Override public void paintComponent(Graphics g) {
                 Graphics2D g2 = (Graphics2D) g.create();
@@ -174,7 +173,6 @@ public class HomeScreen extends JPanel {
         return hero;
     }
 
-    // ── Eyebrow tag ────────────────────────────────────────────────────────
     private JLabel buildEyebrow() {
         JLabel l = new JLabel(AppConfig.APP_BADGE, SwingConstants.CENTER) {
             @Override protected void paintComponent(Graphics g) {
@@ -193,7 +191,6 @@ public class HomeScreen extends JPanel {
         return l;
     }
 
-    // ── Headline ───────────────────────────────────────────────────────────
     private JLabel buildHeadline() {
         String html = "<html><div style='text-align:center; line-height:1.15;'>"
                 + "Furzefield<br>Leisure Centre"
@@ -204,7 +201,6 @@ public class HomeScreen extends JPanel {
         return h;
     }
 
-    // ── Subtitle ───────────────────────────────────────────────────────────
     private JLabel buildSubtitle() {
         JLabel s = new JLabel(AppConfig.APP_SUBTITLE, SwingConstants.CENTER);
         s.setFont(Theme.FONT_SUBTITLE);
@@ -212,7 +208,6 @@ public class HomeScreen extends JPanel {
         return s;
     }
 
-    // ── CTA Button ─────────────────────────────────────────────────────────
     private JButton buildCTA() {
         JButton btn = new JButton("Open Dashboard") {
             private boolean hovered = false;
@@ -249,7 +244,6 @@ public class HomeScreen extends JPanel {
         return btn;
     }
 
-    // ── Reassurance line ───────────────────────────────────────────────────
     private JLabel buildReassurance() {
         JLabel l = new JLabel(
                 "Self-contained    No login required    All data stored locally",
@@ -259,7 +253,7 @@ public class HomeScreen extends JPanel {
         return l;
     }
 
-    // ── Feature chips — icon + label ───────────────────────────────────────
+    // ── Feature chips — icon + label via ImageUtil ─────────────────────────
     private JPanel buildFeatureRow() {
         JPanel row = new JPanel(new FlowLayout(FlowLayout.CENTER, Theme.SPACE_SM, 0));
         row.setOpaque(false);
@@ -288,13 +282,10 @@ public class HomeScreen extends JPanel {
         chip.setLayout(new FlowLayout(FlowLayout.CENTER, Theme.SPACE_XS, 0));
         chip.setBorder(BorderFactory.createEmptyBorder(8, 14, 8, 14));
 
-        // Icon — tinted to accent colour
-        ImageIcon icon = loadIcon("assets/" + iconFile, 18, 18);
-        if (icon != null) {
-            chip.add(new JLabel(tintIcon(icon, Theme.ACCENT)));
-        }
+        // Load and tint via ImageUtil — no local image methods needed
+        JLabel iconLabel = ImageUtil.tintedLabel("assets/" + iconFile, 18, 18, Theme.ACCENT);
+        chip.add(iconLabel);
 
-        // Label
         JLabel text = new JLabel(label);
         text.setFont(Theme.FONT_SMALL);
         text.setForeground(Theme.TEXT_MID);
@@ -318,41 +309,6 @@ public class HomeScreen extends JPanel {
         footer.add(footerLabel(AppConfig.APP_FOOTER_L), BorderLayout.WEST);
         footer.add(footerLabel(AppConfig.APP_FOOTER_R), BorderLayout.EAST);
         return footer;
-    }
-
-    // ═══════════════════════════════════════════════════════════════════════
-    // IMAGE HELPERS
-    // ═══════════════════════════════════════════════════════════════════════
-
-    /**
-     * Loads an image from src/main/resources/ via classpath and scales it.
-     * Returns null gracefully if the file is not found.
-     */
-    private ImageIcon loadIcon(String path, int w, int h) {
-        URL url = getClass().getClassLoader().getResource(path);
-        if (url == null) {
-            System.err.println("[HomeScreen] Image not found: " + path);
-            return null;
-        }
-        Image scaled = new ImageIcon(url).getImage().getScaledInstance(w, h, Image.SCALE_SMOOTH);
-        return new ImageIcon(scaled);
-    }
-
-    /**
-     * Tints a transparent-background PNG to the given colour.
-     * Draws the image then overlays the colour using SrcAtop compositing.
-     */
-    private ImageIcon tintIcon(ImageIcon source, Color tint) {
-        int w = source.getIconWidth();
-        int h = source.getIconHeight();
-        BufferedImage result = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
-        Graphics2D g2 = result.createGraphics();
-        g2.drawImage(source.getImage(), 0, 0, null);
-        g2.setComposite(AlphaComposite.SrcAtop);
-        g2.setColor(tint);
-        g2.fillRect(0, 0, w, h);
-        g2.dispose();
-        return new ImageIcon(result);
     }
 
     // ═══════════════════════════════════════════════════════════════════════
