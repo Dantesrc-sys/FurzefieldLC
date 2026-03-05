@@ -77,6 +77,10 @@ FurzefieldLC/
 ### Option 1 — Run directly with Maven (development)
 
 ```powershell
+# Make sure to comple beforehand
+mvn compile exec:java
+
+# Run
 mvn exec:java
 ```
 
