@@ -4,6 +4,7 @@ import com.flc.config.Theme;
 
 import javax.swing.*;
 import java.awt.*;
+import java.net.URL;
 
 /**
  * Single application window.
@@ -25,7 +26,12 @@ public class AppFrame extends JFrame {
     public AppFrame() {
         instance = this;
 
-        setTitle("Furzefield Leisure Centre");
+        setTitle("Furzefield");
+        // load application icon and use it for the frame (taskbar + window title bar)
+        Image icon = loadAppIcon();
+        if (icon != null) {
+            setIconImage(icon);
+        }
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setMinimumSize(Theme.WINDOW_MIN);
         setPreferredSize(Theme.WINDOW_SIZE);
@@ -49,5 +55,20 @@ public class AppFrame extends JFrame {
 
     public void showDashboard() {
         cardLayout.show(cardPanel, CARD_DASHBOARD);
+    }
+
+    /**
+     * Attempt to load the logo image from the classpath so it can be
+     * used as the window/taskbar icon. Returns null if the resource is
+     * missing or could not be read.
+     */
+    private Image loadAppIcon() {
+        // assume the same logo used on HomeScreen
+        URL url = getClass().getClassLoader().getResource("assets/logo.png");
+        if (url == null) {
+            System.err.println("[AppFrame] App icon not found in resources");
+            return null;
+        }
+        return new ImageIcon(url).getImage();
     }
 }
