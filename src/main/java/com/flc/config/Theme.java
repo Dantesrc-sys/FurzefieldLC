@@ -16,7 +16,7 @@ public final class Theme {
     // ═══════════════════════════════════════════════════════════════════════
 
     // ── Backgrounds ──────────────────────────────────────────────────────────
-    public static final Color BG              = new Color(0xFAFAF8);  // main window bg
+    public static final Color BG              = new Color(0xF5F5F3);  // main window bg
     public static final Color BG_ALT          = new Color(0xF0F0EC);  // status bar, alternating rows
     public static final Color BG_CARD         = new Color(0xFFFFFF);  // card / panel bg
     public static final Color BG_INPUT        = new Color(0xFFFFFF);  // text field bg
@@ -47,13 +47,13 @@ public final class Theme {
     public static final Color TEXT_WARNING    = new Color(0xE67E22);  // warnings
 
     // ── Buttons ───────────────────────────────────────────────────────────────
-    public static final Color BTN_PRIMARY       = new Color(0x2D6A4F);
-    public static final Color BTN_HOVER         = new Color(0x1B4332);
-    public static final Color BTN_PRESSED       = new Color(0x142E24);
-    public static final Color BTN_DISABLED      = new Color(0xB0C4BA);
-    public static final Color BTN_TEXT          = Color.WHITE;
-    public static final Color BTN_TEXT_DISABLED = new Color(0xE8EEE9);
-    
+    public static final Color BTN_PRIMARY      = new Color(0x2D6A4F);
+    public static final Color BTN_HOVER        = new Color(0x1B4332);
+    public static final Color BTN_PRESSED      = new Color(0x142E24);
+    public static final Color BTN_DISABLED     = new Color(0xB0C4BA);
+    public static final Color BTN_TEXT         = Color.WHITE;
+    public static final Color BTN_TEXT_DISABLED= new Color(0xE8EEE9);
+
     public static final Color BTN_CHANGE        = new Color(0x6C63FF);
     public static final Color BTN_CHANGE_HOVER  = new Color(0x5A52D5);
 
@@ -148,12 +148,12 @@ public final class Theme {
 
     public static final int SPACE_XXS  = 4;
     public static final int SPACE_XS   = 8;
-    public static final int SPACE_SM   = 12;
-    public static final int SPACE_MD   = 16;
-    public static final int SPACE_LG   = 24;
-    public static final int SPACE_XL   = 32;
-    public static final int SPACE_XXL  = 48;
-    public static final int SPACE_XXXL = 64;
+    public static final int SPACE_SM   = 16;   // was 12
+    public static final int SPACE_MD   = 24;   // was 16
+    public static final int SPACE_LG   = 36;   // was 24
+    public static final int SPACE_XL   = 48;   // was 32
+    public static final int SPACE_XXL  = 64;   // was 48
+    public static final int SPACE_XXXL = 88;   // was 64
 
     // Legacy aliases
     public static final int PADDING_XS  = SPACE_XS;
@@ -195,13 +195,13 @@ public final class Theme {
     // ═══════════════════════════════════════════════════════════════════════
 
     // ── Window ────────────────────────────────────────────────────────────────
-    public static final Dimension WINDOW_SIZE = new Dimension(1100, 700);
-    public static final Dimension WINDOW_MIN  = new Dimension(900,  620);
+    public static final Dimension WINDOW_SIZE = new Dimension(1280, 800);
+    public static final Dimension WINDOW_MIN  = new Dimension(1024, 680);
 
     // ── Layout ────────────────────────────────────────────────────────────────
-    public static final int SIDEBAR_WIDTH     = 220;
+    public static final int SIDEBAR_WIDTH     = 240;
     public static final int STRIP_WIDTH       = 8;
-    public static final int TOPBAR_HEIGHT     = 60;
+    public static final int TOPBAR_HEIGHT     = 68;
     public static final int STATUSBAR_HEIGHT  = 36;
 
     // ── Buttons ───────────────────────────────────────────────────────────────
@@ -211,7 +211,7 @@ public final class Theme {
     public static final Dimension BTN_ICON_SIZE    = new Dimension(36,  36);
 
     // ── Form ──────────────────────────────────────────────────────────────────
-    public static final int INPUT_H       = 42;
+    public static final int INPUT_H       = 46;
     public static final int LABEL_WIDTH   = 140;
 
     // ── Cards ─────────────────────────────────────────────────────────────────
@@ -219,10 +219,10 @@ public final class Theme {
     public static final int CARD_MIN_HEIGHT = 120;
 
     // ── Table ─────────────────────────────────────────────────────────────────
-    public static final int TABLE_ROW_HEIGHT    = 46;
-    public static final int TABLE_HEADER_HEIGHT = 48;
-    public static final int TABLE_CELL_PAD_H    = 16;  // horizontal cell padding
-    public static final int TABLE_CELL_PAD_V    = 10;  // vertical cell padding
+    public static final int TABLE_ROW_HEIGHT    = 52;
+    public static final int TABLE_HEADER_HEIGHT = 52;
+    public static final int TABLE_CELL_PAD_H    = 20;  // horizontal cell padding
+    public static final int TABLE_CELL_PAD_V    = 12;  // vertical cell padding
 
     // ── Logo / Avatar ─────────────────────────────────────────────────────────
     public static final int LOGO_SIZE  = 64;
@@ -254,7 +254,7 @@ public final class Theme {
     public static final int OPACITY_SHADOW      = 18;
     public static final int OPACITY_DECO_CIRCLE = 28;
     public static final int OPACITY_STRIP_TEXT  = 60;
-
+    
     // ═══════════════════════════════════════════════════════════════════════
     // Dashboad Icon 
     // ═══════════════════════════════════════════════════════════════════════
