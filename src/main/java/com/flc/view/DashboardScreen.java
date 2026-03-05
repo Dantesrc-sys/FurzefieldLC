@@ -62,6 +62,7 @@ public class DashboardScreen extends JPanel {
 
         JPanel screenPanel = switch (item) {
             case DASHBOARD -> buildDashboardHome();
+            case TIMETABLE -> new TimetableScreen();
             default        -> buildComingSoon(item.label);
         };
 
