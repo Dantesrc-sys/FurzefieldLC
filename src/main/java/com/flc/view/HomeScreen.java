@@ -334,6 +334,10 @@ public class HomeScreen extends JPanel {
     // ═══════════════════════════════════════════════════════════════════════
 
     private void onGetStarted() {
+        AppFrame.get().setExtendedState(
+            AppFrame.get().getExtendedState() | java.awt.Frame.MAXIMIZED_BOTH
+        );
+        
         AppFrame.get().showDashboard();
     }
 }
