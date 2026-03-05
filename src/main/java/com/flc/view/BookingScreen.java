@@ -4,6 +4,7 @@ import com.flc.config.Theme;
 import com.flc.controller.BookingController;
 import com.flc.controller.MemberController;
 import com.flc.data.DataStore;
+import com.flc.data.persistence.JsonStore;
 import com.flc.model.*;
 
 import javax.swing.*;
@@ -269,6 +270,7 @@ public class BookingScreen extends JPanel {
         if (selectedMember == null || selectedLesson == null) return;
         try {
             bookingController.createBooking(selectedMember, selectedLesson);
+            JsonStore.save();
             setStatus("✓ Booked " + selectedLesson.getExerciseType().getName()
                     + " — Week " + selectedLesson.getWeekNumber(), Theme.TEXT_SUCCESS);
             refreshAll();
@@ -281,6 +283,7 @@ public class BookingScreen extends JPanel {
         if (selectedBooking == null || selectedLesson == null) return;
         try {
             bookingController.changeBooking(selectedBooking, selectedLesson);
+            JsonStore.save();
             setStatus("✓ Booking changed to " + selectedLesson.getExerciseType().getName()
                     + " — Week " + selectedLesson.getWeekNumber(), Theme.TEXT_SUCCESS);
             refreshAll();
@@ -300,6 +303,7 @@ public class BookingScreen extends JPanel {
         try {
             bookingController.cancelBooking(selectedBooking);
             selectedBooking = null;
+            JsonStore.save();
             setStatus("✓ Booking cancelled", Theme.TEXT_SUCCESS);
             refreshAll();
         } catch (Exception ex) {

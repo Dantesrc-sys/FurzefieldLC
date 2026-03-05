@@ -4,6 +4,7 @@ import com.flc.config.AppConfig;
 import com.flc.config.Theme;
 import com.flc.data.DataStore;
 import com.flc.data.SampleData;
+import com.flc.data.persistence.JsonStore;
 import com.flc.view.components.Sidebar;
 import com.flc.view.components.TopBar;
 
@@ -22,8 +23,11 @@ public class DashboardScreen extends JPanel {
     private       TopBar    topBar;
 
     public DashboardScreen() {
-        // Load all sample data on startup
-        SampleData.load();
+        // Load from JSON if exists, otherwise load sample data
+        if (!JsonStore.load()) {
+            SampleData.load();
+            JsonStore.save(); // create initial save file
+        }
 
         setLayout(new BorderLayout());
         setBackground(Theme.BG);

@@ -3,6 +3,7 @@ package com.flc.view;
 import com.flc.config.Theme;
 import com.flc.controller.ReviewController;
 import com.flc.data.DataStore;
+import com.flc.data.persistence.JsonStore;
 import com.flc.model.*;
 
 import javax.swing.*;
@@ -289,6 +290,7 @@ public class ReviewScreen extends JPanel {
 
         try {
             reviewController.addReview(member, lesson, selectedRating, commentArea.getText());
+            JsonStore.save();
             setStatus("✓ Review submitted — " + ratingLabel(selectedRating), Theme.TEXT_SUCCESS);
             commentArea.setText("");
             refreshReviewTable();

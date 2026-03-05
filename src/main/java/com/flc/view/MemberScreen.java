@@ -4,6 +4,7 @@ import com.flc.config.Theme;
 import com.flc.controller.BookingController;
 import com.flc.controller.MemberController;
 import com.flc.data.DataStore;
+import com.flc.data.persistence.JsonStore;
 import com.flc.model.Booking;
 import com.flc.model.Member;
 
@@ -211,10 +212,10 @@ public class MemberScreen extends JPanel {
         card.setAlignmentX(Component.LEFT_ALIGNMENT);
         card.setMaximumSize(new Dimension(Integer.MAX_VALUE, 160));
 
-        detailName     = detailLine("Member Name", Theme.FONT_TITLE_SM, Theme.TEXT_DARK);
-        detailId       = detailLine("ID: M000",       Theme.FONT_SMALL, Theme.TEXT_MID);
-        detailPhone    = detailLine("Phone: 00000000000",    Theme.FONT_SMALL, Theme.TEXT_MID);
-        detailBookings = detailLine("Bookings: 00", Theme.FONT_SMALL, Theme.ACCENT);
+        detailName     = detailLine("—", Theme.FONT_TITLE_SM, Theme.TEXT_DARK);
+        detailId       = detailLine("ID: —",       Theme.FONT_SMALL, Theme.TEXT_MID);
+        detailPhone    = detailLine("Phone: —",    Theme.FONT_SMALL, Theme.TEXT_MID);
+        detailBookings = detailLine("Bookings: —", Theme.FONT_SMALL, Theme.ACCENT);
 
         card.add(detailName);
         card.add(Box.createVerticalStrut(Theme.SPACE_XS));
@@ -255,6 +256,7 @@ public class MemberScreen extends JPanel {
         try {
             memberController.updateName(selectedMember, newName);
             memberController.updatePhone(selectedMember, newPhone);
+            JsonStore.save();
             setStatus("✓ Member updated", Theme.TEXT_SUCCESS);
             refreshTable();
             // Re-select updated member
@@ -287,6 +289,7 @@ public class MemberScreen extends JPanel {
 
         try {
             Member m = memberController.addMember(nameF.getText(), phoneF.getText());
+            JsonStore.save();
             setStatus("✓ Added " + m.getName(), Theme.TEXT_SUCCESS);
             refreshTable();
         } catch (Exception ex) {
@@ -317,10 +320,10 @@ public class MemberScreen extends JPanel {
     }
 
     private void clearDetail() {
-        detailName.setText("Member Name");
-        detailId.setText("ID: M000");
-        detailPhone.setText("Phone: 00000000000");
-        detailBookings.setText("Bookings: 00");
+        detailName.setText("—");
+        detailId.setText("ID: —");
+        detailPhone.setText("Phone: —");
+        detailBookings.setText("Bookings: —");
         editNameField.setText("");
         editPhoneField.setText("");
         saveBtn.setEnabled(false);
