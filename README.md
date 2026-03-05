@@ -94,6 +94,7 @@ This produces a self-contained JAR at:
 
 ```
 target/FurzefieldLC-1.0-SNAPSHOT.jar
+target/FurzefieldLC.jar
 ```
 
 All dependencies (Gson) are bundled inside via the Maven Shade plugin.
@@ -101,7 +102,7 @@ All dependencies (Gson) are bundled inside via the Maven Shade plugin.
 **Step 2 — Run:**
 
 ```powershell
-java -jar target/FurzefieldLC-1.0-SNAPSHOT.jar
+java -jar target/FurzefieldLC.jar
 ```
 
 ### Option 3 — Run tests only
