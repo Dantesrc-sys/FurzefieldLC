@@ -216,8 +216,10 @@ public final class Theme {
     public static final int CARD_MIN_HEIGHT = 120;
 
     // ── Table ─────────────────────────────────────────────────────────────────
-    public static final int TABLE_ROW_HEIGHT    = 40;
-    public static final int TABLE_HEADER_HEIGHT = 44;
+    public static final int TABLE_ROW_HEIGHT    = 46;
+    public static final int TABLE_HEADER_HEIGHT = 48;
+    public static final int TABLE_CELL_PAD_H    = 16;  // horizontal cell padding
+    public static final int TABLE_CELL_PAD_V    = 10;  // vertical cell padding
 
     // ── Logo / Avatar ─────────────────────────────────────────────────────────
     public static final int LOGO_SIZE  = 64;

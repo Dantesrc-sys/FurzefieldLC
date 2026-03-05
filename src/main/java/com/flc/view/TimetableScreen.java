@@ -1,6 +1,7 @@
 package com.flc.view;
 
 import com.flc.config.Theme;
+import com.flc.util.ModernTable;
 import com.flc.controller.BookingController;
 import com.flc.data.DataStore;
 import com.flc.model.*;
@@ -92,7 +93,6 @@ public class TimetableScreen extends JPanel {
         // Day selector
         JComboBox<Day> dayCombo = new JComboBox<>(Day.values());
         dayCombo.setSelectedItem(selectedDay);
-        styleCombo(dayCombo);
         dayCombo.addActionListener(e -> {
             selectedDay = (Day) dayCombo.getSelectedItem();
             if (filterMode.equals("DAY")) refresh();
@@ -103,7 +103,6 @@ public class TimetableScreen extends JPanel {
                 .map(ExerciseType::getName).toList();
         JComboBox<String> exerCombo = new JComboBox<>(names.toArray(new String[0]));
         exerCombo.setSelectedItem(selectedExercise);
-        styleCombo(exerCombo);
         exerCombo.addActionListener(e -> {
             selectedExercise = (String) exerCombo.getSelectedItem();
             if (filterMode.equals("EXERCISE")) refresh();
@@ -124,7 +123,6 @@ public class TimetableScreen extends JPanel {
                 return this;
             }
         });
-        styleCombo(weekCombo);
 
         selRow.add(dayCombo);
         selRow.add(exerCombo);
@@ -153,56 +151,26 @@ public class TimetableScreen extends JPanel {
         wrapper.setOpaque(false);
 
         String[] cols = {"Week", "Day", "Time", "Exercise", "Price", "Enrolled", "Spaces", "Status"};
-        tableModel = new DefaultTableModel(cols, 0) {
-            @Override public boolean isCellEditable(int r, int c) { return false; }
-        };
+        tableModel = new DefaultTableModel(cols, 0);
+        table = ModernTable.create(tableModel);
+        ModernTable.setColumnWidths(table, 72, 100, 110, 130, 72, 120, 0, 120);
+        ModernTable.hideColumn(table, 6);          // hide raw spaces — capacity replaces it
+        ModernTable.setWeekColumn(table,     0);   // Week — chip
+        ModernTable.setDayColumn(table,      1);   // Day — coloured dot
+        ModernTable.setTimeColumn(table,      2);  // Time — coloured dot
+        ModernTable.setExerciseColumn(table, 3);   // Exercise — coloured dot
+        ModernTable.setPriceColumn(table,    4);   // Price — green mono
+        ModernTable.setCapacityColumn(table, 5);   // Enrolled — bar
+        // Status pill
+        java.util.Map<String, Color> pillBg = new java.util.HashMap<>();
+        java.util.Map<String, Color> pillFg = new java.util.HashMap<>();
+        pillBg.put("Full",         Theme.STATUS_BG_RED);
+        pillBg.put("1 space left", Theme.STATUS_BG_ORANGE);
+        pillFg.put("Full",         Theme.STATUS_FULL);
+        pillFg.put("1 space left", Theme.STATUS_ALMOST_FULL);
+        ModernTable.setPillColumn(table, 7, pillBg, pillFg);
 
-        table = new JTable(tableModel) {
-            @Override public Component prepareRenderer(TableCellRenderer r, int row, int col) {
-                Component c = super.prepareRenderer(r, row, col);
-                if (!isRowSelected(row)) {
-                    c.setBackground(row % 2 == 0 ? Theme.TABLE_ROW_ODD : Theme.TABLE_ROW_EVEN);
-                } else {
-                    c.setBackground(Theme.TABLE_ROW_SELECTED);
-                }
-                c.setForeground(Theme.TEXT_DARK);
-                return c;
-            }
-        };
-
-        styleTable(table);
-
-        // Status column — coloured badges
-        table.getColumnModel().getColumn(7).setCellRenderer(new DefaultTableCellRenderer() {
-            @Override public Component getTableCellRendererComponent(
-                    JTable t, Object val, boolean sel, boolean focus, int row, int col) {
-                JLabel l = new JLabel(val == null ? "" : val.toString(), SwingConstants.CENTER) {
-                    @Override protected void paintComponent(Graphics g) {
-                        Graphics2D g2 = (Graphics2D) g.create();
-                        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-                        String s = getText();
-                        Color bg = s.equals("Full")         ? Theme.STATUS_BG_RED
-                                 : s.equals("1 space left") ? Theme.STATUS_BG_ORANGE
-                                 : Theme.STATUS_BG_GREEN;
-                        g2.setColor(bg);
-                        g2.fillRoundRect(2, 4, getWidth() - 4, getHeight() - 8, 8, 8);
-                        g2.dispose();
-                        super.paintComponent(g);
-                    }
-                };
-                String s = val == null ? "" : val.toString();
-                l.setForeground(s.equals("Full")         ? Theme.STATUS_FULL
-                              : s.equals("1 space left") ? Theme.STATUS_ALMOST_FULL
-                              : Theme.STATUS_AVAILABLE);
-                l.setFont(Theme.FONT_SMALL_BOLD);
-                l.setOpaque(false);
-                return l;
-            }
-        });
-
-        JScrollPane scroll = new JScrollPane(table);
-        scroll.setBorder(BorderFactory.createLineBorder(Theme.BORDER_LIGHT));
-        scroll.getViewport().setBackground(Theme.BG_CARD);
+        JScrollPane scroll = ModernTable.wrap(table);
 
         wrapper.add(scroll, BorderLayout.CENTER);
         return wrapper;
@@ -248,28 +216,6 @@ public class TimetableScreen extends JPanel {
     // STYLING HELPERS
     // ═══════════════════════════════════════════════════════════════════════
 
-    private void styleTable(JTable t) {
-        t.setFont(Theme.FONT_TABLE_CELL);
-        t.setRowHeight(Theme.TABLE_ROW_HEIGHT);
-        t.setGridColor(Theme.TABLE_GRID);
-        t.setShowVerticalLines(false);
-        t.setFillsViewportHeight(true);
-        t.setSelectionBackground(Theme.TABLE_ROW_SELECTED);
-        t.setSelectionForeground(Theme.TEXT_DARK);
-        t.setIntercellSpacing(new Dimension(0, 0));
-
-        JTableHeader header = t.getTableHeader();
-        header.setFont(Theme.FONT_TABLE_HEADER);
-        header.setBackground(Theme.TABLE_HEADER_BG);
-        header.setForeground(Theme.TEXT_MID);
-        header.setPreferredSize(new Dimension(0, Theme.TABLE_HEADER_HEIGHT));
-        header.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Theme.BORDER));
-
-        // Column widths
-        int[] widths = {80, 90, 100, 110, 70, 80, 70, 110};
-        for (int i = 0; i < widths.length; i++)
-            t.getColumnModel().getColumn(i).setPreferredWidth(widths[i]);
-    }
 
     private JButton buildToggleBtn(String label, boolean active) {
         JButton btn = new JButton(label) {
@@ -306,11 +252,5 @@ public class TimetableScreen extends JPanel {
         inactive.setForeground(Theme.TEXT_MID);
         active.repaint();
         inactive.repaint();
-    }
-
-    private <T> void styleCombo(JComboBox<T> combo) {
-        combo.setFont(Theme.FONT_INPUT);
-        combo.setBackground(Theme.BG_CARD);
-        combo.setPreferredSize(new Dimension(160, 34));
     }
 }
