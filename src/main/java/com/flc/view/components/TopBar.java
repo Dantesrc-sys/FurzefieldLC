@@ -1,13 +1,15 @@
 package com.flc.view.components;
 
 import com.flc.config.Theme;
+import com.flc.util.ImageUtil;
 
 import javax.swing.*;
 import java.awt.*;
 
 /**
- * Top bar shown at the top of every screen inside the dashboard.
- * Shows current screen title + a breadcrumb.
+ * Top bar shown above every screen inside the dashboard.
+ * Shows the screen title and a plain-text breadcrumb.
+ * No unicode or special characters.
  */
 public class TopBar extends JPanel {
 
@@ -23,7 +25,7 @@ public class TopBar extends JPanel {
                 BorderFactory.createEmptyBorder(0, Theme.SPACE_XL, 0, Theme.SPACE_XL)
         ));
 
-        // Left — breadcrumb + title stacked
+        // Left — breadcrumb above title
         JPanel left = new JPanel();
         left.setLayout(new BoxLayout(left, BoxLayout.Y_AXIS));
         left.setOpaque(false);
@@ -42,6 +44,15 @@ public class TopBar extends JPanel {
         left.add(Box.createVerticalGlue());
 
         add(left, BorderLayout.WEST);
+
+        // Right — screen icon
+        String iconPath = "assets/" + (breadcrumb.toLowerCase().equals("home") ? "dashboard" : breadcrumb.toLowerCase()) + ".png";
+        ImageIcon icon  = ImageUtil.loadTinted(iconPath, 20, 20, Theme.TEXT_LIGHT);
+        if (icon != null) {
+            JLabel iconLabel = new JLabel(icon);
+            iconLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, Theme.SPACE_SM));
+            add(iconLabel, BorderLayout.EAST);
+        }
     }
 
     public void setTitle(String title) {
