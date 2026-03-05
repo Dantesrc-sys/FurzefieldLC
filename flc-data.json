@@ -176,9 +176,7 @@
       "day": "SATURDAY",
       "timeSlot": "EVENING",
       "weekNumber": 2,
-      "memberIds": [
-        "M005"
-      ]
+      "memberIds": []
     },
     {
       "lessonId": "L02SUN1",
@@ -229,7 +227,8 @@
       "timeSlot": "AFTERNOON",
       "weekNumber": 3,
       "memberIds": [
-        "M003"
+        "M003",
+        "M005"
       ]
     },
     {
@@ -382,9 +381,7 @@
       "day": "SUNDAY",
       "timeSlot": "EVENING",
       "weekNumber": 5,
-      "memberIds": [
-        "M005"
-      ]
+      "memberIds": []
     },
     {
       "lessonId": "L06SAT1",
@@ -450,9 +447,7 @@
       "day": "SATURDAY",
       "timeSlot": "MORNING",
       "weekNumber": 7,
-      "memberIds": [
-        "M005"
-      ]
+      "memberIds": []
     },
     {
       "lessonId": "L07SAT2",
@@ -633,11 +628,6 @@
       "lessonId": "L02SUN2"
     },
     {
-      "bookingId": "B015",
-      "memberId": "M005",
-      "lessonId": "L02SAT3"
-    },
-    {
       "bookingId": "B016",
       "memberId": "M006",
       "lessonId": "L02SUN1"
@@ -733,11 +723,6 @@
       "lessonId": "L05SAT2"
     },
     {
-      "bookingId": "B035",
-      "memberId": "M005",
-      "lessonId": "L05SUN3"
-    },
-    {
       "bookingId": "B036",
       "memberId": "M006",
       "lessonId": "L06SAT1"
@@ -785,7 +770,7 @@
     {
       "bookingId": "B045",
       "memberId": "M005",
-      "lessonId": "L07SAT1"
+      "lessonId": "L03SAT2"
     },
     {
       "bookingId": "B046",
