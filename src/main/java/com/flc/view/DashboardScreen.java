@@ -64,6 +64,7 @@ public class DashboardScreen extends JPanel {
             case DASHBOARD -> buildDashboardHome();
             case TIMETABLE -> new TimetableScreen();
             case BOOKINGS  -> new BookingScreen();
+            case MEMBERS   -> new MemberScreen();
             default        -> buildComingSoon(item.label);
         };
 
