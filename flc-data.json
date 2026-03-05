@@ -93,7 +93,8 @@
       "memberIds": [
         "M001",
         "M002",
-        "M003"
+        "M003",
+        "M011"
       ]
     },
     {
@@ -810,6 +811,11 @@
       "bookingId": "B050",
       "memberId": "M010",
       "lessonId": "L08SUN2"
+    },
+    {
+      "bookingId": "B051",
+      "memberId": "M011",
+      "lessonId": "L01SAT1"
     }
   ],
   "reviews": [
@@ -966,6 +972,13 @@
       "lessonId": "L03SUN1",
       "rating": 3,
       "comment": "Aquacise was decent."
+    },
+    {
+      "reviewId": "R023",
+      "memberId": "M011",
+      "lessonId": "L01SAT1",
+      "rating": 5,
+      "comment": "123231"
     }
   ]
 }
