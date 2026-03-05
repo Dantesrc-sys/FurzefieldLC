@@ -1,18 +1,15 @@
 package com.flc.view;
 
 import com.flc.config.Theme;
-import com.flc.controller.BookingController;
 import com.flc.controller.MemberController;
 import com.flc.data.DataStore;
 import com.flc.data.persistence.JsonStore;
-import com.flc.model.Booking;
 import com.flc.model.Member;
 
 import javax.swing.*;
 import javax.swing.table.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.util.List;
 
 /**
  * Members screen — view all members, add new ones, edit name/phone.
@@ -21,7 +18,6 @@ import java.util.List;
 public class MemberScreen extends JPanel {
 
     private final MemberController  memberController  = new MemberController();
-    private final BookingController bookingController = new BookingController();
     private final DataStore         store             = DataStore.getInstance();
 
     // ── Selected state ────────────────────────────────────────────────────────

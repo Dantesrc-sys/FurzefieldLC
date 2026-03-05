@@ -1,6 +1,5 @@
 package com.flc.view;
 
-import com.flc.config.AppConfig;
 import com.flc.config.Theme;
 import com.flc.data.DataStore;
 import com.flc.data.SampleData;

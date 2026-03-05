@@ -2,7 +2,6 @@ package com.flc.view;
 
 import com.flc.config.Theme;
 import com.flc.controller.BookingController;
-import com.flc.controller.MemberController;
 import com.flc.data.DataStore;
 import com.flc.data.persistence.JsonStore;
 import com.flc.model.*;
@@ -20,7 +19,6 @@ import java.util.List;
 public class BookingScreen extends JPanel {
 
     private final BookingController bookingController = new BookingController();
-    private final MemberController  memberController  = new MemberController();
     private final DataStore         store             = DataStore.getInstance();
 
     // ── Selected state ────────────────────────────────────────────────────────

@@ -8,7 +8,6 @@ import com.flc.controller.ReportController.IncomeRow;
 import javax.swing.*;
 import javax.swing.table.*;
 import java.awt.*;
-import java.awt.event.*;
 import java.util.List;
 
 /**
@@ -188,7 +187,6 @@ public class ReportScreen extends JPanel {
         JTable table = buildReportTable(model);
 
         // Colour income column — top earner highlighted
-        double topIncome = rows.isEmpty() ? 0 : rows.get(0).totalIncome();
         table.getColumnModel().getColumn(3).setCellRenderer(new DefaultTableCellRenderer() {
             @Override public Component getTableCellRendererComponent(
                     JTable t, Object val, boolean sel, boolean foc, int row, int col) {
