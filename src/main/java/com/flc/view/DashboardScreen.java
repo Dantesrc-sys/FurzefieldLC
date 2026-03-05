@@ -100,10 +100,30 @@ public class DashboardScreen extends JPanel {
         row1.setOpaque(false);
         row1.setAlignmentX(Component.LEFT_ALIGNMENT);
         row1.setMaximumSize(new Dimension(Integer.MAX_VALUE, 110));
-        row1.add(buildStatCard("Members",        String.valueOf(store.getTotalMembers()),        Theme.ACCENT,               "members.png"));
-        row1.add(buildStatCard("Lessons",         String.valueOf(store.getTotalLessons()),         Theme.ACCENT_MID,           "timetable.png"));
-        row1.add(buildStatCard("Bookings",        String.valueOf(store.getTotalBookings()),        new Color(0x6C63FF),        "bookings.png"));
-        row1.add(buildStatCard("Reviews",         String.valueOf(store.getTotalReviews()),         new Color(0xE67E22),        "reviews.png"));
+        row1.add(buildStatCard(
+            "Members",        
+            String.valueOf(store.getTotalMembers()),        
+            Theme.ACCENT,               
+            "members.png"));
+            
+        row1.add(buildStatCard(
+            "Lessons",         
+            String.valueOf(store.getTotalLessons()),         
+            Theme.ACCENT_MID,           
+            "timetable.png"));
+            
+        row1.add(buildStatCard(
+            "Bookings",        
+            String.valueOf(store.getTotalBookings()),        
+            Theme.BOOKING_ICON_COLOR,        
+            "bookings.png"));
+            
+        row1.add(buildStatCard(
+            "Reviews",         
+            String.valueOf(store.getTotalReviews()),        
+            Theme.REVIEWS_ICON_COLOR,        
+            "reviews.png"));
+            
         page.add(row1);
         page.add(Box.createVerticalStrut(Theme.SPACE_XL));
 
@@ -112,7 +132,11 @@ public class DashboardScreen extends JPanel {
         row2.setOpaque(false);
         row2.setAlignmentX(Component.LEFT_ALIGNMENT);
         row2.setMaximumSize(new Dimension(Integer.MAX_VALUE, 110));
-        row2.add(buildStatCard("Weekends",        "8",                                             new Color(0x27AE60),        "reports.png"));
+        row2.add(buildStatCard(
+            "Weekends",        
+            "8",                                            
+            Theme.REPORTS_ICON_COLOR,        
+            "reports.png"));
         row2.add(buildStatCard("Exercise Types",  String.valueOf(store.getTotalExerciseTypes()),   Theme.ACCENT_DARK,          "dashboard.png"));
         page.add(row2);
         page.add(Box.createVerticalStrut(Theme.SPACE_XL));

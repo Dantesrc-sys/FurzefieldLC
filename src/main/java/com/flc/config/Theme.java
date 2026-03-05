@@ -47,12 +47,15 @@ public final class Theme {
     public static final Color TEXT_WARNING    = new Color(0xE67E22);  // warnings
 
     // ── Buttons ───────────────────────────────────────────────────────────────
-    public static final Color BTN_PRIMARY      = new Color(0x2D6A4F);
-    public static final Color BTN_HOVER        = new Color(0x1B4332);
-    public static final Color BTN_PRESSED      = new Color(0x142E24);
-    public static final Color BTN_DISABLED     = new Color(0xB0C4BA);
-    public static final Color BTN_TEXT         = Color.WHITE;
-    public static final Color BTN_TEXT_DISABLED= new Color(0xE8EEE9);
+    public static final Color BTN_PRIMARY       = new Color(0x2D6A4F);
+    public static final Color BTN_HOVER         = new Color(0x1B4332);
+    public static final Color BTN_PRESSED       = new Color(0x142E24);
+    public static final Color BTN_DISABLED      = new Color(0xB0C4BA);
+    public static final Color BTN_TEXT          = Color.WHITE;
+    public static final Color BTN_TEXT_DISABLED = new Color(0xE8EEE9);
+    
+    public static final Color BTN_CHANGE        = new Color(0x6C63FF);
+    public static final Color BTN_CHANGE_HOVER  = new Color(0x5A52D5);
 
     public static final Color BTN_SECONDARY    = new Color(0xFFFFFF);  // outlined bg
     public static final Color BTN_SEC_BORDER   = new Color(0x2D6A4F);  // outlined border
@@ -251,4 +254,12 @@ public final class Theme {
     public static final int OPACITY_SHADOW      = 18;
     public static final int OPACITY_DECO_CIRCLE = 28;
     public static final int OPACITY_STRIP_TEXT  = 60;
+
+    // ═══════════════════════════════════════════════════════════════════════
+    // Dashboad Icon 
+    // ═══════════════════════════════════════════════════════════════════════
+
+    public static final Color BOOKING_ICON_COLOR    = new Color(0x6C63FF);
+    public static final Color REVIEWS_ICON_COLOR    = new Color(0xE67E22);
+    public static final Color REPORTS_ICON_COLOR    = new Color(0x27AE60);
 }

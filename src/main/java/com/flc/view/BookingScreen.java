@@ -163,7 +163,7 @@ public class BookingScreen extends JPanel {
         row.setAlignmentX(Component.LEFT_ALIGNMENT);
 
         bookBtn   = buildBtn("Book",   Theme.BTN_PRIMARY,  Theme.BTN_HOVER);
-        changeBtn = buildBtn("Change", new Color(0x6C63FF), new Color(0x5A52D5));
+        changeBtn = buildBtn("Change", Theme.BTN_CHANGE,   Theme.BTN_CHANGE_HOVER);
         cancelBtn = buildBtn("Cancel", Theme.BTN_DANGER,   Theme.BTN_DANGER_HOVER);
 
         bookBtn.setEnabled(false);
