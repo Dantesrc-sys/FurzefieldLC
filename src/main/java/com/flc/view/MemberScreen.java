@@ -211,10 +211,10 @@ public class MemberScreen extends JPanel {
         card.setAlignmentX(Component.LEFT_ALIGNMENT);
         card.setMaximumSize(new Dimension(Integer.MAX_VALUE, 160));
 
-        detailName     = detailLine("—", Theme.FONT_TITLE_SM, Theme.TEXT_DARK);
-        detailId       = detailLine("ID: —",       Theme.FONT_SMALL, Theme.TEXT_MID);
-        detailPhone    = detailLine("Phone: —",    Theme.FONT_SMALL, Theme.TEXT_MID);
-        detailBookings = detailLine("Bookings: —", Theme.FONT_SMALL, Theme.ACCENT);
+        detailName     = detailLine("Member Name", Theme.FONT_TITLE_SM, Theme.TEXT_DARK);
+        detailId       = detailLine("ID: M000",       Theme.FONT_SMALL, Theme.TEXT_MID);
+        detailPhone    = detailLine("Phone: 00000000000",    Theme.FONT_SMALL, Theme.TEXT_MID);
+        detailBookings = detailLine("Bookings: 00", Theme.FONT_SMALL, Theme.ACCENT);
 
         card.add(detailName);
         card.add(Box.createVerticalStrut(Theme.SPACE_XS));
@@ -317,10 +317,10 @@ public class MemberScreen extends JPanel {
     }
 
     private void clearDetail() {
-        detailName.setText("—");
-        detailId.setText("ID: —");
-        detailPhone.setText("Phone: —");
-        detailBookings.setText("Bookings: —");
+        detailName.setText("Member Name");
+        detailId.setText("ID: M000");
+        detailPhone.setText("Phone: 00000000000");
+        detailBookings.setText("Bookings: 00");
         editNameField.setText("");
         editPhoneField.setText("");
         saveBtn.setEnabled(false);
