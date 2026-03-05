@@ -183,7 +183,7 @@ public class Sidebar extends JPanel {
                 BorderFactory.createMatteBorder(1, 0, 0, 0, new Color(255, 255, 255, 20)),
                 BorderFactory.createEmptyBorder(Theme.SPACE_SM, Theme.SPACE_MD, Theme.SPACE_SM, 0)
         ));
-        JLabel v = new JLabel("v1.0   2025/26");
+        JLabel v = new JLabel(AppConfig.APP_FOOTER_L);
         v.setFont(Theme.FONT_TINY);
         v.setForeground(new Color(255, 255, 255, 60));
         p.add(v);
