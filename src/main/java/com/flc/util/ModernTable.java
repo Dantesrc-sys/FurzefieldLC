@@ -178,6 +178,10 @@ public final class ModernTable {
     public static void setTimeColumn     (JTable t, int col) { t.getColumnModel().getColumn(col).setCellRenderer(new TimeChipRenderer(TIME_COLOURS)); }
     public static void setDotColumn     (JTable t, int col, Map<String, Color> map) { t.getColumnModel().getColumn(col).setCellRenderer(new DotRenderer(map)); }
 
+    public static void setCodeColumn(JTable t, int col) {
+        t.getColumnModel().getColumn(col).setCellRenderer(new CodeTagRenderer());
+    }
+    
     public static void setPillColumn(JTable t, int col, Map<String, Color> bg, Map<String, Color> fg) {
         t.getColumnModel().getColumn(col).setCellRenderer(new PillRenderer(bg, fg));
     }
@@ -492,6 +496,61 @@ public final class ModernTable {
                     g2.drawString(text,
                             px + (pw - tw) / 2,
                             py + (PILL_H + fm.getAscent() - fm.getDescent()) / 2 - 1);
+                    g2.dispose();
+                }
+            };
+        }
+    }
+
+    // ── Code tag renderer (for IDs like R001, M002) ─────────────────────────
+    public static class CodeTagRenderer implements TableCellRenderer {
+
+        @Override
+        public Component getTableCellRendererComponent(
+                JTable t, Object v, boolean sel, boolean foc, int row, int col) {
+
+            final String text = v == null ? "" : v.toString();
+            final Color bg = rowBg(t, row);
+
+            return new JPanel() {
+                { setOpaque(true); setBackground(bg); }
+
+                @Override protected void paintComponent(Graphics g) {
+                    super.paintComponent(g);
+
+                    if (text.isEmpty()) return;
+
+                    Graphics2D g2 = (Graphics2D) g.create();
+                    g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+                                        RenderingHints.VALUE_ANTIALIAS_ON);
+                    g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
+                                        RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+
+                    g2.setFont(Theme.FONT_MONO); // monospaced looks better for codes
+                    FontMetrics fm = g2.getFontMetrics();
+
+                    int padX = Theme.TABLE_CELL_PAD_H;
+                    int textW = fm.stringWidth(text);
+
+                    int chipH = 20;
+                    int chipW = textW + 16;
+
+                    int chipX = padX;
+                    int chipY = (getHeight() - chipH) / 2;
+
+                    // subtle background chip
+                    g2.setColor(Theme.BG_ALT);
+                    g2.fillRoundRect(chipX, chipY, chipW, chipH, 8, 8);
+
+                    // border
+                    g2.setColor(Theme.BORDER_LIGHT);
+                    g2.drawRoundRect(chipX, chipY, chipW, chipH, 8, 8);
+
+                    // text
+                    g2.setColor(Theme.TEXT_MID);
+                    int textY = chipY + (chipH + fm.getAscent() - fm.getDescent()) / 2 - 1;
+                    g2.drawString(text, chipX + (chipW - textW) / 2, textY);
+
                     g2.dispose();
                 }
             };

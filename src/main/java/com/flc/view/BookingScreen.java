@@ -1,6 +1,7 @@
 package com.flc.view;
 
 import com.flc.config.Theme;
+import com.flc.util.ModernTable;
 import com.flc.controller.BookingController;
 import com.flc.data.DataStore;
 import com.flc.data.persistence.JsonStore;
@@ -60,7 +61,7 @@ public class BookingScreen extends JPanel {
         panel.setPreferredSize(new Dimension(380, 0));
 
         // ── Step 1: Select member ──────────────────────────────────────────
-        panel.add(buildSectionLabel("Step 1 — Select Member"));
+        panel.add(buildSectionLabel("Select Member"));
         panel.add(Box.createVerticalStrut(Theme.SPACE_SM));
 
         memberCombo = new JComboBox<>();
@@ -74,14 +75,13 @@ public class BookingScreen extends JPanel {
                 return this;
             }
         });
-        styleCombo(memberCombo);
         memberCombo.setAlignmentX(Component.LEFT_ALIGNMENT);
         memberCombo.addActionListener(e -> onMemberSelected());
         panel.add(memberCombo);
         panel.add(Box.createVerticalStrut(Theme.SPACE_XL));
 
         // ── Step 2: Filter lessons ─────────────────────────────────────────
-        panel.add(buildSectionLabel("Step 2 — Filter Lessons"));
+        panel.add(buildSectionLabel("Filter Lessons"));
         panel.add(Box.createVerticalStrut(Theme.SPACE_SM));
 
         JPanel filterRow = new JPanel(new FlowLayout(FlowLayout.LEFT, Theme.SPACE_SM, 0));
@@ -89,7 +89,6 @@ public class BookingScreen extends JPanel {
         filterRow.setAlignmentX(Component.LEFT_ALIGNMENT);
 
         dayCombo = new JComboBox<>(Day.values());
-        styleCombo(dayCombo);
         dayCombo.setPreferredSize(new Dimension(130, 36));
 
         Integer[] weeks = {0,1,2,3,4,5,6,7,8};
@@ -102,7 +101,6 @@ public class BookingScreen extends JPanel {
                 return this;
             }
         });
-        styleCombo(weekCombo);
         weekCombo.setPreferredSize(new Dimension(120, 36));
 
         dayCombo.addActionListener(e  -> refreshLessons());
@@ -114,7 +112,7 @@ public class BookingScreen extends JPanel {
         panel.add(Box.createVerticalStrut(Theme.SPACE_MD));
 
         // ── Step 3: Pick lesson ────────────────────────────────────────────
-        panel.add(buildSectionLabel("Step 3 — Pick a Lesson"));
+        panel.add(buildSectionLabel("Pick a Lesson"));
         panel.add(Box.createVerticalStrut(Theme.SPACE_SM));
         panel.add(buildLessonTable());
         panel.add(Box.createVerticalStrut(Theme.SPACE_LG));
@@ -140,28 +138,22 @@ public class BookingScreen extends JPanel {
             @Override public boolean isCellEditable(int r, int c) { return false; }
         };
 
-        lessonTable = new JTable(lessonModel) {
-            @Override public Component prepareRenderer(TableCellRenderer r, int row, int col) {
-                Component c = super.prepareRenderer(r, row, col);
-                if (!isRowSelected(row))
-                    c.setBackground(row % 2 == 0 ? Theme.TABLE_ROW_ODD : Theme.TABLE_ROW_EVEN);
-                else
-                    c.setBackground(Theme.TABLE_ROW_SELECTED);
-                c.setForeground(Theme.TEXT_DARK);
-                return c;
-            }
-        };
-        styleTable(lessonTable);
+        lessonTable = ModernTable.create(lessonModel);
+        lessonTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+
+        ModernTable.setColumnWidths(lessonTable, 120, 160, 90, 130);
+        ModernTable.setTimeColumn(lessonTable, 0);   // Time — dot
+        ModernTable.setExerciseColumn(lessonTable, 1);   // Exercise — dot
+        ModernTable.setPriceColumn(lessonTable,    2);   // Price — green
+        ModernTable.setCapacityColumn(lessonTable, 3);   // Spaces — bar
         lessonTable.getSelectionModel().addListSelectionListener(e -> {
             if (!e.getValueIsAdjusting()) onLessonSelected();
         });
 
-        JScrollPane scroll = new JScrollPane(lessonTable);
-        scroll.setBorder(BorderFactory.createLineBorder(Theme.BORDER_LIGHT));
-        scroll.setPreferredSize(new Dimension(380, 180));
-        scroll.setMaximumSize(new Dimension(Integer.MAX_VALUE, 180));
+        JScrollPane scroll = ModernTable.wrap(lessonTable);
+        scroll.setPreferredSize(new Dimension(380, 190));
+        scroll.setMaximumSize(new Dimension(Integer.MAX_VALUE, 190));
         scroll.setAlignmentX(Component.LEFT_ALIGNMENT);
-        scroll.getViewport().setBackground(Theme.BG_CARD);
         return scroll;
     }
 
@@ -207,25 +199,20 @@ public class BookingScreen extends JPanel {
             @Override public boolean isCellEditable(int r, int c) { return false; }
         };
 
-        bookingTable = new JTable(bookingModel) {
-            @Override public Component prepareRenderer(TableCellRenderer r, int row, int col) {
-                Component c = super.prepareRenderer(r, row, col);
-                if (!isRowSelected(row))
-                    c.setBackground(row % 2 == 0 ? Theme.TABLE_ROW_ODD : Theme.TABLE_ROW_EVEN);
-                else
-                    c.setBackground(Theme.TABLE_ROW_SELECTED);
-                c.setForeground(Theme.TEXT_DARK);
-                return c;
-            }
-        };
-        styleTable(bookingTable);
+        bookingTable = ModernTable.create(bookingModel);
+        ModernTable.setColumnWidths(bookingTable, 80, 90, 110, 120, 150, 90);
+        
+        ModernTable.setCodeColumn(bookingTable,      0);  // ID chip
+        ModernTable.setWeekColumn(bookingTable,      1);  // Week chip
+        ModernTable.setDayColumn(bookingTable,       2);  // Day dot
+        ModernTable.setTimeColumn(bookingTable,      3);  // Time dot
+        ModernTable.setExerciseColumn(bookingTable,  4);  // Exercise dot
+        ModernTable.setPriceColumn(bookingTable,     5);  // Price green
         bookingTable.getSelectionModel().addListSelectionListener(e -> {
             if (!e.getValueIsAdjusting()) onBookingSelected();
         });
 
-        JScrollPane scroll = new JScrollPane(bookingTable);
-        scroll.setBorder(BorderFactory.createLineBorder(Theme.BORDER_LIGHT));
-        scroll.getViewport().setBackground(Theme.BG_CARD);
+        JScrollPane scroll = ModernTable.wrap(bookingTable);
         panel.add(scroll, BorderLayout.CENTER);
 
         return panel;
@@ -388,28 +375,6 @@ public class BookingScreen extends JPanel {
         return l;
     }
 
-    private void styleTable(JTable t) {
-        t.setFont(Theme.FONT_TABLE_CELL);
-        t.setRowHeight(Theme.TABLE_ROW_HEIGHT);
-        t.setGridColor(Theme.TABLE_GRID);
-        t.setShowVerticalLines(false);
-        t.setFillsViewportHeight(true);
-        t.setSelectionBackground(Theme.TABLE_ROW_SELECTED);
-        t.setSelectionForeground(Theme.TEXT_DARK);
-        t.setIntercellSpacing(new Dimension(0, 0));
-        JTableHeader h = t.getTableHeader();
-        h.setFont(Theme.FONT_TABLE_HEADER);
-        h.setBackground(Theme.TABLE_HEADER_BG);
-        h.setForeground(Theme.TEXT_MID);
-        h.setPreferredSize(new Dimension(0, Theme.TABLE_HEADER_HEIGHT));
-        h.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Theme.BORDER));
-    }
-
-    private <T> void styleCombo(JComboBox<T> combo) {
-        combo.setFont(Theme.FONT_INPUT);
-        combo.setBackground(Theme.BG_CARD);
-        combo.setPreferredSize(new Dimension(160, 36));
-    }
 
     private JButton buildBtn(String label, Color bg, Color hover) {
         JButton btn = new JButton(label) {
