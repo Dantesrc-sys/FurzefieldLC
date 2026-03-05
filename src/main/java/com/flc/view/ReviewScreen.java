@@ -1,6 +1,7 @@
 package com.flc.view;
 
 import com.flc.config.Theme;
+import com.flc.util.ModernTable;
 import com.flc.controller.ReviewController;
 import com.flc.data.DataStore;
 import com.flc.data.persistence.JsonStore;
@@ -74,7 +75,6 @@ public class ReviewScreen extends JPanel {
                 return this;
             }
         });
-        styleCombo(memberCombo);
         memberCombo.setAlignmentX(Component.LEFT_ALIGNMENT);
         memberCombo.addActionListener(e -> refreshLessonCombo());
         panel.add(memberCombo);
@@ -96,7 +96,6 @@ public class ReviewScreen extends JPanel {
                 return this;
             }
         });
-        styleCombo(lessonCombo);
         lessonCombo.setAlignmentX(Component.LEFT_ALIGNMENT);
         panel.add(lessonCombo);
         panel.add(Box.createVerticalStrut(Theme.SPACE_LG));
@@ -110,17 +109,9 @@ public class ReviewScreen extends JPanel {
         // Comment
         panel.add(sectionLabel("Comment (optional)"));
         panel.add(Box.createVerticalStrut(Theme.SPACE_XS));
-        commentArea = new JTextArea(4, 20);
-        commentArea.setFont(Theme.FONT_INPUT);
-        commentArea.setLineWrap(true);
-        commentArea.setWrapStyleWord(true);
-        commentArea.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(Theme.BORDER),
-                BorderFactory.createEmptyBorder(8, 10, 8, 10)));
+        commentArea = new JTextArea(4, 0);
         JScrollPane commentScroll = new JScrollPane(commentArea);
         commentScroll.setBorder(null);
-        commentScroll.setAlignmentX(Component.LEFT_ALIGNMENT);
-        commentScroll.setMaximumSize(new Dimension(Integer.MAX_VALUE, 100));
         panel.add(commentScroll);
         panel.add(Box.createVerticalStrut(Theme.SPACE_XL));
 
@@ -229,37 +220,16 @@ public class ReviewScreen extends JPanel {
             @Override public boolean isCellEditable(int r, int c) { return false; }
         };
 
-        reviewTable = new JTable(reviewModel) {
-            @Override public Component prepareRenderer(TableCellRenderer r, int row, int col) {
-                Component c = super.prepareRenderer(r, row, col);
-                if (!isRowSelected(row))
-                    c.setBackground(row % 2 == 0 ? Theme.TABLE_ROW_ODD : Theme.TABLE_ROW_EVEN);
-                else
-                    c.setBackground(Theme.TABLE_ROW_SELECTED);
-                c.setForeground(Theme.TEXT_DARK);
-                return c;
-            }
-        };
-        styleTable(reviewTable);
+        reviewTable = ModernTable.create(reviewModel);
+        ModernTable.setColumnWidths(reviewTable, 160, 160, 100, 120, 140, 0);
+        ModernTable.setBoldColumn(reviewTable,     0);  // Member name bold
+        ModernTable.setExerciseColumn(reviewTable, 1);  // Exercise dot
+        ModernTable.setWeekColumn(reviewTable,     2);  // Week chip
+        ModernTable.setDayColumn(reviewTable,      3);  // Day dot
 
-        // Rating column — star display
-        reviewTable.getColumnModel().getColumn(4).setCellRenderer(
-                new DefaultTableCellRenderer() {
-                    @Override public void setValue(Object val) {
-                        if (val instanceof Integer r) {
-                            StringBuilder sb = new StringBuilder();
-                            for (int i = 0; i < 5; i++)
-                                sb.append(i < r ? "★" : "☆");
-                            setText(sb.toString());
-                            setForeground(Theme.STAR_FILLED);
-                            setFont(new Font("SansSerif", Font.PLAIN, 13));
-                        }
-                    }
-                });
+        ModernTable.setStarColumn(reviewTable, 4);
 
-        JScrollPane scroll = new JScrollPane(reviewTable);
-        scroll.setBorder(BorderFactory.createLineBorder(Theme.BORDER_LIGHT));
-        scroll.getViewport().setBackground(Theme.BG_CARD);
+        JScrollPane scroll = ModernTable.wrap(reviewTable);
         panel.add(scroll, BorderLayout.CENTER);
 
         return panel;
@@ -324,31 +294,6 @@ public class ReviewScreen extends JPanel {
         return l;
     }
 
-    private <T> void styleCombo(JComboBox<T> combo) {
-        combo.setFont(Theme.FONT_INPUT);
-        combo.setBackground(Theme.BG_CARD);
-        combo.setMaximumSize(new Dimension(Integer.MAX_VALUE, 36));
-    }
-
-    private void styleTable(JTable t) {
-        t.setFont(Theme.FONT_TABLE_CELL);
-        t.setRowHeight(Theme.TABLE_ROW_HEIGHT);
-        t.setGridColor(Theme.TABLE_GRID);
-        t.setShowVerticalLines(false);
-        t.setFillsViewportHeight(true);
-        t.setSelectionBackground(Theme.TABLE_ROW_SELECTED);
-        t.setSelectionForeground(Theme.TEXT_DARK);
-        t.setIntercellSpacing(new Dimension(0, 0));
-        JTableHeader h = t.getTableHeader();
-        h.setFont(Theme.FONT_TABLE_HEADER);
-        h.setBackground(Theme.TABLE_HEADER_BG);
-        h.setForeground(Theme.TEXT_MID);
-        h.setPreferredSize(new Dimension(0, Theme.TABLE_HEADER_HEIGHT));
-        h.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Theme.BORDER));
-        int[] widths = {110, 90, 65, 80, 90, 200};
-        for (int i = 0; i < widths.length && i < t.getColumnCount(); i++)
-            t.getColumnModel().getColumn(i).setPreferredWidth(widths[i]);
-    }
 
     private JButton buildBtn(String label) {
         JButton btn = new JButton(label) {
