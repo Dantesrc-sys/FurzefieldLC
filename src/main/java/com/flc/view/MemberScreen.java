@@ -5,6 +5,7 @@ import com.flc.controller.MemberController;
 import com.flc.data.DataStore;
 import com.flc.data.persistence.JsonStore;
 import com.flc.model.Member;
+import com.flc.util.ImageUtil;
 
 import javax.swing.*;
 import javax.swing.table.*;
@@ -13,12 +14,13 @@ import java.awt.event.*;
 
 /**
  * Members screen — view all members, add new ones, edit name/phone.
- * Layout: left = member list table | right = detail + edit panel
+ * Add member uses an inline panel — no JOptionPane dialogs.
+ * Layout: left = member list | right = detail / edit / add panel
  */
 public class MemberScreen extends JPanel {
 
-    private final MemberController  memberController  = new MemberController();
-    private final DataStore         store             = DataStore.getInstance();
+    private final MemberController memberController = new MemberController();
+    private final DataStore        store            = DataStore.getInstance();
 
     // ── Selected state ────────────────────────────────────────────────────────
     private Member selectedMember = null;
@@ -33,8 +35,19 @@ public class MemberScreen extends JPanel {
     private JTextField        editNameField;
     private JTextField        editPhoneField;
     private JButton           saveBtn;
-    private JButton           addBtn;
     private JLabel            statusLabel;
+
+    // ── Right panel cards (switched via CardLayout) ────────────────────────────
+    private JPanel      rightCards;
+    private CardLayout  rightCardLayout;
+
+    private static final String CARD_DETAIL = "DETAIL";
+    private static final String CARD_ADD    = "ADD";
+
+    // ── Add form fields ───────────────────────────────────────────────────────
+    private JTextField addNameField;
+    private JTextField addPhoneField;
+    private JLabel     addStatusLabel;
 
     public MemberScreen() {
         setLayout(new BorderLayout(Theme.SPACE_LG, 0));
@@ -54,7 +67,7 @@ public class MemberScreen extends JPanel {
         JPanel panel = new JPanel(new BorderLayout(0, Theme.SPACE_MD));
         panel.setOpaque(false);
 
-        // ── Top bar: title + add button ────────────────────────────────────
+        // Top bar
         JPanel top = new JPanel(new BorderLayout());
         top.setOpaque(false);
 
@@ -63,31 +76,27 @@ public class MemberScreen extends JPanel {
         title.setForeground(Theme.TEXT_DARK);
         top.add(title, BorderLayout.WEST);
 
-        addBtn = buildPrimaryBtn("+ Add Member", Theme.ACCENT, Theme.ACCENT_DARK);
-        addBtn.addActionListener(e -> showAddMemberDialog());
+        JButton addBtn = buildBtn("Add Member", Theme.ACCENT, Theme.ACCENT_DARK);
+        addBtn.addActionListener(e -> showAddPanel());
         top.add(addBtn, BorderLayout.EAST);
-        panel.add(top, BorderLayout.NORTH);
 
-        // ── Search bar ────────────────────────────────────────────────────
+        // Search bar
         JTextField searchField = new JTextField();
         searchField.setFont(Theme.FONT_INPUT);
         searchField.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(Theme.BORDER),
                 BorderFactory.createEmptyBorder(8, 12, 8, 12)));
-        searchField.putClientProperty("JTextField.placeholderText", "Search by name...");
         searchField.addKeyListener(new KeyAdapter() {
             @Override public void keyReleased(KeyEvent e) {
                 filterTable(searchField.getText().trim());
             }
         });
-        panel.add(searchField, BorderLayout.CENTER);
 
-        // ── Table ─────────────────────────────────────────────────────────
+        // Table
         String[] cols = {"ID", "Name", "Phone", "Bookings"};
         memberModel = new DefaultTableModel(cols, 0) {
             @Override public boolean isCellEditable(int r, int c) { return false; }
         };
-
         memberTable = new JTable(memberModel) {
             @Override public Component prepareRenderer(TableCellRenderer r, int row, int col) {
                 Component c = super.prepareRenderer(r, row, col);
@@ -107,28 +116,13 @@ public class MemberScreen extends JPanel {
         JScrollPane scroll = new JScrollPane(memberTable);
         scroll.setBorder(BorderFactory.createLineBorder(Theme.BORDER_LIGHT));
         scroll.getViewport().setBackground(Theme.BG_CARD);
-        panel.add(scroll, BorderLayout.SOUTH);
 
-        // Give scroll the most space
-        panel.setLayout(new BorderLayout(0, Theme.SPACE_MD));
-        panel.add(top,         BorderLayout.NORTH);
-        panel.add(searchField, BorderLayout.CENTER);
-        panel.add(scroll,      BorderLayout.SOUTH);
-
-        // Make scroll fill available space
-        JSplitPane split = new JSplitPane(JSplitPane.VERTICAL_SPLIT, searchField, scroll);
-        split.setDividerSize(0);
-        split.setResizeWeight(0.0);
-        split.setBorder(null);
-        split.setOpaque(false);
-
-        panel.removeAll();
-        panel.setLayout(new BorderLayout(0, Theme.SPACE_MD));
-        panel.add(top,    BorderLayout.NORTH);
         JPanel mid = new JPanel(new BorderLayout(0, Theme.SPACE_SM));
         mid.setOpaque(false);
         mid.add(searchField, BorderLayout.NORTH);
         mid.add(scroll,      BorderLayout.CENTER);
+
+        panel.add(top, BorderLayout.NORTH);
         panel.add(mid, BorderLayout.CENTER);
 
         refreshTable();
@@ -136,25 +130,38 @@ public class MemberScreen extends JPanel {
     }
 
     // ═══════════════════════════════════════════════════════════════════════
-    // RIGHT — member detail + edit
+    // RIGHT — CardLayout: DETAIL card + ADD card
     // ═══════════════════════════════════════════════════════════════════════
 
     private JPanel buildRightPanel() {
+        rightCardLayout = new CardLayout();
+        rightCards      = new JPanel(rightCardLayout);
+        rightCards.setOpaque(false);
+        rightCards.setPreferredSize(new Dimension(280, 0));
+
+        rightCards.add(buildDetailCard(), CARD_DETAIL);
+        rightCards.add(buildAddCard(),    CARD_ADD);
+
+        rightCardLayout.show(rightCards, CARD_DETAIL);
+        return rightCards;
+    }
+
+    // ── DETAIL card ───────────────────────────────────────────────────────────
+    private JPanel buildDetailCard() {
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
         panel.setOpaque(false);
-        panel.setPreferredSize(new Dimension(280, 0));
         panel.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createMatteBorder(0, 1, 0, 0, Theme.BORDER_LIGHT),
                 BorderFactory.createEmptyBorder(0, Theme.SPACE_LG, 0, 0)
         ));
 
-        // ── Detail card ───────────────────────────────────────────────────
-        JPanel detailCard = buildDetailCard();
-        panel.add(detailCard);
+        // Member info card
+        JPanel infoCard = buildInfoCard();
+        panel.add(infoCard);
         panel.add(Box.createVerticalStrut(Theme.SPACE_XL));
 
-        // ── Edit form ─────────────────────────────────────────────────────
+        // Edit form title
         JLabel editTitle = new JLabel("Edit Member");
         editTitle.setFont(Theme.FONT_TITLE_SM);
         editTitle.setForeground(Theme.TEXT_DARK);
@@ -174,7 +181,7 @@ public class MemberScreen extends JPanel {
         panel.add(editPhoneField);
         panel.add(Box.createVerticalStrut(Theme.SPACE_LG));
 
-        saveBtn = buildPrimaryBtn("Save Changes", Theme.ACCENT, Theme.ACCENT_DARK);
+        saveBtn = buildBtn("Save Changes", Theme.ACCENT, Theme.ACCENT_DARK);
         saveBtn.setEnabled(false);
         saveBtn.addActionListener(e -> onSave());
         panel.add(saveBtn);
@@ -190,7 +197,7 @@ public class MemberScreen extends JPanel {
         return panel;
     }
 
-    private JPanel buildDetailCard() {
+    private JPanel buildInfoCard() {
         JPanel card = new JPanel() {
             @Override protected void paintComponent(Graphics g) {
                 Graphics2D g2 = (Graphics2D) g.create();
@@ -208,10 +215,10 @@ public class MemberScreen extends JPanel {
         card.setAlignmentX(Component.LEFT_ALIGNMENT);
         card.setMaximumSize(new Dimension(Integer.MAX_VALUE, 160));
 
-        detailName     = detailLine("—", Theme.FONT_TITLE_SM, Theme.TEXT_DARK);
-        detailId       = detailLine("ID: —",       Theme.FONT_SMALL, Theme.TEXT_MID);
-        detailPhone    = detailLine("Phone: —",    Theme.FONT_SMALL, Theme.TEXT_MID);
-        detailBookings = detailLine("Bookings: —", Theme.FONT_SMALL, Theme.ACCENT);
+        detailName     = detailLine("Select a member", Theme.FONT_TITLE_SM, Theme.TEXT_DARK);
+        detailId       = detailLine("ID: M000",           Theme.FONT_SMALL,    Theme.TEXT_MID);
+        detailPhone    = detailLine("Phone: 000-000-0000",        Theme.FONT_SMALL,    Theme.TEXT_MID);
+        detailBookings = detailLine("Bookings: 0",     Theme.FONT_SMALL,    Theme.ACCENT);
 
         card.add(detailName);
         card.add(Box.createVerticalStrut(Theme.SPACE_XS));
@@ -219,6 +226,103 @@ public class MemberScreen extends JPanel {
         card.add(detailPhone);
         card.add(detailBookings);
         return card;
+    }
+
+    // ── ADD card ──────────────────────────────────────────────────────────────
+    private JPanel buildAddCard() {
+        JPanel panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+        panel.setOpaque(false);
+        panel.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createMatteBorder(0, 1, 0, 0, Theme.BORDER_LIGHT),
+                BorderFactory.createEmptyBorder(0, Theme.SPACE_LG, 0, 0)
+        ));
+
+        // Header row: title + cancel button
+        JPanel header = new JPanel(new BorderLayout());
+        header.setOpaque(false);
+        header.setAlignmentX(Component.LEFT_ALIGNMENT);
+        header.setMaximumSize(new Dimension(Integer.MAX_VALUE, 40));
+
+        JLabel addTitle = new JLabel("New Member");
+        addTitle.setFont(Theme.FONT_TITLE_SM);
+        addTitle.setForeground(Theme.TEXT_DARK);
+        header.add(addTitle, BorderLayout.WEST);
+
+        JButton cancelBtn = new JButton();
+
+        cancelBtn.setIcon(
+                ImageUtil.loadTinted("assets/close.png", 18, 18, Theme.ACCENT)
+        );
+
+        cancelBtn.setPreferredSize(new Dimension(30, 30));
+        cancelBtn.setContentAreaFilled(false);
+        cancelBtn.setBorderPainted(false);
+        cancelBtn.setFocusPainted(false);
+        cancelBtn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        cancelBtn.addActionListener(e -> clearAndShowDetailPanel());
+        header.add(cancelBtn, BorderLayout.EAST);
+
+        panel.add(header);
+        panel.add(Box.createVerticalStrut(Theme.SPACE_XL));
+
+        // Divider
+        JSeparator sep = new JSeparator();
+        sep.setForeground(Theme.BORDER_LIGHT);
+        sep.setAlignmentX(Component.LEFT_ALIGNMENT);
+        sep.setMaximumSize(new Dimension(Integer.MAX_VALUE, 1));
+        panel.add(sep);
+        panel.add(Box.createVerticalStrut(Theme.SPACE_XL));
+
+        // Name field
+        panel.add(formLabel("Full Name"));
+        panel.add(Box.createVerticalStrut(Theme.SPACE_XS));
+        addNameField = buildTextField();
+        panel.add(addNameField);
+        panel.add(Box.createVerticalStrut(Theme.SPACE_MD));
+
+        // Phone field
+        panel.add(formLabel("Phone Number"));
+        panel.add(Box.createVerticalStrut(Theme.SPACE_XS));
+        addPhoneField = buildTextField();
+        panel.add(addPhoneField);
+        panel.add(Box.createVerticalStrut(Theme.SPACE_XL));
+
+        // Submit button — full width feel
+        JButton confirmBtn = buildBtn("Add Member", Theme.ACCENT, Theme.ACCENT_DARK);
+        confirmBtn.addActionListener(e -> onAddMember());
+        panel.add(confirmBtn);
+        panel.add(Box.createVerticalStrut(Theme.SPACE_SM));
+
+        addStatusLabel = new JLabel(" ");
+        addStatusLabel.setFont(Theme.FONT_SMALL);
+        addStatusLabel.setForeground(Theme.TEXT_MID);
+        addStatusLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
+        panel.add(addStatusLabel);
+        panel.add(Box.createVerticalGlue());
+
+        return panel;
+    }
+
+    // ═══════════════════════════════════════════════════════════════════════
+    // PANEL SWITCHING
+    // ═══════════════════════════════════════════════════════════════════════
+
+    private void showAddPanel() {
+        addNameField.setText("");
+        addPhoneField.setText("");
+        addStatusLabel.setText(" ");
+        rightCardLayout.show(rightCards, CARD_ADD);
+        addNameField.requestFocusInWindow();
+    }
+
+    private void clearAndShowDetailPanel() {
+        clearDetail();
+        showDetailPanel();
+    }
+
+    private void showDetailPanel() {
+        rightCardLayout.show(rightCards, CARD_DETAIL);
     }
 
     // ═══════════════════════════════════════════════════════════════════════
@@ -232,6 +336,9 @@ public class MemberScreen extends JPanel {
         String id = (String) memberModel.getValueAt(row, 0);
         selectedMember = store.findMemberById(id);
         if (selectedMember == null) return;
+
+        // Switch back to detail card if on add card
+        showDetailPanel();
 
         int bookingCount = store.findBookingsByMember(selectedMember).size();
         detailName.setText(selectedMember.getName());
@@ -247,49 +354,37 @@ public class MemberScreen extends JPanel {
 
     private void onSave() {
         if (selectedMember == null) return;
-        String newName  = editNameField.getText().trim();
-        String newPhone = editPhoneField.getText().trim();
         try {
-            memberController.updateName(selectedMember, newName);
-            memberController.updatePhone(selectedMember, newPhone);
+            memberController.updateName(selectedMember,  editNameField.getText().trim());
+            memberController.updatePhone(selectedMember, editPhoneField.getText().trim());
             JsonStore.save();
-            setStatus("✓ Member updated", Theme.TEXT_SUCCESS);
+            setStatus("Member updated", Theme.TEXT_SUCCESS);
             refreshTable();
-            // Re-select updated member
             detailName.setText(selectedMember.getName());
             detailPhone.setText("Phone: " + selectedMember.getPhone());
         } catch (Exception ex) {
-            setStatus("✗ " + ex.getMessage(), Theme.TEXT_ERROR);
+            setStatus(ex.getMessage(), Theme.TEXT_ERROR);
         }
     }
 
-    private void showAddMemberDialog() {
-        JTextField nameF  = buildDialogField();
-        JTextField phoneF = buildDialogField();
-
-        JPanel form = new JPanel();
-        form.setLayout(new BoxLayout(form, BoxLayout.Y_AXIS));
-        form.setBorder(BorderFactory.createEmptyBorder(
-                Theme.SPACE_SM, Theme.SPACE_SM, Theme.SPACE_SM, Theme.SPACE_SM));
-        form.add(new JLabel("Name:"));
-        form.add(Box.createVerticalStrut(Theme.SPACE_XS));
-        form.add(nameF);
-        form.add(Box.createVerticalStrut(Theme.SPACE_MD));
-        form.add(new JLabel("Phone:"));
-        form.add(Box.createVerticalStrut(Theme.SPACE_XS));
-        form.add(phoneF);
-
-        int result = JOptionPane.showConfirmDialog(this, form,
-                "Add New Member", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
-        if (result != JOptionPane.OK_OPTION) return;
-
+    private void onAddMember() {
         try {
-            Member m = memberController.addMember(nameF.getText(), phoneF.getText());
+            Member m = memberController.addMember(
+                    addNameField.getText().trim(),
+                    addPhoneField.getText().trim());
             JsonStore.save();
-            setStatus("✓ Added " + m.getName(), Theme.TEXT_SUCCESS);
             refreshTable();
+            addStatusLabel.setText("Added " + m.getName());
+            addStatusLabel.setForeground(Theme.TEXT_SUCCESS);
+            addNameField.setText("");
+            addPhoneField.setText("");
+            // Auto-close after short delay so user sees the confirmation
+            Timer t = new Timer(1200, e -> showDetailPanel());
+            t.setRepeats(false);
+            t.start();
         } catch (Exception ex) {
-            setStatus("✗ " + ex.getMessage(), Theme.TEXT_ERROR);
+            addStatusLabel.setText(ex.getMessage());
+            addStatusLabel.setForeground(Theme.TEXT_ERROR);
         }
     }
 
@@ -316,10 +411,10 @@ public class MemberScreen extends JPanel {
     }
 
     private void clearDetail() {
-        detailName.setText("—");
-        detailId.setText("ID: —");
-        detailPhone.setText("Phone: —");
-        detailBookings.setText("Bookings: —");
+        detailName.setText("Select a member");
+        detailId.setText("ID: M000");
+        detailPhone.setText("Phone: 000-000-0000");
+        detailBookings.setText("Bookings: 0");
         editNameField.setText("");
         editPhoneField.setText("");
         saveBtn.setEnabled(false);
@@ -376,13 +471,7 @@ public class MemberScreen extends JPanel {
         return f;
     }
 
-    private JTextField buildDialogField() {
-        JTextField f = new JTextField(20);
-        f.setFont(Theme.FONT_INPUT);
-        return f;
-    }
-
-    private JButton buildPrimaryBtn(String label, Color bg, Color hover) {
+    private JButton buildBtn(String label, Color bg, Color hover) {
         JButton btn = new JButton(label) {
             private boolean hov = false;
             { addMouseListener(new MouseAdapter() {
