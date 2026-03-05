@@ -4,6 +4,7 @@ import com.flc.config.Theme;
 import com.flc.controller.ReportController;
 import com.flc.controller.ReportController.AttendanceRow;
 import com.flc.controller.ReportController.IncomeRow;
+import com.flc.util.ModernTable;
 
 import javax.swing.*;
 import javax.swing.table.*;
@@ -11,9 +12,9 @@ import java.awt.*;
 import java.util.List;
 
 /**
- * Reports screen — two side-by-side reports:
- *  Left  → Attendance & Rating report (per lesson)
- *  Right → Income report (per exercise type, highest first)
+ * Reports screen — two side-by-side reports using ModernTable.
+ *  Left  → Attendance and Rating (per lesson)
+ *  Right → Income (per exercise, highest first)
  */
 public class ReportScreen extends JPanel {
 
@@ -43,12 +44,8 @@ public class ReportScreen extends JPanel {
         sub.setForeground(Theme.TEXT_MID);
         panel.add(sub, BorderLayout.WEST);
 
-        // Highlight card — highest income exercise
         IncomeRow top = reportController.getHighestIncomeExercise();
-        if (top != null) {
-            JPanel badge = buildHighlightBadge(top);
-            panel.add(badge, BorderLayout.EAST);
-        }
+        if (top != null) panel.add(buildHighlightBadge(top), BorderLayout.EAST);
         return panel;
     }
 
@@ -103,11 +100,11 @@ public class ReportScreen extends JPanel {
     }
 
     // ── Report 1: Attendance & Rating ─────────────────────────────────────
+    // cols: Week | Day | Time | Exercise | Enrolled | Avg Rating
     private JPanel buildAttendanceReport() {
         JPanel panel = new JPanel(new BorderLayout(0, Theme.SPACE_MD));
         panel.setOpaque(false);
-
-        panel.add(reportTitle("Attendance & Rating", "Per lesson · sorted by week"),
+        panel.add(reportTitle("Attendance and Rating", "Per lesson   sorted by week"),
                 BorderLayout.NORTH);
 
         String[] cols = {"Week", "Day", "Time", "Exercise", "Enrolled", "Avg Rating"};
@@ -127,49 +124,61 @@ public class ReportScreen extends JPanel {
             });
         }
 
-        JTable table = buildReportTable(model);
+        // ── Same pattern as TimetableScreen ───────────────────────────────
+        JTable table = ModernTable.create(model);
+        ModernTable.setColumnWidths(table, 90, 120, 130, 160, 140, 130);
+        ModernTable.setWeekColumn    (table, 0);  // chip
+        ModernTable.setDayColumn     (table, 1);  // coloured dot
+        ModernTable.setExerciseColumn(table, 3);  // coloured dot
+        ModernTable.setCapacityColumn(table, 4);  // mini bar
 
-        // Colour the rating column
-        table.getColumnModel().getColumn(5).setCellRenderer(new DefaultTableCellRenderer() {
-            @Override public Component getTableCellRendererComponent(
-                    JTable t, Object val, boolean sel, boolean foc, int row, int col) {
-                Component c = super.getTableCellRendererComponent(t, val, sel, foc, row, col);
-                String s = val == null ? "" : val.toString();
-                if (s.equals("No reviews"))
-                    setForeground(Theme.TEXT_LIGHT);
-                else {
-                    try {
-                        double avg = Double.parseDouble(s.split(" ")[0]);
-                        setForeground(avg >= 4.0 ? Theme.TEXT_SUCCESS
-                                    : avg >= 3.0 ? Theme.TEXT_WARNING
-                                    : Theme.TEXT_ERROR);
-                    } catch (Exception e) {
-                        setForeground(Theme.TEXT_MID);
+        // Avg Rating — green / amber / red based on value
+        java.util.Map<String, Color> ratingBg = new java.util.HashMap<>();
+        java.util.Map<String, Color> ratingFg = new java.util.HashMap<>();
+        ratingBg.put("No reviews", Theme.BG_ALT);
+        ratingFg.put("No reviews", Theme.TEXT_LIGHT);
+        ModernTable.setPillColumn(table, 5, ratingBg, ratingFg);
+        // Override pill for numeric ratings with dynamic colour
+        table.getColumnModel().getColumn(5).setCellRenderer(
+                new ModernTable.DefaultRenderer() {
+                    @Override public Component getTableCellRendererComponent(
+                            JTable t, Object val, boolean sel, boolean foc, int row, int col) {
+                        super.getTableCellRendererComponent(t, val, sel, foc, row, col);
+                        String s = val == null ? "" : val.toString();
+                        if (s.equals("No reviews")) {
+                            setForeground(Theme.TEXT_LIGHT);
+                            setFont(Theme.FONT_BODY);
+                        } else {
+                            try {
+                                double avg = Double.parseDouble(s.split(" ")[0]);
+                                setForeground(avg >= 4.0 ? Theme.TEXT_SUCCESS
+                                            : avg >= 3.0 ? Theme.TEXT_WARNING
+                                            : Theme.TEXT_ERROR);
+                                setFont(Theme.FONT_BODY_BOLD);
+                            } catch (Exception ignored) {
+                                setForeground(Theme.TEXT_MID);
+                            }
+                        }
+                        return this;
                     }
-                }
-                if (!sel) setBackground(row % 2 == 0 ? Theme.TABLE_ROW_ODD : Theme.TABLE_ROW_EVEN);
-                return c;
-            }
-        });
+                });
 
-        // Summary footer
         long totalEnrolled = rows.stream().mapToLong(AttendanceRow::enrolledCount).sum();
-        JLabel footer = footerLabel("Total enrolled across all lessons: " + totalEnrolled);
-
-        panel.add(wrapInScroll(table), BorderLayout.CENTER);
-        panel.add(footer, BorderLayout.SOUTH);
+        panel.add(ModernTable.wrap(table), BorderLayout.CENTER);
+        panel.add(footerLabel("Total enrolled: " + totalEnrolled + " across all lessons"),
+                BorderLayout.SOUTH);
         return panel;
     }
 
     // ── Report 2: Income ──────────────────────────────────────────────────
+    // cols: Exercise | Price/lesson | Total Enrolled | Total Income
     private JPanel buildIncomeReport() {
         JPanel panel = new JPanel(new BorderLayout(0, Theme.SPACE_MD));
         panel.setOpaque(false);
-
         panel.add(reportTitle("Income by Exercise", "Highest earning first"),
                 BorderLayout.NORTH);
 
-        String[] cols = {"Exercise", "Price/lesson", "Total Enrolled", "Total Income"};
+        String[] cols = {"Exercise", "Price / lesson", "Total Enrolled", "Total Income"};
         DefaultTableModel model = new DefaultTableModel(cols, 0) {
             @Override public boolean isCellEditable(int r, int c) { return false; }
         };
@@ -184,70 +193,24 @@ public class ReportScreen extends JPanel {
             });
         }
 
-        JTable table = buildReportTable(model);
+        // ── Same pattern as TimetableScreen ───────────────────────────────
+        JTable table = ModernTable.create(model);
+        ModernTable.setColumnWidths(table, 180, 120, 130, 160);
+        ModernTable.setExerciseColumn(table, 0);  // coloured dot
+        ModernTable.setPriceColumn   (table, 1);  // green mono right-aligned
+        ModernTable.setCentreAligned (table, 2);  // enrolled count centred
+        ModernTable.setPriceColumn   (table, 3);  // total income green mono
 
-        // Colour income column — top earner highlighted
-        table.getColumnModel().getColumn(3).setCellRenderer(new DefaultTableCellRenderer() {
-            @Override public Component getTableCellRendererComponent(
-                    JTable t, Object val, boolean sel, boolean foc, int row, int col) {
-                Component c = super.getTableCellRendererComponent(t, val, sel, foc, row, col);
-                setFont(row == 0 ? Theme.FONT_BODY_BOLD : Theme.FONT_TABLE_CELL);
-                setForeground(row == 0 ? Theme.ACCENT : Theme.TEXT_DARK);
-                if (!sel) setBackground(row == 0 ? Theme.ACCENT_LIGHT
-                        : row % 2 == 0 ? Theme.TABLE_ROW_ODD : Theme.TABLE_ROW_EVEN);
-                return c;
-            }
-        });
-
-        // Summary footer
         double grandTotal = rows.stream().mapToDouble(IncomeRow::totalIncome).sum();
-        JLabel footer = footerLabel("Grand total income: £" + String.format("%.2f", grandTotal));
-
-        panel.add(wrapInScroll(table), BorderLayout.CENTER);
-        panel.add(footer,             BorderLayout.SOUTH);
+        panel.add(ModernTable.wrap(table), BorderLayout.CENTER);
+        panel.add(footerLabel("Grand total income: £" + String.format("%.2f", grandTotal)),
+                BorderLayout.SOUTH);
         return panel;
     }
 
     // ═══════════════════════════════════════════════════════════════════════
     // HELPERS
     // ═══════════════════════════════════════════════════════════════════════
-
-    private JTable buildReportTable(DefaultTableModel model) {
-        JTable table = new JTable(model) {
-            @Override public Component prepareRenderer(TableCellRenderer r, int row, int col) {
-                Component c = super.prepareRenderer(r, row, col);
-                if (!isRowSelected(row))
-                    c.setBackground(row % 2 == 0 ? Theme.TABLE_ROW_ODD : Theme.TABLE_ROW_EVEN);
-                else
-                    c.setBackground(Theme.TABLE_ROW_SELECTED);
-                if (c.getForeground().equals(getForeground()))
-                    c.setForeground(Theme.TEXT_DARK);
-                return c;
-            }
-        };
-        table.setFont(Theme.FONT_TABLE_CELL);
-        table.setRowHeight(Theme.TABLE_ROW_HEIGHT);
-        table.setGridColor(Theme.TABLE_GRID);
-        table.setShowVerticalLines(false);
-        table.setFillsViewportHeight(true);
-        table.setIntercellSpacing(new Dimension(0, 0));
-        table.setSelectionBackground(Theme.TABLE_ROW_SELECTED);
-
-        JTableHeader header = table.getTableHeader();
-        header.setFont(Theme.FONT_TABLE_HEADER);
-        header.setBackground(Theme.TABLE_HEADER_BG);
-        header.setForeground(Theme.TEXT_MID);
-        header.setPreferredSize(new Dimension(0, Theme.TABLE_HEADER_HEIGHT));
-        header.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Theme.BORDER));
-        return table;
-    }
-
-    private JScrollPane wrapInScroll(JTable table) {
-        JScrollPane scroll = new JScrollPane(table);
-        scroll.setBorder(BorderFactory.createLineBorder(Theme.BORDER_LIGHT));
-        scroll.getViewport().setBackground(Theme.BG_CARD);
-        return scroll;
-    }
 
     private JPanel reportTitle(String title, String subtitle) {
         JPanel p = new JPanel();
