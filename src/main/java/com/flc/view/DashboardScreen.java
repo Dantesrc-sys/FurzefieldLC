@@ -87,7 +87,7 @@ public class DashboardScreen extends JPanel {
                 Theme.SPACE_XL, Theme.SPACE_XL, Theme.SPACE_XL, Theme.SPACE_XL));
 
         // Welcome
-        JLabel welcome = new JLabel("Welcome back — here is your overview");
+        JLabel welcome = new JLabel("Welcome back, here is your overview");
         welcome.setFont(Theme.FONT_SUBTITLE);
         welcome.setForeground(Theme.TEXT_MID);
         welcome.setAlignmentX(Component.LEFT_ALIGNMENT);

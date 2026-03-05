@@ -256,11 +256,11 @@ public class BookingScreen extends JPanel {
         try {
             bookingController.createBooking(selectedMember, selectedLesson);
             JsonStore.save();
-            setStatus("✓ Booked " + selectedLesson.getExerciseType().getName()
-                    + " — Week " + selectedLesson.getWeekNumber(), Theme.TEXT_SUCCESS);
+            setStatus("Booked " + selectedLesson.getExerciseType().getName()
+                    + " - Week " + selectedLesson.getWeekNumber(), Theme.TEXT_SUCCESS);
             refreshAll();
         } catch (Exception ex) {
-            setStatus("✗ " + ex.getMessage(), Theme.TEXT_ERROR);
+            setStatus(ex.getMessage(), Theme.TEXT_ERROR);
         }
     }
 
@@ -269,11 +269,11 @@ public class BookingScreen extends JPanel {
         try {
             bookingController.changeBooking(selectedBooking, selectedLesson);
             JsonStore.save();
-            setStatus("✓ Booking changed to " + selectedLesson.getExerciseType().getName()
-                    + " — Week " + selectedLesson.getWeekNumber(), Theme.TEXT_SUCCESS);
+            setStatus("Booking changed to " + selectedLesson.getExerciseType().getName()
+                    + " - Week " + selectedLesson.getWeekNumber(), Theme.TEXT_SUCCESS);
             refreshAll();
         } catch (Exception ex) {
-            setStatus("✗ " + ex.getMessage(), Theme.TEXT_ERROR);
+            setStatus(ex.getMessage(), Theme.TEXT_ERROR);
         }
     }
 
@@ -282,17 +282,17 @@ public class BookingScreen extends JPanel {
         int confirm = JOptionPane.showConfirmDialog(this,
                 "Cancel booking for " + selectedBooking.getLesson().getExerciseType().getName()
                 + "?\nWeek " + selectedBooking.getLesson().getWeekNumber()
-                + " — " + selectedBooking.getLesson().getDay().getDisplayName(),
+                + " - " + selectedBooking.getLesson().getDay().getDisplayName(),
                 "Confirm Cancel", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
         if (confirm != JOptionPane.YES_OPTION) return;
         try {
             bookingController.cancelBooking(selectedBooking);
             selectedBooking = null;
             JsonStore.save();
-            setStatus("✓ Booking cancelled", Theme.TEXT_SUCCESS);
+            setStatus("Booking cancelled", Theme.TEXT_SUCCESS);
             refreshAll();
         } catch (Exception ex) {
-            setStatus("✗ " + ex.getMessage(), Theme.TEXT_ERROR);
+            setStatus(ex.getMessage(), Theme.TEXT_ERROR);
         }
     }
 

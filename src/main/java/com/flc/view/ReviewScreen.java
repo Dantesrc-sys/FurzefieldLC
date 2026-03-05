@@ -71,7 +71,7 @@ public class ReviewScreen extends JPanel {
             @Override public Component getListCellRendererComponent(
                     JList<?> l, Object val, int idx, boolean sel, boolean focus) {
                 super.getListCellRendererComponent(l, val, idx, sel, focus);
-                if (val instanceof Member m) setText(m.getMemberId() + "  —  " + m.getName());
+                if (val instanceof Member m) setText(m.getMemberId() + " - " + m.getName());
                 return this;
             }
         });
@@ -92,7 +92,7 @@ public class ReviewScreen extends JPanel {
                     setText("Wk" + lesson.getWeekNumber()
                             + " " + lesson.getDay().getDisplayName()
                             + " " + lesson.getTimeSlot().getDisplayName()
-                            + " — " + lesson.getExerciseType().getName());
+                            + " - " + lesson.getExerciseType().getName());
                 return this;
             }
         });
@@ -254,17 +254,17 @@ public class ReviewScreen extends JPanel {
         Member member = (Member) memberCombo.getSelectedItem();
         Lesson lesson = (Lesson) lessonCombo.getSelectedItem();
 
-        if (member == null) { setStatus("✗ Please select a member", Theme.TEXT_ERROR); return; }
-        if (lesson == null) { setStatus("✗ No lessons available for this member", Theme.TEXT_ERROR); return; }
+        if (member == null) { setStatus("Please select a member", Theme.TEXT_ERROR); return; }
+        if (lesson == null) { setStatus("No lessons available for this member", Theme.TEXT_ERROR); return; }
 
         try {
             reviewController.addReview(member, lesson, selectedRating, commentArea.getText());
             JsonStore.save();
-            setStatus("✓ Review submitted — " + ratingLabel(selectedRating), Theme.TEXT_SUCCESS);
+            setStatus("Review submitted - " + ratingLabel(selectedRating), Theme.TEXT_SUCCESS);
             commentArea.setText("");
             refreshReviewTable();
         } catch (Exception ex) {
-            setStatus("✗ " + ex.getMessage(), Theme.TEXT_ERROR);
+            setStatus(ex.getMessage(), Theme.TEXT_ERROR);
         }
     }
 
