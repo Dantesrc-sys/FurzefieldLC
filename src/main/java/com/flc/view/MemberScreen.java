@@ -1,6 +1,7 @@
 package com.flc.view;
 
 import com.flc.config.Theme;
+import com.flc.util.ImageUtil;
 import com.flc.util.ModernTable;
 import com.flc.controller.MemberController;
 import com.flc.data.DataStore;
@@ -246,27 +247,18 @@ public class MemberScreen extends JPanel {
         addTitle.setForeground(Theme.TEXT_DARK);
         header.add(addTitle, BorderLayout.WEST);
 
-        JButton cancelBtn = new JButton("Cancel") {
-            @Override
-            protected void paintComponent(Graphics g) {
-                Graphics2D g2 = (Graphics2D) g.create();
-                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-                g2.setColor(Theme.BG_CARD);
-                g2.fillRoundRect(0, 0, getWidth(), getHeight(), Theme.RADIUS_BTN, Theme.RADIUS_BTN);
-                g2.setColor(Theme.BORDER);
-                g2.drawRoundRect(0, 0, getWidth() - 1, getHeight() - 1, Theme.RADIUS_BTN, Theme.RADIUS_BTN);
-                g2.dispose();
-                super.paintComponent(g);
-            }
-        };
-        cancelBtn.setFont(Theme.FONT_BTN_SM);
-        cancelBtn.setForeground(Theme.TEXT_MID);
-        cancelBtn.setPreferredSize(new Dimension(70, 30));
+         JButton cancelBtn = new JButton();
+
+        cancelBtn.setIcon(
+                ImageUtil.loadTinted("assets/close.png", 18, 18, Theme.ACCENT)
+        );
+
+        cancelBtn.setPreferredSize(new Dimension(30, 30));
         cancelBtn.setContentAreaFilled(false);
         cancelBtn.setBorderPainted(false);
         cancelBtn.setFocusPainted(false);
         cancelBtn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        cancelBtn.addActionListener(e -> showDetailPanel());
+        cancelBtn.addActionListener(e -> clearAndShowDetailPanel());
         header.add(cancelBtn, BorderLayout.EAST);
 
         panel.add(header);
@@ -320,6 +312,11 @@ public class MemberScreen extends JPanel {
         addStatusLabel.setText(" ");
         rightCardLayout.show(rightCards, CARD_ADD);
         addNameField.requestFocusInWindow();
+    }
+
+    private void clearAndShowDetailPanel() {
+        clearDetail();
+        showDetailPanel();
     }
 
     private void showDetailPanel() {
