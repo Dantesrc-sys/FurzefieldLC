@@ -1,6 +1,8 @@
 package com.flc.view;
 
 import com.flc.config.Theme;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
 import java.awt.*;
@@ -14,6 +16,7 @@ public class AppFrame extends JFrame {
 
     private static final String CARD_HOME = "HOME";
     private static final String CARD_DASHBOARD = "DASHBOARD";
+    private static final Logger logger = LoggerFactory.getLogger(AppFrame.class);
 
     private final CardLayout cardLayout;
     private final JPanel cardPanel;
@@ -67,7 +70,7 @@ public class AppFrame extends JFrame {
         // assume the same logo used on HomeScreen
         URL url = getClass().getClassLoader().getResource("assets/logo.png");
         if (url == null) {
-            System.err.println("[AppFrame] App icon not found in resources");
+            logger.warn("App icon not found in resources");
             return null;
         }
         return new ImageIcon(url).getImage();

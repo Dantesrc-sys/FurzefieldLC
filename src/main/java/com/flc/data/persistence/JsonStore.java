@@ -4,6 +4,8 @@ import com.flc.data.DataStore;
 import com.flc.model.*;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.*;
 import java.nio.file.*;
@@ -21,6 +23,7 @@ public class JsonStore {
 
     private static final String FILE_NAME = "flc-data.json";
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
+    private static final Logger logger = LoggerFactory.getLogger(JsonStore.class);
 
     private JsonStore() {
     }
@@ -93,9 +96,9 @@ public class JsonStore {
         // Write to file
         try (Writer writer = new FileWriter(FILE_NAME)) {
             GSON.toJson(data, writer);
-            System.out.println("[JsonStore] Saved to " + FILE_NAME);
+            logger.info("Saved data to {}", FILE_NAME);
         } catch (IOException e) {
-            System.err.println("[JsonStore] Save failed: " + e.getMessage());
+            logger.error("Failed to save data to {}: {}", FILE_NAME, e.getMessage());
         }
     }
 
@@ -111,7 +114,7 @@ public class JsonStore {
     public static boolean load() {
         Path path = Paths.get(FILE_NAME);
         if (!Files.exists(path)) {
-            System.out.println("[JsonStore] No save file found — will use SampleData");
+            logger.info("No save file found at {}, will use sample data", FILE_NAME);
             return false;
         }
 
@@ -168,7 +171,7 @@ public class JsonStore {
             return true;
 
         } catch (Exception e) {
-            System.err.println("[JsonStore] Load failed: " + e.getMessage());
+            logger.error("Failed to load data from {}: {}", FILE_NAME, e.getMessage());
             return false;
         }
     }

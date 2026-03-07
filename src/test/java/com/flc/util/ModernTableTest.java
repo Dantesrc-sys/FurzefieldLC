@@ -32,7 +32,7 @@ class ModernTableTest {
 
     @Test
     void testCreateTable() {
-        DefaultTableModel model = new DefaultTableModel(new Object[]{"Col1", "Col2"}, 0);
+        DefaultTableModel model = new DefaultTableModel(new Object[] { "Col1", "Col2" }, 0);
         JTable table = ModernTable.create(model);
         assertNotNull(table);
         assertEquals(model, table.getModel());
@@ -41,7 +41,7 @@ class ModernTableTest {
 
     @Test
     void testSetColumnWidths() {
-        DefaultTableModel model = new DefaultTableModel(new Object[]{"Col1", "Col2"}, 0);
+        DefaultTableModel model = new DefaultTableModel(new Object[] { "Col1", "Col2" }, 0);
         JTable table = ModernTable.create(model);
         ModernTable.setColumnWidths(table, 100, 200);
         assertEquals(100, table.getColumnModel().getColumn(0).getPreferredWidth());
@@ -50,7 +50,7 @@ class ModernTableTest {
 
     @Test
     void testHideColumn() {
-        DefaultTableModel model = new DefaultTableModel(new Object[]{"Col1", "Col2"}, 0);
+        DefaultTableModel model = new DefaultTableModel(new Object[] { "Col1", "Col2" }, 0);
         JTable table = ModernTable.create(model);
         ModernTable.hideColumn(table, 1);
         assertEquals(0, table.getColumnModel().getColumn(1).getWidth());
@@ -58,7 +58,7 @@ class ModernTableTest {
 
     @Test
     void testSetBoldColumn() {
-        DefaultTableModel model = new DefaultTableModel(new Object[]{"Col1"}, 0);
+        DefaultTableModel model = new DefaultTableModel(new Object[] { "Col1" }, 0);
         JTable table = ModernTable.create(model);
         ModernTable.setBoldColumn(table, 0);
         // Hard to test renderer without GUI, just check no exception
@@ -67,7 +67,7 @@ class ModernTableTest {
 
     @Test
     void testSetRightAligned() {
-        DefaultTableModel model = new DefaultTableModel(new Object[]{"Col1"}, 0);
+        DefaultTableModel model = new DefaultTableModel(new Object[] { "Col1" }, 0);
         JTable table = ModernTable.create(model);
         ModernTable.setRightAligned(table, 0);
         assertNotNull(table.getColumnModel().getColumn(0).getCellRenderer());
@@ -75,7 +75,7 @@ class ModernTableTest {
 
     @Test
     void testSetCentreAligned() {
-        DefaultTableModel model = new DefaultTableModel(new Object[]{"Col1"}, 0);
+        DefaultTableModel model = new DefaultTableModel(new Object[] { "Col1" }, 0);
         JTable table = ModernTable.create(model);
         ModernTable.setCentreAligned(table, 0);
         assertNotNull(table.getColumnModel().getColumn(0).getCellRenderer());
@@ -83,7 +83,7 @@ class ModernTableTest {
 
     @Test
     void testSetPriceColumn() {
-        DefaultTableModel model = new DefaultTableModel(new Object[]{"Col1"}, 0);
+        DefaultTableModel model = new DefaultTableModel(new Object[] { "Col1" }, 0);
         JTable table = ModernTable.create(model);
         ModernTable.setPriceColumn(table, 0);
         assertNotNull(table.getColumnModel().getColumn(0).getCellRenderer());

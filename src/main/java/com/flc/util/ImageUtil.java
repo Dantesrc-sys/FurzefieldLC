@@ -1,5 +1,8 @@
 package com.flc.util;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -12,6 +15,8 @@ import java.net.URL;
  * Theme.ACCENT); ImageIcon both = ImageUtil.loadTinted("assets/bookings.png", 20, 20, Theme.ACCENT);
  */
 public final class ImageUtil {
+
+    private static final Logger logger = LoggerFactory.getLogger(ImageUtil.class);
 
     private ImageUtil() {
     }
@@ -27,7 +32,7 @@ public final class ImageUtil {
     public static ImageIcon load(String path, int w, int h) {
         URL url = ImageUtil.class.getClassLoader().getResource(path);
         if (url == null) {
-            System.err.println("[ImageUtil] Not found: " + path);
+            logger.warn("Image not found: {}", path);
             return null;
         }
         Image scaled = new ImageIcon(url).getImage().getScaledInstance(w, h, Image.SCALE_SMOOTH);
