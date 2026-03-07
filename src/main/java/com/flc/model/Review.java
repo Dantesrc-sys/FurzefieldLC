@@ -3,8 +3,9 @@ package com.flc.model;
 import com.flc.config.AppConfig;
 
 /**
- * Represents a review written by a member after attending a lesson. Rating is 1–5 as defined in AppConfig.RATING_MIN /
- * RATING_MAX.
+ * Represents a review written by a member after attending a lesson.
+ * Ratings must be 1–5 as defined in AppConfig.RATING_MIN and AppConfig.RATING_MAX.
+ * Comments are optional (default to empty string if null).
  */
 public class Review {
 
@@ -16,6 +17,16 @@ public class Review {
     private String comment;
 
     // ── Constructor ───────────────────────────────────────────────────────────
+    /**
+     * Creates a new Review for a lesson attended by a member.
+     *
+     * @param reviewId the unique identifier for this review
+     * @param member the member writing the review
+     * @param lesson the lesson being reviewed
+     * @param rating the rating from 1 to 5 (as per AppConfig)
+     * @param comment optional comment text (null is converted to empty string)
+     * @throws IllegalArgumentException if IDs are blank, if objects are null, or if rating is out of range
+     */
     public Review(String reviewId, Member member, Lesson lesson, int rating, String comment) {
         if (reviewId == null || reviewId.isBlank())
             throw new IllegalArgumentException("Review ID cannot be empty");

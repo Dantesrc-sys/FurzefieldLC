@@ -1,8 +1,10 @@
 package com.flc.config;
 
 /**
- * Application-wide string constants for Furzefield Leisure Centre. All user-facing text lives here — change once,
- * applies everywhere.
+ * Application-wide configuration constants for Furzefield Leisure Centre.
+ * All user-facing text lives here — change once, applies everywhere.
+ * Also defines business rules like lesson capacity and rating ranges.
+ * No instances are created (utility class).
  */
 public final class AppConfig {
 

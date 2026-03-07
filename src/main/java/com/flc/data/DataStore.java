@@ -15,6 +15,12 @@ public class DataStore {
     // ── Singleton ─────────────────────────────────────────────────────────────
     private static final DataStore INSTANCE = new DataStore();
 
+    /**
+     * Returns the singleton instance of DataStore.
+     * All data is stored in this single instance throughout the application lifecycle.
+     *
+     * @return the DataStore singleton instance
+     */
     public static DataStore getInstance() {
         return INSTANCE;
     }

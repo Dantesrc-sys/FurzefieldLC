@@ -1,7 +1,9 @@
 package com.flc.model;
 
 /**
- * Represents a booking made by a member for a specific lesson. A booking is the link between a Member and a Lesson.
+ * Represents a booking made by a member for a specific lesson.
+ * A booking is the link between a Member and a Lesson.
+ * The lesson reference is mutable, allowing members to change their bookings.
  */
 public class Booking {
 
@@ -11,6 +13,14 @@ public class Booking {
     private Lesson lesson; // mutable — member can change their booking
 
     // ── Constructor ───────────────────────────────────────────────────────────
+    /**
+     * Creates a new Booking linking a member to a lesson.
+     *
+     * @param bookingId the unique identifier for this booking
+     * @param member the member making the booking
+     * @param lesson the lesson being booked
+     * @throws IllegalArgumentException if any parameter is null or if IDs are blank
+     */
     public Booking(String bookingId, Member member, Lesson lesson) {
         if (bookingId == null || bookingId.isBlank())
             throw new IllegalArgumentException("Booking ID cannot be empty");
@@ -25,6 +35,10 @@ public class Booking {
     }
 
     // ── Getters ───────────────────────────────────────────────────────────────
+    /**
+     * Gets the unique identifier for this booking.
+     * @return the booking ID (immutable)
+     */
     public String getBookingId() {
         return bookingId;
     }

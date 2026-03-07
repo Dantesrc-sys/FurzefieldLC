@@ -2,6 +2,8 @@ package com.flc.model;
 
 /**
  * Represents a member of Furzefield Leisure Centre.
+ * Each member has a unique ID, name, and phone number.
+ * Members can enroll in lessons and write reviews.
  */
 public class Member {
 
@@ -11,6 +13,14 @@ public class Member {
     private String phone;
 
     // ── Constructor ───────────────────────────────────────────────────────────
+    /**
+     * Creates a new Member with the specified ID, name, and phone number.
+     *
+     * @param memberId the unique identifier for this member
+     * @param name the member's full name
+     * @param phone the member's contact phone number
+     * @throws IllegalArgumentException if any parameter is null or blank
+     */
     public Member(String memberId, String name, String phone) {
         if (memberId == null || memberId.isBlank())
             throw new IllegalArgumentException("Member ID cannot be empty");
@@ -25,25 +35,49 @@ public class Member {
     }
 
     // ── Getters ───────────────────────────────────────────────────────────────
+    /**
+     * Gets the unique identifier for this member.
+     * @return the member ID (immutable)
+     */
     public String getMemberId() {
         return memberId;
     }
 
+    /**
+     * Gets the member's full name.
+     * @return the member's name
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * Gets the member's contact phone number.
+     * @return the phone number
+     */
     public String getPhone() {
         return phone;
     }
 
     // ── Setters (id is immutable) ─────────────────────────────────────────────
+    /**
+     * Updates the member's name.
+     *
+     * @param name the new name
+     * @throws IllegalArgumentException if name is null or blank
+     */
     public void setName(String name) {
         if (name == null || name.isBlank())
             throw new IllegalArgumentException("Name cannot be empty");
         this.name = name;
     }
 
+    /**
+     * Updates the member's phone number.
+     *
+     * @param phone the new phone number
+     * @throws IllegalArgumentException if phone is null or blank
+     */
     public void setPhone(String phone) {
         if (phone == null || phone.isBlank())
             throw new IllegalArgumentException("Phone cannot be empty");

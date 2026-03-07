@@ -50,19 +50,36 @@ public class MemberController {
     // QUERIES
     // ═══════════════════════════════════════════════════════════════════════
 
+    /**
+     * Retrieves all members in the system.
+     *
+     * @return a list of all members (may be empty)
+     */
     public List<Member> getAllMembers() {
         return store.getMembers();
     }
 
+    /**
+     * Finds a member by their unique ID.
+     *
+     * @param id the member's unique identifier
+     * @return the member, or null if not found
+     * @throws IllegalArgumentException if id is null or blank
+     */
     public Member findById(String id) {
-        if (id == null || id.isBlank())
-            throw new IllegalArgumentException("ID cannot be empty");
+        ValidationUtil.requireNonBlank(id, "Member ID");
         return store.findMemberById(id);
     }
 
+    /**
+     * Finds a member by their exact name (case-sensitive).
+     *
+     * @param name the member's name
+     * @return the first member with this exact name, or null if not found
+     * @throws IllegalArgumentException if name is null or blank
+     */
     public Member findByName(String name) {
-        if (name == null || name.isBlank())
-            throw new IllegalArgumentException("Name cannot be empty");
+        ValidationUtil.requireNonBlank(name, "Name");
         return store.findMemberByName(name);
     }
 

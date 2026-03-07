@@ -16,8 +16,11 @@ import java.util.ArrayList;
  *
  * File location: flc-data.json in the working directory (next to the jar).
  *
- * Strategy: - Save: convert every model object to a flat DTO (IDs only for references) - Load: read DTOs, reconstruct
- * model objects, re-link object references
+ * Strategy:
+ * - Save: convert every model object to a flat DTO (IDs only for references)
+ * - Load: read DTOs, reconstruct model objects, re-link object references
+ *
+ * Uses SLF4J for logging all save/load operations and errors.
  */
 public class JsonStore {
 
@@ -32,6 +35,11 @@ public class JsonStore {
     // SAVE
     // ═══════════════════════════════════════════════════════════════════════
 
+    /**
+     * Saves the entire DataStore to flc-data.json in the working directory.
+     * Converts all model objects to DTOs for JSON serialization.
+     * On success, logs an INFO message. On failure, logs an ERROR message.
+     */
     public static void save() {
         DataStore store = DataStore.getInstance();
         AppData data = new AppData();
@@ -108,8 +116,12 @@ public class JsonStore {
 
     /**
      * Loads data from flc-data.json if it exists.
+     * Reconstructs all model objects from DTOs and re-establishes object relationships.
+     * On successful load, logs an INFO message with counts of loaded objects.
+     * On missing file, logs an INFO message and returns false (caller should load sample data).
+     * On read errors, logs an ERROR message and returns false.
      *
-     * @return true if loaded from file, false if file not found (caller should load SampleData)
+     * @return true if data was successfully loaded from file, false if file not found or error occurred
      */
     public static boolean load() {
         Path path = Paths.get(FILE_NAME);
@@ -176,7 +188,12 @@ public class JsonStore {
         }
     }
 
-    /** Returns true if a save file already exists */
+    /**
+     * Checks if a save file exists in the working directory.
+     * Useful for determining whether to load from file or use sample data.
+     *
+     * @return true if flc-data.json exists, false otherwise
+     */
     public static boolean saveFileExists() {
         return Files.exists(Paths.get(FILE_NAME));
     }

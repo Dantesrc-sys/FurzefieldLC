@@ -121,30 +121,70 @@ public class BookingController {
     // QUERIES
     // ═══════════════════════════════════════════════════════════════════════
 
+    /**
+     * Retrieves all bookings made by a specific member.
+     *
+     * @param member the member to query
+     * @return a list of bookings for this member (may be empty)
+     * @throws IllegalArgumentException if member is null
+     */
     public List<Booking> getBookingsForMember(Member member) {
         ValidationUtil.requireNonNull(member, "Member");
         return store.findBookingsByMember(member);
     }
 
+    /**
+     * Retrieves all bookings in a specific lesson.
+     *
+     * @param lesson the lesson to query
+     * @return a list of bookings for this lesson (may be empty)
+     * @throws IllegalArgumentException if lesson is null
+     */
     public List<Booking> getBookingsForLesson(Lesson lesson) {
         ValidationUtil.requireNonNull(lesson, "Lesson");
         return store.findBookingsByLesson(lesson);
     }
 
+    /**
+     * Retrieves all lessons that are not yet full.
+     *
+     * @return a list of available lessons (lessons with capacity &lt; max)
+     */
     public List<Lesson> getAvailableLessons() {
         return store.getLessons().stream().filter(l -> !l.isFull()).toList();
     }
 
+    /**
+     * Retrieves all available (not full) lessons on a specific day.
+     *
+     * @param day the day of the week to filter by
+     * @return a list of available lessons on this day (may be empty)
+     * @throws IllegalArgumentException if day is null
+     */
     public List<Lesson> getAvailableLessonsByDay(Day day) {
         ValidationUtil.requireNonNull(day, "Day");
         return store.findLessonsByDay(day).stream().filter(l -> !l.isFull()).toList();
     }
 
+    /**
+     * Retrieves all lessons on a specific day, including full lessons.
+     *
+     * @param day the day of the week to filter by
+     * @return a list of all lessons on this day (may be empty)
+     * @throws IllegalArgumentException if day is null
+     */
     public List<Lesson> getLessonsByDay(Day day) {
         ValidationUtil.requireNonNull(day, "Day");
         return store.findLessonsByDay(day);
     }
 
+    /**
+     * Retrieves all lessons for a specific exercise type.
+     *
+     * @param name the name of the exercise type to filter by
+     * @return a list of lessons offering this exercise (may be empty)
+     * @throws IllegalArgumentException if name is null or blank
+     */
     public List<Lesson> getLessonsByExerciseName(String name) {
         ValidationUtil.requireNonBlank(name, "Exercise name");
         return store.findLessonsByExerciseName(name);

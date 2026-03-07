@@ -67,6 +67,11 @@ public class ReviewController {
         return store.findReviewsByMember(member);
     }
 
+    /**
+     * Retrieves all reviews in the system.
+     *
+     * @return a list of all reviews (may be empty)
+     */
     public List<Review> getAllReviews() {
         return store.getReviews();
     }

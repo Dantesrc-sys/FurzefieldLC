@@ -7,8 +7,10 @@ import java.util.List;
 import com.flc.config.AppConfig;
 
 /**
- * Represents a single group exercise lesson at Furzefield Leisure Centre. A lesson belongs to a specific weekend
- * (weekNumber), day, and time slot. Max capacity is defined in AppConfig.MAX_LESSON_CAPACITY (4 members).
+ * Represents a single group exercise lesson at Furzefield Leisure Centre.
+ * A lesson belongs to a specific weekend (weekNumber), day, and time slot.
+ * Max capacity is defined in AppConfig.MAX_LESSON_CAPACITY (4 members).
+ * Members can enroll, and capacity checks are enforced during booking operations.
  */
 public class Lesson {
 
@@ -21,6 +23,16 @@ public class Lesson {
     private final List<Member> members; // enrolled members (max 4)
 
     // ── Constructor ───────────────────────────────────────────────────────────
+    /**
+     * Creates a new Lesson with the specified exercise type, day, time slot, and week.
+     *
+     * @param lessonId the unique identifier for this lesson
+     * @param exerciseType the type of exercise offered in this lesson
+     * @param day the day of the week (SATURDAY or SUNDAY)
+     * @param timeSlot the time of day (MORNING, AFTERNOON, EVENING)
+     * @param weekNumber the weekend number (1-8)
+     * @throws IllegalArgumentException if any required parameter is null or invalid
+     */
     public Lesson(String lessonId, ExerciseType exerciseType, Day day, TimeSlot timeSlot, int weekNumber) {
         if (lessonId == null || lessonId.isBlank())
             throw new IllegalArgumentException("Lesson ID cannot be empty");
@@ -42,31 +54,58 @@ public class Lesson {
     }
 
     // ── Getters ───────────────────────────────────────────────────────────────
+    /**
+     * Gets the unique identifier for this lesson.
+     * @return the lesson ID (immutable)
+     */
     public String getLessonId() {
         return lessonId;
     }
 
+    /**
+     * Gets the exercise type for this lesson.
+     * @return the ExerciseType
+     */
     public ExerciseType getExerciseType() {
         return exerciseType;
     }
 
+    /**
+     * Gets the day of the week for this lesson.
+     * @return the Day (SATURDAY or SUNDAY)
+     */
     public Day getDay() {
         return day;
     }
 
+    /**
+     * Gets the time slot for this lesson.
+     * @return the TimeSlot (MORNING, AFTERNOON, or EVENING)
+     */
     public TimeSlot getTimeSlot() {
         return timeSlot;
     }
 
+    /**
+     * Gets the weekend number for this lesson.
+     * @return the week number (1-8)
+     */
     public int getWeekNumber() {
         return weekNumber;
     }
 
+    /**
+     * Gets the price of this lesson, which is the exercise type's price.
+     * @return the lesson price
+     */
     public double getPrice() {
         return exerciseType.getPrice();
     }
 
-    /** Returns an unmodifiable view — use addMember / removeMember to change */
+    /**
+     * Gets an unmodifiable view of enrolled members. To modify membership, use addMember or removeMember.
+     * @return an unmodifiable list of enrolled members
+     */
     public List<Member> getMembers() {
         return Collections.unmodifiableList(members);
     }
