@@ -523,7 +523,9 @@
       "day": "SATURDAY",
       "timeSlot": "EVENING",
       "weekNumber": 8,
-      "memberIds": []
+      "memberIds": [
+        "M008"
+      ]
     },
     {
       "lessonId": "L08SUN1",
@@ -551,9 +553,7 @@
       "day": "SUNDAY",
       "timeSlot": "EVENING",
       "weekNumber": 8,
-      "memberIds": [
-        "M008"
-      ]
+      "memberIds": []
     }
   ],
   "bookings": [
@@ -785,7 +785,7 @@
     {
       "bookingId": "B048",
       "memberId": "M008",
-      "lessonId": "L08SUN3"
+      "lessonId": "L08SAT3"
     },
     {
       "bookingId": "B049",
