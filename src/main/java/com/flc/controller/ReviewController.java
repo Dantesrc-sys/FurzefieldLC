@@ -2,6 +2,7 @@ package com.flc.controller;
 
 import com.flc.data.DataStore;
 import com.flc.model.*;
+import com.flc.validation.ValidationUtil;
 
 import java.util.List;
 
@@ -36,10 +37,9 @@ public class ReviewController {
      * @return the created Review
      */
     public Review addReview(Member member, Lesson lesson, int rating, String comment) {
-        if (member == null)
-            throw new IllegalArgumentException("Member cannot be null");
-        if (lesson == null)
-            throw new IllegalArgumentException("Lesson cannot be null");
+        ValidationUtil.requireNonNull(member, "Member");
+        ValidationUtil.requireNonNull(lesson, "Lesson");
+        ValidationUtil.validateRange(rating, 1, 5, "Rating");
 
         if (!lesson.hasMember(member))
             throw new IllegalStateException("Member has not attended this lesson and cannot review it");
@@ -58,14 +58,12 @@ public class ReviewController {
     // ═══════════════════════════════════════════════════════════════════════
 
     public List<Review> getReviewsForLesson(Lesson lesson) {
-        if (lesson == null)
-            throw new IllegalArgumentException("Lesson cannot be null");
+        ValidationUtil.requireNonNull(lesson, "Lesson");
         return store.findReviewsByLesson(lesson);
     }
 
     public List<Review> getReviewsForMember(Member member) {
-        if (member == null)
-            throw new IllegalArgumentException("Member cannot be null");
+        ValidationUtil.requireNonNull(member, "Member");
         return store.findReviewsByMember(member);
     }
 
@@ -77,8 +75,7 @@ public class ReviewController {
      * Returns the average rating for a lesson, or 0.0 if no reviews exist.
      */
     public double getAverageRating(Lesson lesson) {
-        if (lesson == null)
-            throw new IllegalArgumentException("Lesson cannot be null");
+        ValidationUtil.requireNonNull(lesson, "Lesson");
         List<Review> reviews = store.findReviewsByLesson(lesson);
         if (reviews.isEmpty())
             return 0.0;

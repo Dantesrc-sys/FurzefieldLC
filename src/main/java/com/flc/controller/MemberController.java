@@ -2,6 +2,7 @@ package com.flc.controller;
 
 import com.flc.data.DataStore;
 import com.flc.model.Member;
+import com.flc.validation.ValidationUtil;
 
 import java.util.List;
 
@@ -26,20 +27,18 @@ public class MemberController {
      * Adds a new member to the system.
      *
      * @throws IllegalArgumentException
-     *             if name or phone is blank
+     *             if name or phone is invalid
      * @throws IllegalStateException
      *             if a member with the same name already exists
      *
      * @return the created Member
      */
     public Member addMember(String name, String phone) {
-        if (name == null || name.isBlank())
-            throw new IllegalArgumentException("Name cannot be empty");
-        if (phone == null || phone.isBlank())
-            throw new IllegalArgumentException("Phone cannot be empty");
+        ValidationUtil.validateName(name);
+        ValidationUtil.validatePhone(phone);
 
-        if (store.findMemberByName(name) != null)
-            throw new IllegalStateException("A member with the name '" + name + "' already exists");
+        if (store.findMemberByName(name.trim()) != null)
+            throw new IllegalStateException("A member with the name '" + name.trim() + "' already exists");
 
         String memberId = generateMemberId();
         Member member = new Member(memberId, name.trim(), phone.trim());

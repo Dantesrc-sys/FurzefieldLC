@@ -1,5 +1,7 @@
 package com.flc.model;
 
+import com.flc.validation.ValidationUtil;
+
 /**
  * Represents a type of group exercise offered at Furzefield Leisure Centre. Price stays the same regardless of time
  * slot or day.
@@ -13,12 +15,9 @@ public class ExerciseType {
 
     // ── Constructor ───────────────────────────────────────────────────────────
     public ExerciseType(String exerciseId, String name, double price) {
-        if (exerciseId == null || exerciseId.isBlank())
-            throw new IllegalArgumentException("Exercise ID cannot be empty");
-        if (name == null || name.isBlank())
-            throw new IllegalArgumentException("Name cannot be empty");
-        if (price < 0)
-            throw new IllegalArgumentException("Price cannot be negative");
+        ValidationUtil.requireNonBlank(exerciseId, "Exercise ID");
+        ValidationUtil.requireNonBlank(name, "Name");
+        ValidationUtil.validateNonNegative(price, "Price");
 
         this.exerciseId = exerciseId;
         this.name = name;

@@ -2,6 +2,7 @@ package com.flc.controller;
 
 import com.flc.data.DataStore;
 import com.flc.model.*;
+import com.flc.validation.ValidationUtil;
 
 import java.util.List;
 
@@ -36,8 +37,8 @@ public class BookingController {
      * @return the created Booking
      */
     public Booking createBooking(Member member, Lesson lesson) {
-        validateNotNull(member, "Member");
-        validateNotNull(lesson, "Lesson");
+        ValidationUtil.requireNonNull(member, "Member");
+        ValidationUtil.requireNonNull(lesson, "Lesson");
 
         if (lesson.isFull())
             throw new IllegalStateException("Lesson is full: " + lesson.getLessonId());
@@ -72,8 +73,8 @@ public class BookingController {
      *             if member is already booked in new lesson
      */
     public void changeBooking(Booking booking, Lesson newLesson) {
-        validateNotNull(booking, "Booking");
-        validateNotNull(newLesson, "New lesson");
+        ValidationUtil.requireNonNull(booking, "Booking");
+        ValidationUtil.requireNonNull(newLesson, "New lesson");
 
         Lesson oldLesson = booking.getLesson();
         Member member = booking.getMember();
@@ -111,7 +112,7 @@ public class BookingController {
      * Cancels a booking and removes the member from the lesson.
      */
     public void cancelBooking(Booking booking) {
-        validateNotNull(booking, "Booking");
+        ValidationUtil.requireNonNull(booking, "Booking");
         booking.getLesson().removeMember(booking.getMember());
         store.removeBooking(booking);
     }
@@ -121,12 +122,12 @@ public class BookingController {
     // ═══════════════════════════════════════════════════════════════════════
 
     public List<Booking> getBookingsForMember(Member member) {
-        validateNotNull(member, "Member");
+        ValidationUtil.requireNonNull(member, "Member");
         return store.findBookingsByMember(member);
     }
 
     public List<Booking> getBookingsForLesson(Lesson lesson) {
-        validateNotNull(lesson, "Lesson");
+        ValidationUtil.requireNonNull(lesson, "Lesson");
         return store.findBookingsByLesson(lesson);
     }
 
@@ -135,18 +136,17 @@ public class BookingController {
     }
 
     public List<Lesson> getAvailableLessonsByDay(Day day) {
-        validateNotNull(day, "Day");
+        ValidationUtil.requireNonNull(day, "Day");
         return store.findLessonsByDay(day).stream().filter(l -> !l.isFull()).toList();
     }
 
     public List<Lesson> getLessonsByDay(Day day) {
-        validateNotNull(day, "Day");
+        ValidationUtil.requireNonNull(day, "Day");
         return store.findLessonsByDay(day);
     }
 
     public List<Lesson> getLessonsByExerciseName(String name) {
-        if (name == null || name.isBlank())
-            throw new IllegalArgumentException("Exercise name cannot be empty");
+        ValidationUtil.requireNonBlank(name, "Exercise name");
         return store.findLessonsByExerciseName(name);
     }
 
@@ -166,10 +166,5 @@ public class BookingController {
 
     private String generateBookingId() {
         return "B" + String.format("%03d", bookingCounter++);
-    }
-
-    private void validateNotNull(Object obj, String name) {
-        if (obj == null)
-            throw new IllegalArgumentException(name + " cannot be null");
     }
 }
