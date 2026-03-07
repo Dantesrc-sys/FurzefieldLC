@@ -7,26 +7,26 @@ import static org.junit.jupiter.api.Assertions.*;
 class LessonTest {
 
     private ExerciseType yoga;
-    private Lesson       lesson;
-    private Member       alice;
-    private Member       bob;
+    private Lesson lesson;
+    private Member alice;
+    private Member bob;
 
     @BeforeEach
     void setUp() {
-        yoga   = new ExerciseType("E001", "Yoga", 12.50);
+        yoga = new ExerciseType("E001", "Yoga", 12.50);
         lesson = new Lesson("L001", yoga, Day.SATURDAY, TimeSlot.MORNING, 1);
-        alice  = new Member("M001", "Alice", "07700900001");
-        bob    = new Member("M002", "Bob",   "07700900002");
+        alice = new Member("M001", "Alice", "07700900001");
+        bob = new Member("M002", "Bob", "07700900002");
     }
 
     // ── Construction ──────────────────────────────────────────────────────────
     @Test
     void shouldCreateLessonWithValidData() {
-        assertEquals("L001",          lesson.getLessonId());
-        assertEquals(yoga,            lesson.getExerciseType());
-        assertEquals(Day.SATURDAY,    lesson.getDay());
-        assertEquals(TimeSlot.MORNING,lesson.getTimeSlot());
-        assertEquals(1,               lesson.getWeekNumber());
+        assertEquals("L001", lesson.getLessonId());
+        assertEquals(yoga, lesson.getExerciseType());
+        assertEquals(Day.SATURDAY, lesson.getDay());
+        assertEquals(TimeSlot.MORNING, lesson.getTimeSlot());
+        assertEquals(1, lesson.getWeekNumber());
     }
 
     @Test
@@ -38,14 +38,12 @@ class LessonTest {
 
     @Test
     void shouldThrowWhenExerciseTypeIsNull() {
-        assertThrows(IllegalArgumentException.class,
-            () -> new Lesson("L002", null, Day.SATURDAY, TimeSlot.MORNING, 1));
+        assertThrows(IllegalArgumentException.class, () -> new Lesson("L002", null, Day.SATURDAY, TimeSlot.MORNING, 1));
     }
 
     @Test
     void shouldThrowWhenWeekNumberIsZero() {
-        assertThrows(IllegalArgumentException.class,
-            () -> new Lesson("L002", yoga, Day.SATURDAY, TimeSlot.MORNING, 0));
+        assertThrows(IllegalArgumentException.class, () -> new Lesson("L002", yoga, Day.SATURDAY, TimeSlot.MORNING, 0));
     }
 
     // ── Enrolment ─────────────────────────────────────────────────────────────
@@ -82,7 +80,7 @@ class LessonTest {
         lesson.addMember(alice);
         lesson.addMember(bob);
         lesson.addMember(new Member("M003", "Carol", "07700900003"));
-        lesson.addMember(new Member("M004", "Dave",  "07700900004"));
+        lesson.addMember(new Member("M004", "Dave", "07700900004"));
         assertTrue(lesson.isFull());
         assertEquals(0, lesson.getAvailableSpaces());
     }
@@ -92,9 +90,8 @@ class LessonTest {
         lesson.addMember(alice);
         lesson.addMember(bob);
         lesson.addMember(new Member("M003", "Carol", "07700900003"));
-        lesson.addMember(new Member("M004", "Dave",  "07700900004"));
-        assertThrows(IllegalStateException.class,
-            () -> lesson.addMember(new Member("M005", "Eve", "07700900005")));
+        lesson.addMember(new Member("M004", "Dave", "07700900004"));
+        assertThrows(IllegalStateException.class, () -> lesson.addMember(new Member("M005", "Eve", "07700900005")));
     }
 
     // ── Income ────────────────────────────────────────────────────────────────
@@ -120,7 +117,6 @@ class LessonTest {
     @Test
     void shouldReturnUnmodifiableMembersList() {
         lesson.addMember(alice);
-        assertThrows(UnsupportedOperationException.class,
-            () -> lesson.getMembers().add(bob));
+        assertThrows(UnsupportedOperationException.class, () -> lesson.getMembers().add(bob));
     }
 }

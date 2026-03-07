@@ -11,23 +11,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Left sidebar navigation panel.
- * Uses PNG images from assets/ — no unicode or special characters.
+ * Left sidebar navigation panel. Uses PNG images from assets/ — no unicode or special characters.
  */
 public class Sidebar extends JPanel {
 
     public enum NavItem {
-        DASHBOARD ("Dashboard", "assets/dashboard.png"),
-        TIMETABLE ("Timetable", "assets/timetable.png"),
-        BOOKINGS  ("Bookings",  "assets/bookings.png"),
-        MEMBERS   ("Members",   "assets/members.png"),
-        REVIEWS   ("Reviews",   "assets/reviews.png"),
-        REPORTS   ("Reports",   "assets/reports.png");
+        DASHBOARD("Dashboard", "assets/dashboard.png"), TIMETABLE("Timetable", "assets/timetable.png"),
+        BOOKINGS("Bookings", "assets/bookings.png"), MEMBERS("Members", "assets/members.png"),
+        REVIEWS("Reviews", "assets/reviews.png"), REPORTS("Reports", "assets/reports.png");
 
         public final String label;
         public final String iconPath;
+
         NavItem(String label, String iconPath) {
-            this.label    = label;
+            this.label = label;
             this.iconPath = iconPath;
         }
     }
@@ -49,8 +46,8 @@ public class Sidebar extends JPanel {
 
     private void rebuild() {
         removeAll();
-        add(buildBrand(),   BorderLayout.NORTH);
-        add(buildNav(),     BorderLayout.CENTER);
+        add(buildBrand(), BorderLayout.NORTH);
+        add(buildNav(), BorderLayout.CENTER);
         add(buildVersion(), BorderLayout.SOUTH);
         revalidate();
         repaint();
@@ -60,8 +57,8 @@ public class Sidebar extends JPanel {
     private JPanel buildBrand() {
         JPanel brand = new JPanel(new FlowLayout(FlowLayout.LEFT, Theme.SPACE_SM, 0));
         brand.setOpaque(false);
-        brand.setBorder(BorderFactory.createEmptyBorder(
-                Theme.SPACE_XL, Theme.SPACE_MD, Theme.SPACE_XL, Theme.SPACE_MD));
+        brand.setBorder(
+                BorderFactory.createEmptyBorder(Theme.SPACE_XL, Theme.SPACE_MD, Theme.SPACE_XL, Theme.SPACE_MD));
 
         ImageIcon logoIcon = ImageUtil.load("assets/logo.png", 36, 36);
         JLabel logo;
@@ -69,7 +66,8 @@ public class Sidebar extends JPanel {
             logo = new JLabel(logoIcon);
         } else {
             logo = new JLabel() {
-                @Override public void paintComponent(Graphics g) {
+                @Override
+                public void paintComponent(Graphics g) {
                     Graphics2D g2 = (Graphics2D) g.create();
                     g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
                     g2.setColor(Theme.ACCENT_MID);
@@ -81,7 +79,11 @@ public class Sidebar extends JPanel {
                     g2.drawString(t, (36 - fm.stringWidth(t)) / 2, 36 / 2 + fm.getAscent() / 2 - 2);
                     g2.dispose();
                 }
-                @Override public Dimension getPreferredSize() { return new Dimension(36, 36); }
+
+                @Override
+                public Dimension getPreferredSize() {
+                    return new Dimension(36, 36);
+                }
             };
         }
         logo.setPreferredSize(new Dimension(36, 36));
@@ -111,8 +113,8 @@ public class Sidebar extends JPanel {
     private JPanel buildNavRow(NavItem item) {
         boolean active = item == activeItem;
 
-        Color dimColour  = new Color(255, 255, 255, 160);
-        Color fullWhite  = Color.WHITE;
+        Color dimColour = new Color(255, 255, 255, 160);
+        Color fullWhite = Color.WHITE;
         Color iconColour = active ? fullWhite : dimColour;
 
         // Icon label
@@ -127,13 +129,13 @@ public class Sidebar extends JPanel {
 
         // Row panel — fixed height, items vertically centred via FlowLayout CENTER_Y
         JPanel row = new JPanel(new FlowLayout(FlowLayout.LEFT, Theme.SPACE_SM, 13)) {
-            @Override protected void paintComponent(Graphics g) {
+            @Override
+            protected void paintComponent(Graphics g) {
                 if (active) {
                     Graphics2D g2 = (Graphics2D) g.create();
                     g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
                     g2.setColor(new Color(255, 255, 255, 20));
-                    g2.fillRoundRect(Theme.SPACE_SM, 2,
-                            getWidth() - Theme.SPACE_SM * 2, getHeight() - 4,
+                    g2.fillRoundRect(Theme.SPACE_SM, 2, getWidth() - Theme.SPACE_SM * 2, getHeight() - 4,
                             Theme.RADIUS_SM, Theme.RADIUS_SM);
                     g2.setColor(Theme.ACCENT_MID);
                     g2.fillRoundRect(0, 6, 4, getHeight() - 12, 4, 4);
@@ -152,21 +154,28 @@ public class Sidebar extends JPanel {
 
         // Hover + click
         row.addMouseListener(new MouseAdapter() {
-            @Override public void mouseEntered(MouseEvent e) {
+            @Override
+            public void mouseEntered(MouseEvent e) {
                 if (item != activeItem) {
                     ImageIcon hov = ImageUtil.loadTinted(item.iconPath, 18, 18, fullWhite);
-                    if (hov != null) iconLabel.setIcon(hov);
+                    if (hov != null)
+                        iconLabel.setIcon(hov);
                     textLabel.setForeground(fullWhite);
                 }
             }
-            @Override public void mouseExited(MouseEvent e) {
+
+            @Override
+            public void mouseExited(MouseEvent e) {
                 if (item != activeItem) {
                     ImageIcon dim = ImageUtil.loadTinted(item.iconPath, 18, 18, dimColour);
-                    if (dim != null) iconLabel.setIcon(dim);
+                    if (dim != null)
+                        iconLabel.setIcon(dim);
                     textLabel.setForeground(dimColour);
                 }
             }
-            @Override public void mouseClicked(MouseEvent e) {
+
+            @Override
+            public void mouseClicked(MouseEvent e) {
                 setActiveItem(item);
                 listeners.forEach(l -> l.onNavSelected(item));
             }
@@ -181,8 +190,7 @@ public class Sidebar extends JPanel {
         p.setOpaque(false);
         p.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createMatteBorder(1, 0, 0, 0, new Color(255, 255, 255, 20)),
-                BorderFactory.createEmptyBorder(Theme.SPACE_SM, Theme.SPACE_MD, Theme.SPACE_SM, 0)
-        ));
+                BorderFactory.createEmptyBorder(Theme.SPACE_SM, Theme.SPACE_MD, Theme.SPACE_SM, 0)));
         JLabel v = new JLabel(AppConfig.APP_FOOTER_L);
         v.setFont(Theme.FONT_TINY);
         v.setForeground(new Color(255, 255, 255, 60));
@@ -196,7 +204,11 @@ public class Sidebar extends JPanel {
         rebuild();
     }
 
-    public NavItem getActiveItem() { return activeItem; }
+    public NavItem getActiveItem() {
+        return activeItem;
+    }
 
-    public void addNavListener(NavListener listener) { listeners.add(listener); }
+    public void addNavListener(NavListener listener) {
+        listeners.add(listener);
+    }
 }

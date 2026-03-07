@@ -6,25 +6,23 @@ import java.awt.image.BufferedImage;
 import java.net.URL;
 
 /**
- * Shared utility for loading and manipulating image assets.
- * All assets live in src/main/resources/assets/
+ * Shared utility for loading and manipulating image assets. All assets live in src/main/resources/assets/
  *
- * Usage:
- *   ImageIcon icon = ImageUtil.load("assets/logo.png", 36, 36);
- *   ImageIcon tinted = ImageUtil.tint(icon, Theme.ACCENT);
- *   ImageIcon both = ImageUtil.loadTinted("assets/bookings.png", 20, 20, Theme.ACCENT);
+ * Usage: ImageIcon icon = ImageUtil.load("assets/logo.png", 36, 36); ImageIcon tinted = ImageUtil.tint(icon,
+ * Theme.ACCENT); ImageIcon both = ImageUtil.loadTinted("assets/bookings.png", 20, 20, Theme.ACCENT);
  */
 public final class ImageUtil {
 
-    private ImageUtil() {}
+    private ImageUtil() {
+    }
 
     // ═══════════════════════════════════════════════════════════════════════
     // LOAD
     // ═══════════════════════════════════════════════════════════════════════
 
     /**
-     * Loads an image from the classpath and scales it to w x h.
-     * Returns null gracefully if the file is not found — callers should handle this.
+     * Loads an image from the classpath and scales it to w x h. Returns null gracefully if the file is not found —
+     * callers should handle this.
      */
     public static ImageIcon load(String path, int w, int h) {
         URL url = ImageUtil.class.getClassLoader().getResource(path);
@@ -32,8 +30,7 @@ public final class ImageUtil {
             System.err.println("[ImageUtil] Not found: " + path);
             return null;
         }
-        Image scaled = new ImageIcon(url).getImage()
-                .getScaledInstance(w, h, Image.SCALE_SMOOTH);
+        Image scaled = new ImageIcon(url).getImage().getScaledInstance(w, h, Image.SCALE_SMOOTH);
         return new ImageIcon(scaled);
     }
 
@@ -42,12 +39,12 @@ public final class ImageUtil {
     // ═══════════════════════════════════════════════════════════════════════
 
     /**
-     * Tints a transparent-background PNG icon to the given colour.
-     * Uses SrcAtop compositing — preserves alpha, replaces colour.
-     * Works best with white or grey icons on transparent backgrounds.
+     * Tints a transparent-background PNG icon to the given colour. Uses SrcAtop compositing — preserves alpha, replaces
+     * colour. Works best with white or grey icons on transparent backgrounds.
      */
     public static ImageIcon tint(ImageIcon source, Color colour) {
-        if (source == null) return null;
+        if (source == null)
+            return null;
         int w = source.getIconWidth();
         int h = source.getIconHeight();
         BufferedImage result = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
@@ -66,12 +63,12 @@ public final class ImageUtil {
     // ═══════════════════════════════════════════════════════════════════════
 
     /**
-     * Loads, scales, and tints in one call.
-     * Returns null if the file is not found.
+     * Loads, scales, and tints in one call. Returns null if the file is not found.
      */
     public static ImageIcon loadTinted(String path, int w, int h, Color colour) {
         ImageIcon icon = load(path, w, h);
-        if (icon == null) return null;
+        if (icon == null)
+            return null;
         return tint(icon, colour);
     }
 

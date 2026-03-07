@@ -5,8 +5,7 @@ package com.flc.model;
  */
 public enum Day {
 
-    SATURDAY ("Saturday"),
-    SUNDAY   ("Sunday");
+    SATURDAY("Saturday"), SUNDAY("Sunday");
 
     private final String displayName;
 
@@ -14,8 +13,12 @@ public enum Day {
         this.displayName = displayName;
     }
 
-    public String getDisplayName() { return displayName; }
+    public String getDisplayName() {
+        return displayName;
+    }
 
     @Override
-    public String toString() { return displayName; }
+    public String toString() {
+        return displayName;
+    }
 }

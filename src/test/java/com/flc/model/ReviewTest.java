@@ -6,16 +6,14 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class ReviewTest {
 
-    private Member       alice;
-    private Lesson       lesson;
-    private Review       review;
+    private Member alice;
+    private Lesson lesson;
+    private Review review;
 
     @BeforeEach
     void setUp() {
-        alice  = new Member("M001", "Alice", "07700900001");
-        lesson = new Lesson("L001",
-                new ExerciseType("E001", "Yoga", 12.50),
-                Day.SATURDAY, TimeSlot.MORNING, 1);
+        alice = new Member("M001", "Alice", "07700900001");
+        lesson = new Lesson("L001", new ExerciseType("E001", "Yoga", 12.50), Day.SATURDAY, TimeSlot.MORNING, 1);
         lesson.addMember(alice);
         review = new Review("R001", alice, lesson, 4, "Really enjoyed it!");
     }
@@ -23,10 +21,10 @@ class ReviewTest {
     // ── Construction ──────────────────────────────────────────────────────────
     @Test
     void shouldCreateReviewWithValidData() {
-        assertEquals("R001",               review.getReviewId());
-        assertEquals(alice,                review.getMember());
-        assertEquals(lesson,               review.getLesson());
-        assertEquals(4,                    review.getRating());
+        assertEquals("R001", review.getReviewId());
+        assertEquals(alice, review.getMember());
+        assertEquals(lesson, review.getLesson());
+        assertEquals(4, review.getRating());
         assertEquals("Really enjoyed it!", review.getComment());
     }
 
@@ -44,20 +42,17 @@ class ReviewTest {
 
     @Test
     void shouldThrowWhenReviewIdIsBlank() {
-        assertThrows(IllegalArgumentException.class,
-            () -> new Review("", alice, lesson, 4, "Good"));
+        assertThrows(IllegalArgumentException.class, () -> new Review("", alice, lesson, 4, "Good"));
     }
 
     @Test
     void shouldThrowWhenMemberIsNull() {
-        assertThrows(IllegalArgumentException.class,
-            () -> new Review("R002", null, lesson, 4, "Good"));
+        assertThrows(IllegalArgumentException.class, () -> new Review("R002", null, lesson, 4, "Good"));
     }
 
     @Test
     void shouldThrowWhenLessonIsNull() {
-        assertThrows(IllegalArgumentException.class,
-            () -> new Review("R002", alice, null, 4, "Good"));
+        assertThrows(IllegalArgumentException.class, () -> new Review("R002", alice, null, 4, "Good"));
     }
 
     // ── Rating validation ─────────────────────────────────────────────────────
@@ -71,24 +66,22 @@ class ReviewTest {
 
     @Test
     void shouldThrowWhenRatingIsTooLow() {
-        assertThrows(IllegalArgumentException.class,
-            () -> new Review("R002", alice, lesson, 0, ""));
+        assertThrows(IllegalArgumentException.class, () -> new Review("R002", alice, lesson, 0, ""));
     }
 
     @Test
     void shouldThrowWhenRatingIsTooHigh() {
-        assertThrows(IllegalArgumentException.class,
-            () -> new Review("R002", alice, lesson, 6, ""));
+        assertThrows(IllegalArgumentException.class, () -> new Review("R002", alice, lesson, 6, ""));
     }
 
     // ── Rating labels ─────────────────────────────────────────────────────────
     @Test
     void shouldReturnCorrectRatingLabels() {
         assertEquals("Very Dissatisfied", new Review("R1", alice, lesson, 1, "").getRatingLabel());
-        assertEquals("Dissatisfied",      new Review("R2", alice, lesson, 2, "").getRatingLabel());
-        assertEquals("Ok",                new Review("R3", alice, lesson, 3, "").getRatingLabel());
-        assertEquals("Satisfied",         new Review("R4", alice, lesson, 4, "").getRatingLabel());
-        assertEquals("Very Satisfied",    new Review("R5", alice, lesson, 5, "").getRatingLabel());
+        assertEquals("Dissatisfied", new Review("R2", alice, lesson, 2, "").getRatingLabel());
+        assertEquals("Ok", new Review("R3", alice, lesson, 3, "").getRatingLabel());
+        assertEquals("Satisfied", new Review("R4", alice, lesson, 4, "").getRatingLabel());
+        assertEquals("Very Satisfied", new Review("R5", alice, lesson, 5, "").getRatingLabel());
     }
 
     // ── Setters ───────────────────────────────────────────────────────────────

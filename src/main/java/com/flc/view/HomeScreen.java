@@ -9,9 +9,8 @@ import java.awt.*;
 import java.awt.event.*;
 
 /**
- * Home screen — first impression when the app opens.
- * Uses ImageUtil for all image loading and tinting.
- * No special characters, dashes, or emoji.
+ * Home screen — first impression when the app opens. Uses ImageUtil for all image loading and tinting. No special
+ * characters, dashes, or emoji.
  */
 public class HomeScreen extends JPanel {
 
@@ -31,26 +30,21 @@ public class HomeScreen extends JPanel {
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
                 Graphics2D g2 = (Graphics2D) g.create();
-                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,      RenderingHints.VALUE_ANTIALIAS_ON);
-                g2.setRenderingHint(RenderingHints.KEY_RENDERING,         RenderingHints.VALUE_RENDER_QUALITY);
+                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                g2.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
                 g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 
                 g2.setColor(Theme.BG);
                 g2.fillRect(0, 0, getWidth(), getHeight());
 
                 // Soft decorative arc — top right
-                g2.setColor(new Color(
-                        Theme.ACCENT_MID.getRed(),
-                        Theme.ACCENT_MID.getGreen(),
+                g2.setColor(new Color(Theme.ACCENT_MID.getRed(), Theme.ACCENT_MID.getGreen(),
                         Theme.ACCENT_MID.getBlue(), Theme.OPACITY_DECO_CIRCLE));
                 int arc = 500;
                 g2.fillOval(getWidth() - arc + 120, -arc / 2 + 20, arc, arc);
 
                 // Inner arc — layered depth
-                g2.setColor(new Color(
-                        Theme.ACCENT.getRed(),
-                        Theme.ACCENT.getGreen(),
-                        Theme.ACCENT.getBlue(), 12));
+                g2.setColor(new Color(Theme.ACCENT.getRed(), Theme.ACCENT.getGreen(), Theme.ACCENT.getBlue(), 12));
                 int arc2 = 320;
                 g2.fillOval(getWidth() - arc2 + 60, -arc2 / 3, arc2, arc2);
 
@@ -72,7 +66,7 @@ public class HomeScreen extends JPanel {
         root.setOpaque(true);
         root.setBackground(Theme.BG);
         root.add(buildTopBar(), BorderLayout.NORTH);
-        root.add(buildBody(),   BorderLayout.CENTER);
+        root.add(buildBody(), BorderLayout.CENTER);
         root.add(buildFooter(), BorderLayout.SOUTH);
         return root;
     }
@@ -84,8 +78,8 @@ public class HomeScreen extends JPanel {
     private JPanel buildTopBar() {
         JPanel bar = new JPanel(new BorderLayout());
         bar.setOpaque(false);
-        bar.setBorder(BorderFactory.createEmptyBorder(
-                Theme.SPACE_XL, Theme.SPACE_XXL, Theme.SPACE_XL, Theme.SPACE_XXL));
+        bar.setBorder(
+                BorderFactory.createEmptyBorder(Theme.SPACE_XL, Theme.SPACE_XXL, Theme.SPACE_XL, Theme.SPACE_XXL));
 
         JPanel brand = new JPanel(new FlowLayout(FlowLayout.LEFT, Theme.SPACE_SM, 0));
         brand.setOpaque(false);
@@ -106,14 +100,19 @@ public class HomeScreen extends JPanel {
         }
         // Fallback — painted green circle
         return new JLabel() {
-            @Override public void paintComponent(Graphics g) {
+            @Override
+            public void paintComponent(Graphics g) {
                 Graphics2D g2 = (Graphics2D) g.create();
                 g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
                 g2.setColor(Theme.ACCENT);
                 g2.fillOval(0, 0, 36, 36);
                 g2.dispose();
             }
-            @Override public Dimension getPreferredSize() { return new Dimension(36, 36); }
+
+            @Override
+            public Dimension getPreferredSize() {
+                return new Dimension(36, 36);
+            }
         };
     }
 
@@ -126,7 +125,8 @@ public class HomeScreen extends JPanel {
 
     private JLabel buildVersionPill() {
         JLabel l = new JLabel("2025 / 26", SwingConstants.CENTER) {
-            @Override protected void paintComponent(Graphics g) {
+            @Override
+            protected void paintComponent(Graphics g) {
                 Graphics2D g2 = (Graphics2D) g.create();
                 g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
                 g2.setColor(Theme.ACCENT_LIGHT);
@@ -175,7 +175,8 @@ public class HomeScreen extends JPanel {
 
     private JLabel buildEyebrow() {
         JLabel l = new JLabel(AppConfig.APP_BADGE, SwingConstants.CENTER) {
-            @Override protected void paintComponent(Graphics g) {
+            @Override
+            protected void paintComponent(Graphics g) {
                 Graphics2D g2 = (Graphics2D) g.create();
                 g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
                 g2.setColor(Theme.ACCENT_LIGHT);
@@ -192,8 +193,7 @@ public class HomeScreen extends JPanel {
     }
 
     private JLabel buildHeadline() {
-        String html = "<html><div style='text-align:center; line-height:1.15;'>"
-                + "Furzefield<br>Leisure Centre"
+        String html = "<html><div style='text-align:center; line-height:1.15;'>" + "Furzefield<br>Leisure Centre"
                 + "</div></html>";
         JLabel h = new JLabel(html, SwingConstants.CENTER);
         h.setFont(Theme.FONT_HEADLINE);
@@ -214,18 +214,33 @@ public class HomeScreen extends JPanel {
             private boolean pressed = false;
             {
                 addMouseListener(new MouseAdapter() {
-                    public void mouseEntered (MouseEvent e) { hovered = true;  repaint(); }
-                    public void mouseExited  (MouseEvent e) { hovered = false; repaint(); }
-                    public void mousePressed (MouseEvent e) { pressed = true;  repaint(); }
-                    public void mouseReleased(MouseEvent e) { pressed = false; repaint(); }
+                    public void mouseEntered(MouseEvent e) {
+                        hovered = true;
+                        repaint();
+                    }
+
+                    public void mouseExited(MouseEvent e) {
+                        hovered = false;
+                        repaint();
+                    }
+
+                    public void mousePressed(MouseEvent e) {
+                        pressed = true;
+                        repaint();
+                    }
+
+                    public void mouseReleased(MouseEvent e) {
+                        pressed = false;
+                        repaint();
+                    }
                 });
             }
-            @Override protected void paintComponent(Graphics g) {
+
+            @Override
+            protected void paintComponent(Graphics g) {
                 Graphics2D g2 = (Graphics2D) g.create();
                 g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-                Color bg = pressed ? Theme.BTN_PRESSED
-                         : hovered ? Theme.BTN_HOVER
-                         : Theme.BTN_PRIMARY;
+                Color bg = pressed ? Theme.BTN_PRESSED : hovered ? Theme.BTN_HOVER : Theme.BTN_PRIMARY;
                 g2.setColor(bg);
                 g2.fillRoundRect(0, 0, getWidth(), getHeight(), Theme.RADIUS_BTN, Theme.RADIUS_BTN);
                 g2.dispose();
@@ -245,9 +260,7 @@ public class HomeScreen extends JPanel {
     }
 
     private JLabel buildReassurance() {
-        JLabel l = new JLabel(
-                "Self-contained    No login required    All data stored locally",
-                SwingConstants.CENTER);
+        JLabel l = new JLabel("Self-contained    No login required    All data stored locally", SwingConstants.CENTER);
         l.setFont(Theme.FONT_TINY);
         l.setForeground(Theme.TEXT_LIGHT);
         return l;
@@ -258,15 +271,16 @@ public class HomeScreen extends JPanel {
         JPanel row = new JPanel(new FlowLayout(FlowLayout.CENTER, Theme.SPACE_SM, 0));
         row.setOpaque(false);
         row.add(buildChip("bookings.png", "Bookings"));
-        row.add(buildChip("members.png",  "Members"));
-        row.add(buildChip("reviews.png",  "Reviews"));
-        row.add(buildChip("reports.png",  "Reports"));
+        row.add(buildChip("members.png", "Members"));
+        row.add(buildChip("reviews.png", "Reviews"));
+        row.add(buildChip("reports.png", "Reports"));
         return row;
     }
 
     private JPanel buildChip(String iconFile, String label) {
         JPanel chip = new JPanel() {
-            @Override protected void paintComponent(Graphics g) {
+            @Override
+            protected void paintComponent(Graphics g) {
                 Graphics2D g2 = (Graphics2D) g.create();
                 g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
                 g2.setColor(Theme.BG_CARD);
@@ -303,9 +317,7 @@ public class HomeScreen extends JPanel {
         footer.setBackground(Theme.BG);
         footer.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createMatteBorder(1, 0, 0, 0, Theme.BORDER_LIGHT),
-                BorderFactory.createEmptyBorder(
-                        Theme.SPACE_SM, Theme.SPACE_XXL, Theme.SPACE_SM, Theme.SPACE_XXL)
-        ));
+                BorderFactory.createEmptyBorder(Theme.SPACE_SM, Theme.SPACE_XXL, Theme.SPACE_SM, Theme.SPACE_XXL)));
         footer.add(footerLabel(AppConfig.APP_FOOTER_L), BorderLayout.WEST);
         footer.add(footerLabel(AppConfig.APP_FOOTER_R), BorderLayout.EAST);
         return footer;
@@ -334,10 +346,8 @@ public class HomeScreen extends JPanel {
     // ═══════════════════════════════════════════════════════════════════════
 
     private void onGetStarted() {
-        AppFrame.get().setExtendedState(
-            AppFrame.get().getExtendedState() | java.awt.Frame.MAXIMIZED_BOTH
-        );
-        
+        AppFrame.get().setExtendedState(AppFrame.get().getExtendedState() | java.awt.Frame.MAXIMIZED_BOTH);
+
         AppFrame.get().showDashboard();
     }
 }

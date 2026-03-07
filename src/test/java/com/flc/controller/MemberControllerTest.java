@@ -8,12 +8,12 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class MemberControllerTest {
 
-    private DataStore        store;
+    private DataStore store;
     private MemberController controller;
 
     @BeforeEach
     void setUp() {
-        store      = DataStore.getInstance();
+        store = DataStore.getInstance();
         store.clearAll();
         controller = new MemberController();
     }
@@ -23,40 +23,37 @@ class MemberControllerTest {
     void shouldAddMemberSuccessfully() {
         Member m = controller.addMember("Alice", "07700900001");
         assertNotNull(m);
-        assertEquals("Alice",       m.getName());
+        assertEquals("Alice", m.getName());
         assertEquals("07700900001", m.getPhone());
     }
 
     @Test
     void shouldGenerateUniqueMemberIds() {
         Member a = controller.addMember("Alice", "07700900001");
-        Member b = controller.addMember("Bob",   "07700900002");
+        Member b = controller.addMember("Bob", "07700900002");
         assertNotEquals(a.getMemberId(), b.getMemberId());
     }
 
     @Test
     void shouldThrowWhenNameIsBlank() {
-        assertThrows(IllegalArgumentException.class,
-            () -> controller.addMember("", "07700900001"));
+        assertThrows(IllegalArgumentException.class, () -> controller.addMember("", "07700900001"));
     }
 
     @Test
     void shouldThrowWhenPhoneIsBlank() {
-        assertThrows(IllegalArgumentException.class,
-            () -> controller.addMember("Alice", ""));
+        assertThrows(IllegalArgumentException.class, () -> controller.addMember("Alice", ""));
     }
 
     @Test
     void shouldThrowWhenDuplicateName() {
         controller.addMember("Alice", "07700900001");
-        assertThrows(IllegalStateException.class,
-            () -> controller.addMember("Alice", "07700900002"));
+        assertThrows(IllegalStateException.class, () -> controller.addMember("Alice", "07700900002"));
     }
 
     @Test
     void shouldTrimWhitespaceFromNameAndPhone() {
         Member m = controller.addMember("  Alice  ", "  07700900001  ");
-        assertEquals("Alice",       m.getName());
+        assertEquals("Alice", m.getName());
         assertEquals("07700900001", m.getPhone());
     }
 
@@ -87,7 +84,7 @@ class MemberControllerTest {
     @Test
     void shouldReturnAllMembers() {
         controller.addMember("Alice", "07700900001");
-        controller.addMember("Bob",   "07700900002");
+        controller.addMember("Bob", "07700900002");
         assertEquals(2, controller.getAllMembers().size());
     }
 
@@ -102,8 +99,7 @@ class MemberControllerTest {
     @Test
     void shouldThrowWhenUpdatingPhoneToBlank() {
         Member m = controller.addMember("Alice", "07700900001");
-        assertThrows(IllegalArgumentException.class,
-            () -> controller.updatePhone(m, ""));
+        assertThrows(IllegalArgumentException.class, () -> controller.updatePhone(m, ""));
     }
 
     @Test
@@ -117,7 +113,6 @@ class MemberControllerTest {
     void shouldThrowWhenUpdatingNameToDuplicate() {
         Member alice = controller.addMember("Alice", "07700900001");
         controller.addMember("Bob", "07700900002");
-        assertThrows(IllegalStateException.class,
-            () -> controller.updateName(alice, "Bob"));
+        assertThrows(IllegalStateException.class, () -> controller.updateName(alice, "Bob"));
     }
 }

@@ -8,33 +8,33 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class BookingControllerTest {
 
-    private DataStore         store;
+    private DataStore store;
     private BookingController controller;
-    private Member            alice;
-    private Member            bob;
-    private Lesson            satMorning;
-    private Lesson            satAfternoon;
-    private Lesson            sunMorning;
+    private Member alice;
+    private Member bob;
+    private Lesson satMorning;
+    private Lesson satAfternoon;
+    private Lesson sunMorning;
 
     @BeforeEach
     void setUp() {
-        store      = DataStore.getInstance();
+        store = DataStore.getInstance();
         store.clearAll();
         controller = new BookingController();
 
-        ExerciseType yoga  = new ExerciseType("E001", "Yoga",  12.00);
+        ExerciseType yoga = new ExerciseType("E001", "Yoga", 12.00);
         ExerciseType zumba = new ExerciseType("E002", "Zumba", 10.00);
         store.addExerciseType(yoga);
         store.addExerciseType(zumba);
 
-        alice        = new Member("M001", "Alice", "07700900001");
-        bob          = new Member("M002", "Bob",   "07700900002");
+        alice = new Member("M001", "Alice", "07700900001");
+        bob = new Member("M002", "Bob", "07700900002");
         store.addMember(alice);
         store.addMember(bob);
 
-        satMorning   = new Lesson("L001", yoga,  Day.SATURDAY, TimeSlot.MORNING,   1);
+        satMorning = new Lesson("L001", yoga, Day.SATURDAY, TimeSlot.MORNING, 1);
         satAfternoon = new Lesson("L002", zumba, Day.SATURDAY, TimeSlot.AFTERNOON, 1);
-        sunMorning   = new Lesson("L003", yoga,  Day.SUNDAY,   TimeSlot.MORNING,   1);
+        sunMorning = new Lesson("L003", yoga, Day.SUNDAY, TimeSlot.MORNING, 1);
         store.addLesson(satMorning);
         store.addLesson(satAfternoon);
         store.addLesson(sunMorning);
@@ -45,7 +45,7 @@ class BookingControllerTest {
     void shouldCreateBookingSuccessfully() {
         Booking b = controller.createBooking(alice, satMorning);
         assertNotNull(b);
-        assertEquals(alice,      b.getMember());
+        assertEquals(alice, b.getMember());
         assertEquals(satMorning, b.getLesson());
         assertTrue(satMorning.hasMember(alice));
     }
@@ -56,26 +56,22 @@ class BookingControllerTest {
         satMorning.addMember(new Member("M004", "D", "07700900004"));
         satMorning.addMember(new Member("M005", "E", "07700900005"));
         satMorning.addMember(new Member("M006", "F", "07700900006"));
-        assertThrows(IllegalStateException.class,
-            () -> controller.createBooking(alice, satMorning));
+        assertThrows(IllegalStateException.class, () -> controller.createBooking(alice, satMorning));
     }
 
     @Test
     void shouldThrowWhenMemberAlreadyBooked() {
         controller.createBooking(alice, satMorning);
-        assertThrows(IllegalStateException.class,
-            () -> controller.createBooking(alice, satMorning));
+        assertThrows(IllegalStateException.class, () -> controller.createBooking(alice, satMorning));
     }
 
     @Test
     void shouldThrowOnTimeConflict() {
         controller.createBooking(alice, satMorning);
         // Another lesson same week + day + slot
-        Lesson satMorning2 = new Lesson("L004", store.findExerciseTypeById("E002"),
-                Day.SATURDAY, TimeSlot.MORNING, 1);
+        Lesson satMorning2 = new Lesson("L004", store.findExerciseTypeById("E002"), Day.SATURDAY, TimeSlot.MORNING, 1);
         store.addLesson(satMorning2);
-        assertThrows(IllegalStateException.class,
-            () -> controller.createBooking(alice, satMorning2));
+        assertThrows(IllegalStateException.class, () -> controller.createBooking(alice, satMorning2));
     }
 
     @Test
@@ -103,8 +99,7 @@ class BookingControllerTest {
     @Test
     void shouldThrowWhenChangingToSameLesson() {
         Booking b = controller.createBooking(alice, satMorning);
-        assertThrows(IllegalStateException.class,
-            () -> controller.changeBooking(b, satMorning));
+        assertThrows(IllegalStateException.class, () -> controller.changeBooking(b, satMorning));
     }
 
     @Test
@@ -114,8 +109,7 @@ class BookingControllerTest {
         satAfternoon.addMember(new Member("M005", "E", "07700900005"));
         satAfternoon.addMember(new Member("M006", "F", "07700900006"));
         Booking b = controller.createBooking(alice, satMorning);
-        assertThrows(IllegalStateException.class,
-            () -> controller.changeBooking(b, satAfternoon));
+        assertThrows(IllegalStateException.class, () -> controller.changeBooking(b, satAfternoon));
     }
 
     @Test
@@ -123,15 +117,13 @@ class BookingControllerTest {
         // Alice in satMorning, bob in satAfternoon (same slot week 1)
         controller.createBooking(alice, satMorning);
         // create a same-slot conflict lesson
-        Lesson conflict = new Lesson("L005", store.findExerciseTypeById("E001"),
-                Day.SATURDAY, TimeSlot.MORNING, 1);
+        Lesson conflict = new Lesson("L005", store.findExerciseTypeById("E001"), Day.SATURDAY, TimeSlot.MORNING, 1);
         store.addLesson(conflict);
         controller.createBooking(bob, conflict);
 
         Booking aliceBooking = store.findBookingsByMember(alice).get(0);
         // try to move alice to conflict — should fail and alice stays in satMorning
-        assertThrows(IllegalStateException.class,
-            () -> controller.changeBooking(aliceBooking, conflict));
+        assertThrows(IllegalStateException.class, () -> controller.changeBooking(aliceBooking, conflict));
         assertTrue(satMorning.hasMember(alice)); // restored
     }
 

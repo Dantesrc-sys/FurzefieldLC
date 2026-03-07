@@ -13,49 +13,47 @@ import java.awt.*;
 import java.awt.event.*;
 
 /**
- * Members screen — view all members, add new ones, edit name/phone.
- * Add member uses an inline panel — no JOptionPane dialogs.
- * Layout: left = member list | right = detail / edit / add panel
+ * Members screen — view all members, add new ones, edit name/phone. Add member uses an inline panel — no JOptionPane
+ * dialogs. Layout: left = member list | right = detail / edit / add panel
  */
 public class MemberScreen extends JPanel {
 
     private final MemberController memberController = new MemberController();
-    private final DataStore        store            = DataStore.getInstance();
+    private final DataStore store = DataStore.getInstance();
 
     // ── Selected state ────────────────────────────────────────────────────────
     private Member selectedMember = null;
 
     // ── UI refs ───────────────────────────────────────────────────────────────
-    private JTable            memberTable;
+    private JTable memberTable;
     private DefaultTableModel memberModel;
-    private JLabel            detailName;
-    private JLabel            detailId;
-    private JLabel            detailPhone;
-    private JLabel            detailBookings;
-    private JTextField  editNameField;
-    private JTextField  editPhoneField;
-    private JButton           saveBtn;
-    private JLabel            statusLabel;
+    private JLabel detailName;
+    private JLabel detailId;
+    private JLabel detailPhone;
+    private JLabel detailBookings;
+    private JTextField editNameField;
+    private JTextField editPhoneField;
+    private JButton saveBtn;
+    private JLabel statusLabel;
 
     // ── Right panel cards (switched via CardLayout) ────────────────────────────
-    private JPanel      rightCards;
-    private CardLayout  rightCardLayout;
+    private JPanel rightCards;
+    private CardLayout rightCardLayout;
 
     private static final String CARD_DETAIL = "DETAIL";
-    private static final String CARD_ADD    = "ADD";
+    private static final String CARD_ADD = "ADD";
 
     // ── Add form fields ───────────────────────────────────────────────────────
     private JTextField addNameField;
     private JTextField addPhoneField;
-    private JLabel     addStatusLabel;
+    private JLabel addStatusLabel;
 
     public MemberScreen() {
         setLayout(new BorderLayout(Theme.SPACE_LG, 0));
         setBackground(Theme.BG);
-        setBorder(BorderFactory.createEmptyBorder(
-                Theme.SPACE_XL, Theme.SPACE_XL, Theme.SPACE_XL, Theme.SPACE_XL));
+        setBorder(BorderFactory.createEmptyBorder(Theme.SPACE_XL, Theme.SPACE_XL, Theme.SPACE_XL, Theme.SPACE_XL));
 
-        add(buildLeftPanel(),  BorderLayout.CENTER);
+        add(buildLeftPanel(), BorderLayout.CENTER);
         add(buildRightPanel(), BorderLayout.EAST);
     }
 
@@ -85,29 +83,35 @@ public class MemberScreen extends JPanel {
         searchField.setFont(Theme.FONT_INPUT);
         searchField.putClientProperty("JTextField.placeholderText", "Search by name...");
         searchField.addKeyListener(new KeyAdapter() {
-            @Override public void keyReleased(KeyEvent e) {
+            @Override
+            public void keyReleased(KeyEvent e) {
                 filterTable(searchField.getText().trim());
             }
         });
 
         // Table
-        String[] cols = {"ID", "Name", "Phone", "Bookings"};
+        String[] cols = { "ID", "Name", "Phone", "Bookings" };
         memberModel = new DefaultTableModel(cols, 0) {
-            @Override public boolean isCellEditable(int r, int c) { return false; }
+            @Override
+            public boolean isCellEditable(int r, int c) {
+                return false;
+            }
         };
         memberTable = ModernTable.create(memberModel);
 
         ModernTable.setColumnWidths(memberTable, 70, 200, 190, 110);
-        ModernTable.setBoldColumn(memberTable,    1);  // Name
-        ModernTable.setCodeColumn(memberTable,    0);  // ID chip
+        ModernTable.setBoldColumn(memberTable, 1); // Name
+        ModernTable.setCodeColumn(memberTable, 0); // ID chip
 
         // Bookings count — pill: 0=grey, else green
         java.util.Map<String, Color> bkBg = new java.util.HashMap<>();
         java.util.Map<String, Color> bkFg = new java.util.HashMap<>();
-        bkBg.put("0", Theme.BG_ALT);       bkFg.put("0", Theme.TEXT_LIGHT);
+        bkBg.put("0", Theme.BG_ALT);
+        bkFg.put("0", Theme.TEXT_LIGHT);
         ModernTable.setPillColumn(memberTable, 3, bkBg, bkFg);
         memberTable.getSelectionModel().addListSelectionListener(e -> {
-            if (!e.getValueIsAdjusting()) onMemberSelected();
+            if (!e.getValueIsAdjusting())
+                onMemberSelected();
         });
 
         JScrollPane scroll = ModernTable.wrap(memberTable);
@@ -115,7 +119,7 @@ public class MemberScreen extends JPanel {
         JPanel mid = new JPanel(new BorderLayout(0, Theme.SPACE_SM));
         mid.setOpaque(false);
         mid.add(searchField, BorderLayout.NORTH);
-        mid.add(scroll,      BorderLayout.CENTER);
+        mid.add(scroll, BorderLayout.CENTER);
 
         panel.add(top, BorderLayout.NORTH);
         panel.add(mid, BorderLayout.CENTER);
@@ -130,12 +134,12 @@ public class MemberScreen extends JPanel {
 
     private JPanel buildRightPanel() {
         rightCardLayout = new CardLayout();
-        rightCards      = new JPanel(rightCardLayout);
+        rightCards = new JPanel(rightCardLayout);
         rightCards.setOpaque(false);
         rightCards.setPreferredSize(new Dimension(280, 0));
 
         rightCards.add(buildDetailCard(), CARD_DETAIL);
-        rightCards.add(buildAddCard(),    CARD_ADD);
+        rightCards.add(buildAddCard(), CARD_ADD);
 
         rightCardLayout.show(rightCards, CARD_DETAIL);
         return rightCards;
@@ -146,10 +150,9 @@ public class MemberScreen extends JPanel {
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
         panel.setOpaque(false);
-        panel.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createMatteBorder(0, 1, 0, 0, Theme.BORDER_LIGHT),
-                BorderFactory.createEmptyBorder(0, Theme.SPACE_LG, 0, 0)
-        ));
+        panel.setBorder(
+                BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 1, 0, 0, Theme.BORDER_LIGHT),
+                        BorderFactory.createEmptyBorder(0, Theme.SPACE_LG, 0, 0)));
 
         // Member info card
         JPanel infoCard = buildInfoCard();
@@ -194,7 +197,8 @@ public class MemberScreen extends JPanel {
 
     private JPanel buildInfoCard() {
         JPanel card = new JPanel() {
-            @Override protected void paintComponent(Graphics g) {
+            @Override
+            protected void paintComponent(Graphics g) {
                 Graphics2D g2 = (Graphics2D) g.create();
                 g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
                 g2.setColor(Theme.ACCENT_LIGHT);
@@ -205,15 +209,14 @@ public class MemberScreen extends JPanel {
         };
         card.setLayout(new BoxLayout(card, BoxLayout.Y_AXIS));
         card.setOpaque(false);
-        card.setBorder(BorderFactory.createEmptyBorder(
-                Theme.SPACE_LG, Theme.SPACE_LG, Theme.SPACE_LG, Theme.SPACE_LG));
+        card.setBorder(BorderFactory.createEmptyBorder(Theme.SPACE_LG, Theme.SPACE_LG, Theme.SPACE_LG, Theme.SPACE_LG));
         card.setAlignmentX(Component.LEFT_ALIGNMENT);
         card.setMaximumSize(new Dimension(Integer.MAX_VALUE, 160));
 
-        detailName     = detailLine("Select a member", Theme.FONT_TITLE_SM, Theme.TEXT_DARK);
-        detailId       = detailLine("ID: —",           Theme.FONT_SMALL,    Theme.TEXT_MID);
-        detailPhone    = detailLine("Phone: —",        Theme.FONT_SMALL,    Theme.TEXT_MID);
-        detailBookings = detailLine("Bookings: —",     Theme.FONT_SMALL,    Theme.ACCENT);
+        detailName = detailLine("Select a member", Theme.FONT_TITLE_SM, Theme.TEXT_DARK);
+        detailId = detailLine("ID: —", Theme.FONT_SMALL, Theme.TEXT_MID);
+        detailPhone = detailLine("Phone: —", Theme.FONT_SMALL, Theme.TEXT_MID);
+        detailBookings = detailLine("Bookings: —", Theme.FONT_SMALL, Theme.ACCENT);
 
         card.add(detailName);
         card.add(Box.createVerticalStrut(Theme.SPACE_XS));
@@ -228,10 +231,9 @@ public class MemberScreen extends JPanel {
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
         panel.setOpaque(false);
-        panel.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createMatteBorder(0, 1, 0, 0, Theme.BORDER_LIGHT),
-                BorderFactory.createEmptyBorder(0, Theme.SPACE_LG, 0, 0)
-        ));
+        panel.setBorder(
+                BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 1, 0, 0, Theme.BORDER_LIGHT),
+                        BorderFactory.createEmptyBorder(0, Theme.SPACE_LG, 0, 0)));
 
         // Header row: title + cancel button
         JPanel header = new JPanel(new BorderLayout());
@@ -245,7 +247,8 @@ public class MemberScreen extends JPanel {
         header.add(addTitle, BorderLayout.WEST);
 
         JButton cancelBtn = new JButton("Cancel") {
-            @Override protected void paintComponent(Graphics g) {
+            @Override
+            protected void paintComponent(Graphics g) {
                 Graphics2D g2 = (Graphics2D) g.create();
                 g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
                 g2.setColor(Theme.BG_CARD);
@@ -329,11 +332,16 @@ public class MemberScreen extends JPanel {
 
     private void onMemberSelected() {
         int row = memberTable.getSelectedRow();
-        if (row < 0) { selectedMember = null; clearDetail(); return; }
+        if (row < 0) {
+            selectedMember = null;
+            clearDetail();
+            return;
+        }
 
         String id = (String) memberModel.getValueAt(row, 0);
         selectedMember = store.findMemberById(id);
-        if (selectedMember == null) return;
+        if (selectedMember == null)
+            return;
 
         // Switch back to detail card if on add card
         showDetailPanel();
@@ -351,9 +359,10 @@ public class MemberScreen extends JPanel {
     }
 
     private void onSave() {
-        if (selectedMember == null) return;
+        if (selectedMember == null)
+            return;
         try {
-            memberController.updateName(selectedMember,  editNameField.getText().trim());
+            memberController.updateName(selectedMember, editNameField.getText().trim());
             memberController.updatePhone(selectedMember, editPhoneField.getText().trim());
             JsonStore.save();
             setStatus("Member updated", Theme.TEXT_SUCCESS);
@@ -367,9 +376,7 @@ public class MemberScreen extends JPanel {
 
     private void onAddMember() {
         try {
-            Member m = memberController.addMember(
-                    addNameField.getText().trim(),
-                    addPhoneField.getText().trim());
+            Member m = memberController.addMember(addNameField.getText().trim(), addPhoneField.getText().trim());
             JsonStore.save();
             refreshTable();
             addStatusLabel.setText("Added " + m.getName());
@@ -394,7 +401,7 @@ public class MemberScreen extends JPanel {
         memberModel.setRowCount(0);
         for (Member m : store.getMembers()) {
             int count = store.findBookingsByMember(m).size();
-            memberModel.addRow(new Object[]{m.getMemberId(), m.getName(), m.getPhone(), count});
+            memberModel.addRow(new Object[] { m.getMemberId(), m.getName(), m.getPhone(), count });
         }
     }
 
@@ -403,7 +410,7 @@ public class MemberScreen extends JPanel {
         for (Member m : store.getMembers()) {
             if (query.isEmpty() || m.getName().toLowerCase().contains(query.toLowerCase())) {
                 int count = store.findBookingsByMember(m).size();
-                memberModel.addRow(new Object[]{m.getMemberId(), m.getName(), m.getPhone(), count});
+                memberModel.addRow(new Object[] { m.getMemberId(), m.getName(), m.getPhone(), count });
             }
         }
     }
@@ -421,7 +428,6 @@ public class MemberScreen extends JPanel {
     // ═══════════════════════════════════════════════════════════════════════
     // STYLING HELPERS
     // ═══════════════════════════════════════════════════════════════════════
-
 
     private JLabel detailLine(String text, Font font, Color color) {
         JLabel l = new JLabel(text);
@@ -443,8 +449,7 @@ public class MemberScreen extends JPanel {
         JTextField f = new JTextField();
         f.setFont(Theme.FONT_INPUT);
         f.setMaximumSize(new Dimension(Integer.MAX_VALUE, Theme.INPUT_H));
-        f.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(Theme.BORDER),
+        f.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(Theme.BORDER),
                 BorderFactory.createEmptyBorder(8, 12, 8, 12)));
         f.setAlignmentX(Component.LEFT_ALIGNMENT);
         return f;
@@ -453,11 +458,22 @@ public class MemberScreen extends JPanel {
     private JButton buildBtn(String label, Color bg, Color hover) {
         JButton btn = new JButton(label) {
             private boolean hov = false;
-            { addMouseListener(new MouseAdapter() {
-                public void mouseEntered(MouseEvent e) { hov = true;  repaint(); }
-                public void mouseExited (MouseEvent e) { hov = false; repaint(); }
-            }); }
-            @Override protected void paintComponent(Graphics g) {
+            {
+                addMouseListener(new MouseAdapter() {
+                    public void mouseEntered(MouseEvent e) {
+                        hov = true;
+                        repaint();
+                    }
+
+                    public void mouseExited(MouseEvent e) {
+                        hov = false;
+                        repaint();
+                    }
+                });
+            }
+
+            @Override
+            protected void paintComponent(Graphics g) {
                 Graphics2D g2 = (Graphics2D) g.create();
                 g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
                 g2.setColor(!isEnabled() ? Theme.BTN_DISABLED : hov ? hover : bg);

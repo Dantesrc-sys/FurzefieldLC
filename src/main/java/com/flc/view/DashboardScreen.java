@@ -13,14 +13,13 @@ import java.awt.*;
 import java.awt.event.*;
 
 /**
- * Main dashboard screen — no unicode or special characters anywhere.
- * All icons loaded from assets/ via ImageUtil.
+ * Main dashboard screen — no unicode or special characters anywhere. All icons loaded from assets/ via ImageUtil.
  */
 public class DashboardScreen extends JPanel {
 
     private final Sidebar sidebar;
-    private final JPanel  contentArea;
-    private       TopBar  topBar;
+    private final JPanel contentArea;
+    private TopBar topBar;
 
     public DashboardScreen() {
         if (!JsonStore.load()) {
@@ -31,13 +30,13 @@ public class DashboardScreen extends JPanel {
         setLayout(new BorderLayout());
         setBackground(Theme.BG);
 
-        sidebar     = new Sidebar();
+        sidebar = new Sidebar();
         contentArea = new JPanel(new BorderLayout());
         contentArea.setBackground(Theme.BG);
 
         sidebar.addNavListener(this::navigateTo);
 
-        add(sidebar,     BorderLayout.WEST);
+        add(sidebar, BorderLayout.WEST);
         add(contentArea, BorderLayout.CENTER);
 
         navigateTo(Sidebar.NavItem.DASHBOARD);
@@ -52,25 +51,25 @@ public class DashboardScreen extends JPanel {
         contentArea.removeAll();
 
         topBar = switch (item) {
-            case DASHBOARD -> new TopBar("Dashboard", "Home");
-            case TIMETABLE -> new TopBar("Timetable", "Timetable");
-            case BOOKINGS  -> new TopBar("Bookings",  "Bookings");
-            case MEMBERS   -> new TopBar("Members",   "Members");
-            case REVIEWS   -> new TopBar("Reviews",   "Reviews");
-            case REPORTS   -> new TopBar("Reports",   "Reports");
+        case DASHBOARD -> new TopBar("Dashboard", "Home");
+        case TIMETABLE -> new TopBar("Timetable", "Timetable");
+        case BOOKINGS -> new TopBar("Bookings", "Bookings");
+        case MEMBERS -> new TopBar("Members", "Members");
+        case REVIEWS -> new TopBar("Reviews", "Reviews");
+        case REPORTS -> new TopBar("Reports", "Reports");
         };
 
         JPanel screen = switch (item) {
-            case DASHBOARD -> buildDashboardHome();
-            case TIMETABLE -> new TimetableScreen();
-            case BOOKINGS  -> new BookingScreen();
-            case MEMBERS   -> new MemberScreen();
-            case REVIEWS   -> new ReviewScreen();
-            case REPORTS   -> new ReportScreen();
+        case DASHBOARD -> buildDashboardHome();
+        case TIMETABLE -> new TimetableScreen();
+        case BOOKINGS -> new BookingScreen();
+        case MEMBERS -> new MemberScreen();
+        case REVIEWS -> new ReviewScreen();
+        case REPORTS -> new ReportScreen();
         };
 
-        contentArea.add(topBar,  BorderLayout.NORTH);
-        contentArea.add(screen,  BorderLayout.CENTER);
+        contentArea.add(topBar, BorderLayout.NORTH);
+        contentArea.add(screen, BorderLayout.CENTER);
         contentArea.revalidate();
         contentArea.repaint();
     }
@@ -83,8 +82,7 @@ public class DashboardScreen extends JPanel {
         JPanel page = new JPanel();
         page.setLayout(new BoxLayout(page, BoxLayout.Y_AXIS));
         page.setBackground(Theme.BG);
-        page.setBorder(BorderFactory.createEmptyBorder(
-                Theme.SPACE_XL, Theme.SPACE_XL, Theme.SPACE_XL, Theme.SPACE_XL));
+        page.setBorder(BorderFactory.createEmptyBorder(Theme.SPACE_XL, Theme.SPACE_XL, Theme.SPACE_XL, Theme.SPACE_XL));
 
         // Welcome
         JLabel welcome = new JLabel("Welcome back, here is your overview");
@@ -100,30 +98,16 @@ public class DashboardScreen extends JPanel {
         row1.setOpaque(false);
         row1.setAlignmentX(Component.LEFT_ALIGNMENT);
         row1.setMaximumSize(new Dimension(Integer.MAX_VALUE, 110));
-        row1.add(buildStatCard(
-            "Members",        
-            String.valueOf(store.getTotalMembers()),        
-            Theme.ACCENT,               
-            "members.png"));
-            
-        row1.add(buildStatCard(
-            "Lessons",         
-            String.valueOf(store.getTotalLessons()),         
-            Theme.ACCENT_MID,           
-            "timetable.png"));
-            
-        row1.add(buildStatCard(
-            "Bookings",        
-            String.valueOf(store.getTotalBookings()),        
-            Theme.BOOKING_ICON_COLOR,        
-            "bookings.png"));
-            
-        row1.add(buildStatCard(
-            "Reviews",         
-            String.valueOf(store.getTotalReviews()),        
-            Theme.REVIEWS_ICON_COLOR,        
-            "reviews.png"));
-            
+        row1.add(buildStatCard("Members", String.valueOf(store.getTotalMembers()), Theme.ACCENT, "members.png"));
+
+        row1.add(buildStatCard("Lessons", String.valueOf(store.getTotalLessons()), Theme.ACCENT_MID, "timetable.png"));
+
+        row1.add(buildStatCard("Bookings", String.valueOf(store.getTotalBookings()), Theme.BOOKING_ICON_COLOR,
+                "bookings.png"));
+
+        row1.add(buildStatCard("Reviews", String.valueOf(store.getTotalReviews()), Theme.REVIEWS_ICON_COLOR,
+                "reviews.png"));
+
         page.add(row1);
         page.add(Box.createVerticalStrut(Theme.SPACE_XL));
 
@@ -132,12 +116,9 @@ public class DashboardScreen extends JPanel {
         row2.setOpaque(false);
         row2.setAlignmentX(Component.LEFT_ALIGNMENT);
         row2.setMaximumSize(new Dimension(Integer.MAX_VALUE, 110));
-        row2.add(buildStatCard(
-            "Weekends",        
-            "8",                                            
-            Theme.REPORTS_ICON_COLOR,        
-            "reports.png"));
-        row2.add(buildStatCard("Exercise Types",  String.valueOf(store.getTotalExerciseTypes()),   Theme.ACCENT_DARK,          "dashboard.png"));
+        row2.add(buildStatCard("Weekends", "8", Theme.REPORTS_ICON_COLOR, "reports.png"));
+        row2.add(buildStatCard("Exercise Types", String.valueOf(store.getTotalExerciseTypes()), Theme.ACCENT_DARK,
+                "dashboard.png"));
         page.add(row2);
         page.add(Box.createVerticalStrut(Theme.SPACE_XL));
 
@@ -153,11 +134,8 @@ public class DashboardScreen extends JPanel {
         actions.setOpaque(false);
         actions.setAlignmentX(Component.LEFT_ALIGNMENT);
 
-        for (Sidebar.NavItem item : new Sidebar.NavItem[]{
-                Sidebar.NavItem.TIMETABLE,
-                Sidebar.NavItem.BOOKINGS,
-                Sidebar.NavItem.MEMBERS,
-                Sidebar.NavItem.REPORTS}) {
+        for (Sidebar.NavItem item : new Sidebar.NavItem[] { Sidebar.NavItem.TIMETABLE, Sidebar.NavItem.BOOKINGS,
+                Sidebar.NavItem.MEMBERS, Sidebar.NavItem.REPORTS }) {
             actions.add(buildQuickActionBtn(item));
         }
         page.add(actions);
@@ -168,7 +146,8 @@ public class DashboardScreen extends JPanel {
     // ── Stat card ─────────────────────────────────────────────────────────────
     private JPanel buildStatCard(String label, String value, Color accent, String iconFile) {
         JPanel card = new JPanel() {
-            @Override protected void paintComponent(Graphics g) {
+            @Override
+            protected void paintComponent(Graphics g) {
                 Graphics2D g2 = (Graphics2D) g.create();
                 g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
                 g2.setColor(Theme.BG_CARD);
@@ -185,8 +164,7 @@ public class DashboardScreen extends JPanel {
         };
         card.setLayout(new BorderLayout());
         card.setOpaque(false);
-        card.setBorder(BorderFactory.createEmptyBorder(
-                Theme.SPACE_LG, Theme.SPACE_LG, Theme.SPACE_MD, Theme.SPACE_LG));
+        card.setBorder(BorderFactory.createEmptyBorder(Theme.SPACE_LG, Theme.SPACE_LG, Theme.SPACE_MD, Theme.SPACE_LG));
 
         // Left: value + label stacked
         JPanel text = new JPanel();
@@ -228,11 +206,20 @@ public class DashboardScreen extends JPanel {
             private boolean hovered = false;
             {
                 addMouseListener(new MouseAdapter() {
-                    public void mouseEntered(MouseEvent e) { hovered = true;  repaint(); }
-                    public void mouseExited (MouseEvent e) { hovered = false; repaint(); }
+                    public void mouseEntered(MouseEvent e) {
+                        hovered = true;
+                        repaint();
+                    }
+
+                    public void mouseExited(MouseEvent e) {
+                        hovered = false;
+                        repaint();
+                    }
                 });
             }
-            @Override protected void paintComponent(Graphics g) {
+
+            @Override
+            protected void paintComponent(Graphics g) {
                 Graphics2D g2 = (Graphics2D) g.create();
                 g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
                 g2.setColor(hovered ? Theme.ACCENT_LIGHT : Theme.BG_CARD);
@@ -245,7 +232,8 @@ public class DashboardScreen extends JPanel {
             }
         };
 
-        if (icon != null) btn.setIcon(icon);
+        if (icon != null)
+            btn.setIcon(icon);
         btn.setFont(Theme.FONT_BTN_SM);
         btn.setForeground(Theme.ACCENT);
         btn.setPreferredSize(new Dimension(150, 40));

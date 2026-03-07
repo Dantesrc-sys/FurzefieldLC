@@ -14,16 +14,16 @@ import java.util.ArrayList;
  *
  * File location: flc-data.json in the working directory (next to the jar).
  *
- * Strategy:
- *  - Save: convert every model object to a flat DTO (IDs only for references)
- *  - Load: read DTOs, reconstruct model objects, re-link object references
+ * Strategy: - Save: convert every model object to a flat DTO (IDs only for references) - Load: read DTOs, reconstruct
+ * model objects, re-link object references
  */
 public class JsonStore {
 
     private static final String FILE_NAME = "flc-data.json";
-    private static final Gson   GSON      = new GsonBuilder().setPrettyPrinting().create();
+    private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 
-    private JsonStore() {}
+    private JsonStore() {
+    }
 
     // ═══════════════════════════════════════════════════════════════════════
     // SAVE
@@ -31,15 +31,15 @@ public class JsonStore {
 
     public static void save() {
         DataStore store = DataStore.getInstance();
-        AppData   data  = new AppData();
+        AppData data = new AppData();
 
         // Members
         data.members = new ArrayList<>();
         for (Member m : store.getMembers()) {
             AppData.MemberDto dto = new AppData.MemberDto();
             dto.memberId = m.getMemberId();
-            dto.name     = m.getName();
-            dto.phone    = m.getPhone();
+            dto.name = m.getName();
+            dto.phone = m.getPhone();
             data.members.add(dto);
         }
 
@@ -48,8 +48,8 @@ public class JsonStore {
         for (ExerciseType e : store.getExerciseTypes()) {
             AppData.ExerciseTypeDto dto = new AppData.ExerciseTypeDto();
             dto.exerciseId = e.getExerciseId();
-            dto.name       = e.getName();
-            dto.price      = e.getPrice();
+            dto.name = e.getName();
+            dto.price = e.getPrice();
             data.exerciseTypes.add(dto);
         }
 
@@ -57,13 +57,14 @@ public class JsonStore {
         data.lessons = new ArrayList<>();
         for (Lesson l : store.getLessons()) {
             AppData.LessonDto dto = new AppData.LessonDto();
-            dto.lessonId      = l.getLessonId();
-            dto.exerciseTypeId= l.getExerciseType().getExerciseId();
-            dto.day           = l.getDay().name();
-            dto.timeSlot      = l.getTimeSlot().name();
-            dto.weekNumber    = l.getWeekNumber();
-            dto.memberIds     = new ArrayList<>();
-            for (Member m : l.getMembers()) dto.memberIds.add(m.getMemberId());
+            dto.lessonId = l.getLessonId();
+            dto.exerciseTypeId = l.getExerciseType().getExerciseId();
+            dto.day = l.getDay().name();
+            dto.timeSlot = l.getTimeSlot().name();
+            dto.weekNumber = l.getWeekNumber();
+            dto.memberIds = new ArrayList<>();
+            for (Member m : l.getMembers())
+                dto.memberIds.add(m.getMemberId());
             data.lessons.add(dto);
         }
 
@@ -72,8 +73,8 @@ public class JsonStore {
         for (Booking b : store.getBookings()) {
             AppData.BookingDto dto = new AppData.BookingDto();
             dto.bookingId = b.getBookingId();
-            dto.memberId  = b.getMember().getMemberId();
-            dto.lessonId  = b.getLesson().getLessonId();
+            dto.memberId = b.getMember().getMemberId();
+            dto.lessonId = b.getLesson().getLessonId();
             data.bookings.add(dto);
         }
 
@@ -84,8 +85,8 @@ public class JsonStore {
             dto.reviewId = r.getReviewId();
             dto.memberId = r.getMember().getMemberId();
             dto.lessonId = r.getLesson().getLessonId();
-            dto.rating   = r.getRating();
-            dto.comment  = r.getComment();
+            dto.rating = r.getRating();
+            dto.comment = r.getComment();
             data.reviews.add(dto);
         }
 
@@ -104,6 +105,7 @@ public class JsonStore {
 
     /**
      * Loads data from flc-data.json if it exists.
+     *
      * @return true if loaded from file, false if file not found (caller should load SampleData)
      */
     public static boolean load() {
@@ -114,7 +116,7 @@ public class JsonStore {
         }
 
         try (Reader reader = new FileReader(FILE_NAME)) {
-            AppData   data  = GSON.fromJson(reader, AppData.class);
+            AppData data = GSON.fromJson(reader, AppData.class);
             DataStore store = DataStore.getInstance();
             store.clearAll();
 
@@ -129,17 +131,16 @@ public class JsonStore {
             // 3 — Lessons (re-link exercise type + enrolled members)
             for (AppData.LessonDto dto : data.lessons) {
                 ExerciseType type = store.findExerciseTypeById(dto.exerciseTypeId);
-                if (type == null) continue;
-                Lesson lesson = new Lesson(
-                        dto.lessonId, type,
-                        Day.valueOf(dto.day),
-                        TimeSlot.valueOf(dto.timeSlot),
+                if (type == null)
+                    continue;
+                Lesson lesson = new Lesson(dto.lessonId, type, Day.valueOf(dto.day), TimeSlot.valueOf(dto.timeSlot),
                         dto.weekNumber);
                 // Re-enrol members
                 if (dto.memberIds != null) {
                     for (String memberId : dto.memberIds) {
                         Member m = store.findMemberById(memberId);
-                        if (m != null) lesson.addMember(m);
+                        if (m != null)
+                            lesson.addMember(m);
                     }
                 }
                 store.addLesson(lesson);
@@ -161,11 +162,9 @@ public class JsonStore {
                     store.addReview(new Review(dto.reviewId, m, l, dto.rating, dto.comment));
             }
 
-            System.out.println("[JsonStore] Loaded from " + FILE_NAME
-                    + " — " + store.getTotalMembers()    + " members, "
-                    + store.getTotalLessons()             + " lessons, "
-                    + store.getTotalBookings()            + " bookings, "
-                    + store.getTotalReviews()             + " reviews");
+            System.out.println("[JsonStore] Loaded from " + FILE_NAME + " — " + store.getTotalMembers() + " members, "
+                    + store.getTotalLessons() + " lessons, " + store.getTotalBookings() + " bookings, "
+                    + store.getTotalReviews() + " reviews");
             return true;
 
         } catch (Exception e) {

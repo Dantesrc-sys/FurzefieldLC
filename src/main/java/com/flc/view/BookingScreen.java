@@ -14,39 +14,38 @@ import java.awt.event.*;
 import java.util.List;
 
 /**
- * Bookings screen — create a new booking, change an existing one, or cancel.
- * Layout: left panel (select member + lesson) | right panel (member's bookings)
+ * Bookings screen — create a new booking, change an existing one, or cancel. Layout: left panel (select member +
+ * lesson) | right panel (member's bookings)
  */
 public class BookingScreen extends JPanel {
 
     private final BookingController bookingController = new BookingController();
-    private final DataStore         store             = DataStore.getInstance();
+    private final DataStore store = DataStore.getInstance();
 
     // ── Selected state ────────────────────────────────────────────────────────
-    private Member  selectedMember  = null;
-    private Lesson  selectedLesson  = null;
+    private Member selectedMember = null;
+    private Lesson selectedLesson = null;
     private Booking selectedBooking = null;
 
     // ── UI refs ───────────────────────────────────────────────────────────────
-    private JComboBox<Member>  memberCombo;
-    private JComboBox<Day>     dayCombo;
+    private JComboBox<Member> memberCombo;
+    private JComboBox<Day> dayCombo;
     private JComboBox<Integer> weekCombo;
-    private JTable             lessonTable;
-    private DefaultTableModel  lessonModel;
-    private JTable             bookingTable;
-    private DefaultTableModel  bookingModel;
-    private JButton            bookBtn;
-    private JButton            changeBtn;
-    private JButton            cancelBtn;
-    private JLabel             statusLabel;
+    private JTable lessonTable;
+    private DefaultTableModel lessonModel;
+    private JTable bookingTable;
+    private DefaultTableModel bookingModel;
+    private JButton bookBtn;
+    private JButton changeBtn;
+    private JButton cancelBtn;
+    private JLabel statusLabel;
 
     public BookingScreen() {
         setLayout(new BorderLayout(Theme.SPACE_LG, 0));
         setBackground(Theme.BG);
-        setBorder(BorderFactory.createEmptyBorder(
-                Theme.SPACE_XL, Theme.SPACE_XL, Theme.SPACE_XL, Theme.SPACE_XL));
+        setBorder(BorderFactory.createEmptyBorder(Theme.SPACE_XL, Theme.SPACE_XL, Theme.SPACE_XL, Theme.SPACE_XL));
 
-        add(buildLeftPanel(),  BorderLayout.WEST);
+        add(buildLeftPanel(), BorderLayout.WEST);
         add(buildRightPanel(), BorderLayout.CENTER);
     }
 
@@ -67,8 +66,9 @@ public class BookingScreen extends JPanel {
         memberCombo = new JComboBox<>();
         store.getMembers().forEach(memberCombo::addItem);
         memberCombo.setRenderer(new DefaultListCellRenderer() {
-            @Override public Component getListCellRendererComponent(
-                    JList<?> list, Object val, int idx, boolean sel, boolean focus) {
+            @Override
+            public Component getListCellRendererComponent(JList<?> list, Object val, int idx, boolean sel,
+                    boolean focus) {
                 super.getListCellRendererComponent(list, val, idx, sel, focus);
                 if (val instanceof Member m)
                     setText(m.getMemberId() + "  —  " + m.getName());
@@ -91,19 +91,20 @@ public class BookingScreen extends JPanel {
         dayCombo = new JComboBox<>(Day.values());
         dayCombo.setPreferredSize(new Dimension(130, 36));
 
-        Integer[] weeks = {0,1,2,3,4,5,6,7,8};
+        Integer[] weeks = { 0, 1, 2, 3, 4, 5, 6, 7, 8 };
         weekCombo = new JComboBox<>(weeks);
         weekCombo.setRenderer(new DefaultListCellRenderer() {
-            @Override public Component getListCellRendererComponent(
-                    JList<?> list, Object val, int idx, boolean sel, boolean focus) {
+            @Override
+            public Component getListCellRendererComponent(JList<?> list, Object val, int idx, boolean sel,
+                    boolean focus) {
                 super.getListCellRendererComponent(list, val, idx, sel, focus);
-                setText((Integer)val == 0 ? "All Weeks" : "Week " + val);
+                setText((Integer) val == 0 ? "All Weeks" : "Week " + val);
                 return this;
             }
         });
         weekCombo.setPreferredSize(new Dimension(120, 36));
 
-        dayCombo.addActionListener(e  -> refreshLessons());
+        dayCombo.addActionListener(e -> refreshLessons());
         weekCombo.addActionListener(e -> refreshLessons());
 
         filterRow.add(dayCombo);
@@ -133,21 +134,25 @@ public class BookingScreen extends JPanel {
     }
 
     private JScrollPane buildLessonTable() {
-        String[] cols = {"Time", "Exercise", "Price", "Spaces"};
+        String[] cols = { "Time", "Exercise", "Price", "Spaces" };
         lessonModel = new DefaultTableModel(cols, 0) {
-            @Override public boolean isCellEditable(int r, int c) { return false; }
+            @Override
+            public boolean isCellEditable(int r, int c) {
+                return false;
+            }
         };
 
         lessonTable = ModernTable.create(lessonModel);
         lessonTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
         ModernTable.setColumnWidths(lessonTable, 120, 160, 90, 130);
-        ModernTable.setTimeColumn(lessonTable, 0);   // Time — dot
-        ModernTable.setExerciseColumn(lessonTable, 1);   // Exercise — dot
-        ModernTable.setPriceColumn(lessonTable,    2);   // Price — green
-        ModernTable.setCapacityColumn(lessonTable, 3);   // Spaces — bar
+        ModernTable.setTimeColumn(lessonTable, 0); // Time — dot
+        ModernTable.setExerciseColumn(lessonTable, 1); // Exercise — dot
+        ModernTable.setPriceColumn(lessonTable, 2); // Price — green
+        ModernTable.setCapacityColumn(lessonTable, 3); // Spaces — bar
         lessonTable.getSelectionModel().addListSelectionListener(e -> {
-            if (!e.getValueIsAdjusting()) onLessonSelected();
+            if (!e.getValueIsAdjusting())
+                onLessonSelected();
         });
 
         JScrollPane scroll = ModernTable.wrap(lessonTable);
@@ -162,15 +167,15 @@ public class BookingScreen extends JPanel {
         row.setOpaque(false);
         row.setAlignmentX(Component.LEFT_ALIGNMENT);
 
-        bookBtn   = buildBtn("Book",   Theme.BTN_PRIMARY,  Theme.BTN_HOVER);
-        changeBtn = buildBtn("Change", Theme.BTN_CHANGE,   Theme.BTN_CHANGE_HOVER);
-        cancelBtn = buildBtn("Cancel", Theme.BTN_DANGER,   Theme.BTN_DANGER_HOVER);
+        bookBtn = buildBtn("Book", Theme.BTN_PRIMARY, Theme.BTN_HOVER);
+        changeBtn = buildBtn("Change", Theme.BTN_CHANGE, Theme.BTN_CHANGE_HOVER);
+        cancelBtn = buildBtn("Cancel", Theme.BTN_DANGER, Theme.BTN_DANGER_HOVER);
 
         bookBtn.setEnabled(false);
         changeBtn.setEnabled(false);
         cancelBtn.setEnabled(false);
 
-        bookBtn.addActionListener(e   -> onBook());
+        bookBtn.addActionListener(e -> onBook());
         changeBtn.addActionListener(e -> onChange());
         cancelBtn.addActionListener(e -> onCancel());
 
@@ -194,22 +199,26 @@ public class BookingScreen extends JPanel {
         title.setBorder(BorderFactory.createEmptyBorder(0, 0, Theme.SPACE_MD, 0));
         panel.add(title, BorderLayout.NORTH);
 
-        String[] cols = {"ID", "Week", "Day", "Time", "Exercise", "Price"};
+        String[] cols = { "ID", "Week", "Day", "Time", "Exercise", "Price" };
         bookingModel = new DefaultTableModel(cols, 0) {
-            @Override public boolean isCellEditable(int r, int c) { return false; }
+            @Override
+            public boolean isCellEditable(int r, int c) {
+                return false;
+            }
         };
 
         bookingTable = ModernTable.create(bookingModel);
         ModernTable.setColumnWidths(bookingTable, 80, 90, 110, 120, 150, 90);
-        
-        ModernTable.setCodeColumn(bookingTable,      0);  // ID chip
-        ModernTable.setWeekColumn(bookingTable,      1);  // Week chip
-        ModernTable.setDayColumn(bookingTable,       2);  // Day dot
-        ModernTable.setTimeColumn(bookingTable,      3);  // Time dot
-        ModernTable.setExerciseColumn(bookingTable,  4);  // Exercise dot
-        ModernTable.setPriceColumn(bookingTable,     5);  // Price green
+
+        ModernTable.setCodeColumn(bookingTable, 0); // ID chip
+        ModernTable.setWeekColumn(bookingTable, 1); // Week chip
+        ModernTable.setDayColumn(bookingTable, 2); // Day dot
+        ModernTable.setTimeColumn(bookingTable, 3); // Time dot
+        ModernTable.setExerciseColumn(bookingTable, 4); // Exercise dot
+        ModernTable.setPriceColumn(bookingTable, 5); // Price green
         bookingTable.getSelectionModel().addListSelectionListener(e -> {
-            if (!e.getValueIsAdjusting()) onBookingSelected();
+            if (!e.getValueIsAdjusting())
+                onBookingSelected();
         });
 
         JScrollPane scroll = ModernTable.wrap(bookingTable);
@@ -223,7 +232,7 @@ public class BookingScreen extends JPanel {
     // ═══════════════════════════════════════════════════════════════════════
 
     private void onMemberSelected() {
-        selectedMember  = (Member) memberCombo.getSelectedItem();
+        selectedMember = (Member) memberCombo.getSelectedItem();
         selectedBooking = null;
         refreshBookings();
         updateButtons();
@@ -231,33 +240,42 @@ public class BookingScreen extends JPanel {
 
     private void onLessonSelected() {
         int row = lessonTable.getSelectedRow();
-        if (row < 0) { selectedLesson = null; updateButtons(); return; }
+        if (row < 0) {
+            selectedLesson = null;
+            updateButtons();
+            return;
+        }
 
-        Day     day  = (Day)     dayCombo.getSelectedItem();
-        int     week = (Integer) weekCombo.getSelectedItem();
+        Day day = (Day) dayCombo.getSelectedItem();
+        int week = (Integer) weekCombo.getSelectedItem();
 
         List<Lesson> lessons = getLessonsForFilter(day, week);
-        if (row < lessons.size()) selectedLesson = lessons.get(row);
+        if (row < lessons.size())
+            selectedLesson = lessons.get(row);
         updateButtons();
     }
 
     private void onBookingSelected() {
         int row = bookingTable.getSelectedRow();
         if (row < 0 || selectedMember == null) {
-            selectedBooking = null; updateButtons(); return;
+            selectedBooking = null;
+            updateButtons();
+            return;
         }
         List<Booking> bookings = store.findBookingsByMember(selectedMember);
-        if (row < bookings.size()) selectedBooking = bookings.get(row);
+        if (row < bookings.size())
+            selectedBooking = bookings.get(row);
         updateButtons();
     }
 
     private void onBook() {
-        if (selectedMember == null || selectedLesson == null) return;
+        if (selectedMember == null || selectedLesson == null)
+            return;
         try {
             bookingController.createBooking(selectedMember, selectedLesson);
             JsonStore.save();
-            setStatus("Booked " + selectedLesson.getExerciseType().getName()
-                    + " - Week " + selectedLesson.getWeekNumber(), Theme.TEXT_SUCCESS);
+            setStatus("Booked " + selectedLesson.getExerciseType().getName() + " - Week "
+                    + selectedLesson.getWeekNumber(), Theme.TEXT_SUCCESS);
             refreshAll();
         } catch (Exception ex) {
             setStatus(ex.getMessage(), Theme.TEXT_ERROR);
@@ -265,12 +283,13 @@ public class BookingScreen extends JPanel {
     }
 
     private void onChange() {
-        if (selectedBooking == null || selectedLesson == null) return;
+        if (selectedBooking == null || selectedLesson == null)
+            return;
         try {
             bookingController.changeBooking(selectedBooking, selectedLesson);
             JsonStore.save();
-            setStatus("Booking changed to " + selectedLesson.getExerciseType().getName()
-                    + " - Week " + selectedLesson.getWeekNumber(), Theme.TEXT_SUCCESS);
+            setStatus("Booking changed to " + selectedLesson.getExerciseType().getName() + " - Week "
+                    + selectedLesson.getWeekNumber(), Theme.TEXT_SUCCESS);
             refreshAll();
         } catch (Exception ex) {
             setStatus(ex.getMessage(), Theme.TEXT_ERROR);
@@ -278,13 +297,15 @@ public class BookingScreen extends JPanel {
     }
 
     private void onCancel() {
-        if (selectedBooking == null) return;
+        if (selectedBooking == null)
+            return;
         int confirm = JOptionPane.showConfirmDialog(this,
-                "Cancel booking for " + selectedBooking.getLesson().getExerciseType().getName()
-                + "?\nWeek " + selectedBooking.getLesson().getWeekNumber()
-                + " - " + selectedBooking.getLesson().getDay().getDisplayName(),
+                "Cancel booking for " + selectedBooking.getLesson().getExerciseType().getName() + "?\nWeek "
+                        + selectedBooking.getLesson().getWeekNumber() + " - "
+                        + selectedBooking.getLesson().getDay().getDisplayName(),
                 "Confirm Cancel", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
-        if (confirm != JOptionPane.YES_OPTION) return;
+        if (confirm != JOptionPane.YES_OPTION)
+            return;
         try {
             bookingController.cancelBooking(selectedBooking);
             selectedBooking = null;
@@ -304,33 +325,25 @@ public class BookingScreen extends JPanel {
         lessonModel.setRowCount(0);
         selectedLesson = null;
 
-        Day day  = (Day)     dayCombo.getSelectedItem();
+        Day day = (Day) dayCombo.getSelectedItem();
         int week = (Integer) weekCombo.getSelectedItem();
 
         for (Lesson l : getLessonsForFilter(day, week)) {
-            lessonModel.addRow(new Object[]{
-                l.getTimeSlot().getDisplayName(),
-                l.getExerciseType().getName(),
-                "£" + String.format("%.2f", l.getPrice()),
-                l.getAvailableSpaces() + " / 4"
-            });
+            lessonModel.addRow(new Object[] { l.getTimeSlot().getDisplayName(), l.getExerciseType().getName(),
+                    "£" + String.format("%.2f", l.getPrice()), l.getAvailableSpaces() + " / 4" });
         }
         updateButtons();
     }
 
     private void refreshBookings() {
         bookingModel.setRowCount(0);
-        if (selectedMember == null) return;
+        if (selectedMember == null)
+            return;
         for (Booking b : store.findBookingsByMember(selectedMember)) {
             Lesson l = b.getLesson();
-            bookingModel.addRow(new Object[]{
-                b.getBookingId(),
-                "Week " + l.getWeekNumber(),
-                l.getDay().getDisplayName(),
-                l.getTimeSlot().getDisplayName(),
-                l.getExerciseType().getName(),
-                "£" + String.format("%.2f", l.getPrice())
-            });
+            bookingModel.addRow(new Object[] { b.getBookingId(), "Week " + l.getWeekNumber(),
+                    l.getDay().getDisplayName(), l.getTimeSlot().getDisplayName(), l.getExerciseType().getName(),
+                    "£" + String.format("%.2f", l.getPrice()) });
         }
     }
 
@@ -341,15 +354,13 @@ public class BookingScreen extends JPanel {
     }
 
     private List<Lesson> getLessonsForFilter(Day day, int week) {
-        return store.getLessons().stream()
-                .filter(l -> l.getDay() == day)
-                .filter(l -> week == 0 || l.getWeekNumber() == week)
-                .toList();
+        return store.getLessons().stream().filter(l -> l.getDay() == day)
+                .filter(l -> week == 0 || l.getWeekNumber() == week).toList();
     }
 
     private void updateButtons() {
-        boolean hasMember  = selectedMember  != null;
-        boolean hasLesson  = selectedLesson  != null;
+        boolean hasMember = selectedMember != null;
+        boolean hasLesson = selectedLesson != null;
         boolean hasBooking = selectedBooking != null;
         boolean lessonNotFull = hasLesson && !selectedLesson.isFull();
 
@@ -375,15 +386,25 @@ public class BookingScreen extends JPanel {
         return l;
     }
 
-
     private JButton buildBtn(String label, Color bg, Color hover) {
         JButton btn = new JButton(label) {
             private boolean hov = false;
-            { addMouseListener(new MouseAdapter() {
-                public void mouseEntered(MouseEvent e) { hov = true;  repaint(); }
-                public void mouseExited (MouseEvent e) { hov = false; repaint(); }
-            }); }
-            @Override protected void paintComponent(Graphics g) {
+            {
+                addMouseListener(new MouseAdapter() {
+                    public void mouseEntered(MouseEvent e) {
+                        hov = true;
+                        repaint();
+                    }
+
+                    public void mouseExited(MouseEvent e) {
+                        hov = false;
+                        repaint();
+                    }
+                });
+            }
+
+            @Override
+            protected void paintComponent(Graphics g) {
                 Graphics2D g2 = (Graphics2D) g.create();
                 g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
                 g2.setColor(!isEnabled() ? Theme.BTN_DISABLED : hov ? hover : bg);

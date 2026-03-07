@@ -7,17 +7,17 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class DataStoreTest {
 
-    private DataStore    store;
-    private Member       alice;
+    private DataStore store;
+    private Member alice;
     private ExerciseType yoga;
-    private Lesson       lesson;
+    private Lesson lesson;
 
     @BeforeEach
     void setUp() {
-        store  = DataStore.getInstance();
+        store = DataStore.getInstance();
         store.clearAll();
-        alice  = new Member("M001", "Alice", "07700900001");
-        yoga   = new ExerciseType("E001", "Yoga", 12.50);
+        alice = new Member("M001", "Alice", "07700900001");
+        yoga = new ExerciseType("E001", "Yoga", 12.50);
         lesson = new Lesson("L001", yoga, Day.SATURDAY, TimeSlot.MORNING, 1);
     }
 
@@ -31,8 +31,7 @@ class DataStoreTest {
     @Test
     void shouldThrowOnDuplicateMemberId() {
         store.addMember(alice);
-        assertThrows(IllegalArgumentException.class,
-            () -> store.addMember(new Member("M001", "Bob", "07700900002")));
+        assertThrows(IllegalArgumentException.class, () -> store.addMember(new Member("M001", "Bob", "07700900002")));
     }
 
     @Test
@@ -63,7 +62,7 @@ class DataStoreTest {
     void shouldThrowOnDuplicateExerciseId() {
         store.addExerciseType(yoga);
         assertThrows(IllegalArgumentException.class,
-            () -> store.addExerciseType(new ExerciseType("E001", "Zumba", 10.00)));
+                () -> store.addExerciseType(new ExerciseType("E001", "Zumba", 10.00)));
     }
 
     // ── Lessons ───────────────────────────────────────────────────────────────

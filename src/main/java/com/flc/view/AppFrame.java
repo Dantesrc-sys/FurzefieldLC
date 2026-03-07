@@ -7,21 +7,23 @@ import java.awt.*;
 import java.net.URL;
 
 /**
- * Single application window.
- * Uses CardLayout to swap between HomeScreen and DashboardScreen
- * without ever opening a new window.
+ * Single application window. Uses CardLayout to swap between HomeScreen and DashboardScreen without ever opening a new
+ * window.
  */
 public class AppFrame extends JFrame {
 
-    private static final String CARD_HOME      = "HOME";
+    private static final String CARD_HOME = "HOME";
     private static final String CARD_DASHBOARD = "DASHBOARD";
 
     private final CardLayout cardLayout;
-    private final JPanel     cardPanel;
+    private final JPanel cardPanel;
 
     // Singleton so any screen can call AppFrame.get().showDashboard()
     private static AppFrame instance;
-    public  static AppFrame get() { return instance; }
+
+    public static AppFrame get() {
+        return instance;
+    }
 
     public AppFrame() {
         instance = this;
@@ -37,9 +39,9 @@ public class AppFrame extends JFrame {
         setPreferredSize(Theme.WINDOW_SIZE);
 
         cardLayout = new CardLayout();
-        cardPanel  = new JPanel(cardLayout);
+        cardPanel = new JPanel(cardLayout);
 
-        cardPanel.add(new HomeScreen(),      CARD_HOME);
+        cardPanel.add(new HomeScreen(), CARD_HOME);
         cardPanel.add(new DashboardScreen(), CARD_DASHBOARD);
 
         setContentPane(cardPanel);
@@ -58,9 +60,8 @@ public class AppFrame extends JFrame {
     }
 
     /**
-     * Attempt to load the logo image from the classpath so it can be
-     * used as the window/taskbar icon. Returns null if the resource is
-     * missing or could not be read.
+     * Attempt to load the logo image from the classpath so it can be used as the window/taskbar icon. Returns null if
+     * the resource is missing or could not be read.
      */
     private Image loadAppIcon() {
         // assume the same logo used on HomeScreen

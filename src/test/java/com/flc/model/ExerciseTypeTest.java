@@ -9,27 +9,24 @@ class ExerciseTypeTest {
     @Test
     void shouldCreateWithValidData() {
         ExerciseType e = new ExerciseType("E001", "Yoga", 12.50);
-        assertEquals("E001",  e.getExerciseId());
-        assertEquals("Yoga",  e.getName());
-        assertEquals(12.50,   e.getPrice());
+        assertEquals("E001", e.getExerciseId());
+        assertEquals("Yoga", e.getName());
+        assertEquals(12.50, e.getPrice());
     }
 
     @Test
     void shouldThrowWhenIdIsBlank() {
-        assertThrows(IllegalArgumentException.class,
-            () -> new ExerciseType("", "Yoga", 12.50));
+        assertThrows(IllegalArgumentException.class, () -> new ExerciseType("", "Yoga", 12.50));
     }
 
     @Test
     void shouldThrowWhenNameIsBlank() {
-        assertThrows(IllegalArgumentException.class,
-            () -> new ExerciseType("E001", "", 12.50));
+        assertThrows(IllegalArgumentException.class, () -> new ExerciseType("E001", "", 12.50));
     }
 
     @Test
     void shouldThrowWhenPriceIsNegative() {
-        assertThrows(IllegalArgumentException.class,
-            () -> new ExerciseType("E001", "Yoga", -5.00));
+        assertThrows(IllegalArgumentException.class, () -> new ExerciseType("E001", "Yoga", -5.00));
     }
 
     @Test
@@ -69,8 +66,8 @@ class ExerciseTypeTest {
     // ── Equality ──────────────────────────────────────────────────────────────
     @Test
     void shouldBeEqualWhenSameId() {
-        ExerciseType a = new ExerciseType("E001", "Yoga",   12.50);
-        ExerciseType b = new ExerciseType("E001", "Zumba",  8.00);
+        ExerciseType a = new ExerciseType("E001", "Yoga", 12.50);
+        ExerciseType b = new ExerciseType("E001", "Zumba", 8.00);
         assertEquals(a, b);
     }
 

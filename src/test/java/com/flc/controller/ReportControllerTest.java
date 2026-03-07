@@ -11,13 +11,13 @@ import java.util.List;
 
 class ReportControllerTest {
 
-    private DataStore        store;
+    private DataStore store;
     private ReportController reportController;
 
     @BeforeEach
     void setUp() {
         SampleData.load(); // loads all 48 lessons, 10 members, 50 bookings, 22 reviews
-        store            = DataStore.getInstance();
+        store = DataStore.getInstance();
         reportController = new ReportController();
     }
 
@@ -32,7 +32,7 @@ class ReportControllerTest {
     void shouldSortAttendanceReportByWeekThenDayThenSlot() {
         List<ReportController.AttendanceRow> rows = reportController.getAttendanceReport();
         ReportController.AttendanceRow first = rows.get(0);
-        assertEquals(1,            first.weekNumber());
+        assertEquals(1, first.weekNumber());
         assertEquals(Day.SATURDAY, first.day());
         assertEquals(TimeSlot.MORNING, first.timeSlot());
     }
@@ -58,8 +58,7 @@ class ReportControllerTest {
         List<ReportController.AttendanceRow> rows = reportController.getAttendanceReport();
         // Find a lesson with no reviews — week 8 lessons have none
         ReportController.AttendanceRow noReview = rows.stream()
-                .filter(r -> r.weekNumber() == 8 && r.averageRating() == 0.0)
-                .findFirst().orElse(null);
+                .filter(r -> r.weekNumber() == 8 && r.averageRating() == 0.0).findFirst().orElse(null);
         assertNotNull(noReview);
         assertEquals("No reviews", noReview.formattedRating());
     }
@@ -106,33 +105,35 @@ class ReportControllerTest {
     @Test
     void shouldCalculateTotalIncomeCorrectly() {
         store.clearAll();
-        DataStore ds   = DataStore.getInstance();
-        ExerciseType yoga  = new ExerciseType("E001", "Yoga",  10.00);
-        ExerciseType zumba = new ExerciseType("E002", "Zumba",  8.00);
+        DataStore ds = DataStore.getInstance();
+        ExerciseType yoga = new ExerciseType("E001", "Yoga", 10.00);
+        ExerciseType zumba = new ExerciseType("E002", "Zumba", 8.00);
         ds.addExerciseType(yoga);
         ds.addExerciseType(zumba);
 
         Member alice = new Member("M001", "Alice", "07700900001");
-        Member bob   = new Member("M002", "Bob",   "07700900002");
+        Member bob = new Member("M002", "Bob", "07700900002");
         ds.addMember(alice);
         ds.addMember(bob);
 
-        Lesson l1 = new Lesson("L001", yoga,  Day.SATURDAY, TimeSlot.MORNING,   1);
+        Lesson l1 = new Lesson("L001", yoga, Day.SATURDAY, TimeSlot.MORNING, 1);
         Lesson l2 = new Lesson("L002", zumba, Day.SATURDAY, TimeSlot.AFTERNOON, 1);
         l1.addMember(alice);
-        l1.addMember(bob);   // 2 × £10 = £20
-        l2.addMember(alice); // 1 × £8  = £8
+        l1.addMember(bob); // 2 × £10 = £20
+        l2.addMember(alice); // 1 × £8 = £8
         ds.addLesson(l1);
         ds.addLesson(l2);
 
-        ReportController rc   = new ReportController();
+        ReportController rc = new ReportController();
         List<ReportController.IncomeRow> rows = rc.getIncomeReport();
 
-        ReportController.IncomeRow yogaRow  = rows.stream().filter(r -> r.exerciseName().equals("Yoga")).findFirst().orElseThrow();
-        ReportController.IncomeRow zumbaRow = rows.stream().filter(r -> r.exerciseName().equals("Zumba")).findFirst().orElseThrow();
+        ReportController.IncomeRow yogaRow = rows.stream().filter(r -> r.exerciseName().equals("Yoga")).findFirst()
+                .orElseThrow();
+        ReportController.IncomeRow zumbaRow = rows.stream().filter(r -> r.exerciseName().equals("Zumba")).findFirst()
+                .orElseThrow();
 
-        assertEquals(20.0, yogaRow.totalIncome(),  0.001);
-        assertEquals(8.0,  zumbaRow.totalIncome(), 0.001);
+        assertEquals(20.0, yogaRow.totalIncome(), 0.001);
+        assertEquals(8.0, zumbaRow.totalIncome(), 0.001);
         assertEquals("Yoga", rows.get(0).exerciseName()); // yoga is highest
     }
 }

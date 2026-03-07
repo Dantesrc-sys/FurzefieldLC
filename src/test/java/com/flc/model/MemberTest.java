@@ -9,27 +9,24 @@ class MemberTest {
     @Test
     void shouldCreateMemberWithValidData() {
         Member m = new Member("M001", "Alice Smith", "07700900001");
-        assertEquals("M001",         m.getMemberId());
-        assertEquals("Alice Smith",  m.getName());
-        assertEquals("07700900001",  m.getPhone());
+        assertEquals("M001", m.getMemberId());
+        assertEquals("Alice Smith", m.getName());
+        assertEquals("07700900001", m.getPhone());
     }
 
     @Test
     void shouldThrowWhenIdIsBlank() {
-        assertThrows(IllegalArgumentException.class,
-            () -> new Member("", "Alice", "07700900001"));
+        assertThrows(IllegalArgumentException.class, () -> new Member("", "Alice", "07700900001"));
     }
 
     @Test
     void shouldThrowWhenNameIsBlank() {
-        assertThrows(IllegalArgumentException.class,
-            () -> new Member("M001", "  ", "07700900001"));
+        assertThrows(IllegalArgumentException.class, () -> new Member("M001", "  ", "07700900001"));
     }
 
     @Test
     void shouldThrowWhenPhoneIsBlank() {
-        assertThrows(IllegalArgumentException.class,
-            () -> new Member("M001", "Alice", ""));
+        assertThrows(IllegalArgumentException.class, () -> new Member("M001", "Alice", ""));
     }
 
     // ── Setters ───────────────────────────────────────────────────────────────

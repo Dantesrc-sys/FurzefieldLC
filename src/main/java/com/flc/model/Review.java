@@ -3,8 +3,8 @@ package com.flc.model;
 import com.flc.config.AppConfig;
 
 /**
- * Represents a review written by a member after attending a lesson.
- * Rating is 1–5 as defined in AppConfig.RATING_MIN / RATING_MAX.
+ * Represents a review written by a member after attending a lesson. Rating is 1–5 as defined in AppConfig.RATING_MIN /
+ * RATING_MAX.
  */
 public class Review {
 
@@ -12,39 +12,56 @@ public class Review {
     private final String reviewId;
     private final Member member;
     private final Lesson lesson;
-    private       int    rating;   // 1–5
-    private       String comment;
+    private int rating; // 1–5
+    private String comment;
 
     // ── Constructor ───────────────────────────────────────────────────────────
     public Review(String reviewId, Member member, Lesson lesson, int rating, String comment) {
-        if (reviewId == null || reviewId.isBlank()) throw new IllegalArgumentException("Review ID cannot be empty");
-        if (member   == null)                       throw new IllegalArgumentException("Member cannot be null");
-        if (lesson   == null)                       throw new IllegalArgumentException("Lesson cannot be null");
+        if (reviewId == null || reviewId.isBlank())
+            throw new IllegalArgumentException("Review ID cannot be empty");
+        if (member == null)
+            throw new IllegalArgumentException("Member cannot be null");
+        if (lesson == null)
+            throw new IllegalArgumentException("Lesson cannot be null");
         validateRating(rating);
 
         this.reviewId = reviewId;
-        this.member   = member;
-        this.lesson   = lesson;
-        this.rating   = rating;
-        this.comment  = (comment == null) ? "" : comment.trim();
+        this.member = member;
+        this.lesson = lesson;
+        this.rating = rating;
+        this.comment = (comment == null) ? "" : comment.trim();
     }
 
     // ── Getters ───────────────────────────────────────────────────────────────
-    public String getReviewId() { return reviewId; }
-    public Member getMember()   { return member;   }
-    public Lesson getLesson()   { return lesson;   }
-    public int    getRating()   { return rating;   }
-    public String getComment()  { return comment;  }
+    public String getReviewId() {
+        return reviewId;
+    }
+
+    public Member getMember() {
+        return member;
+    }
+
+    public Lesson getLesson() {
+        return lesson;
+    }
+
+    public int getRating() {
+        return rating;
+    }
+
+    public String getComment() {
+        return comment;
+    }
 
     // ── Rating label ──────────────────────────────────────────────────────────
     public String getRatingLabel() {
         return switch (rating) {
-            case 1 -> "Very Dissatisfied";
-            case 2 -> "Dissatisfied";
-            case 3 -> "Ok";
-            case 4 -> "Satisfied";
-            case 5 -> "Very Satisfied";
-            default -> "Unknown";
+        case 1 -> "Very Dissatisfied";
+        case 2 -> "Dissatisfied";
+        case 3 -> "Ok";
+        case 4 -> "Satisfied";
+        case 5 -> "Very Satisfied";
+        default -> "Unknown";
         };
     }
 
@@ -62,20 +79,22 @@ public class Review {
     private void validateRating(int rating) {
         if (rating < AppConfig.RATING_MIN || rating > AppConfig.RATING_MAX)
             throw new IllegalArgumentException(
-                "Rating must be between " + AppConfig.RATING_MIN + " and " + AppConfig.RATING_MAX);
+                    "Rating must be between " + AppConfig.RATING_MIN + " and " + AppConfig.RATING_MAX);
     }
 
     // ── Utility ───────────────────────────────────────────────────────────────
     @Override
     public String toString() {
-        return String.format("Review{id='%s', member='%s', lesson='%s', rating=%d (%s)}",
-                reviewId, member.getName(), lesson.getLessonId(), rating, getRatingLabel());
+        return String.format("Review{id='%s', member='%s', lesson='%s', rating=%d (%s)}", reviewId, member.getName(),
+                lesson.getLessonId(), rating, getRatingLabel());
     }
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Review r)) return false;
+        if (this == o)
+            return true;
+        if (!(o instanceof Review r))
+            return false;
         return reviewId.equals(r.reviewId);
     }
 
