@@ -215,9 +215,9 @@ public class MemberScreen extends JPanel {
         card.setMaximumSize(new Dimension(Integer.MAX_VALUE, 160));
 
         detailName = detailLine("Select a member", Theme.FONT_TITLE_SM, Theme.TEXT_DARK);
-        detailId = detailLine("ID: —", Theme.FONT_SMALL, Theme.TEXT_MID);
-        detailPhone = detailLine("Phone: —", Theme.FONT_SMALL, Theme.TEXT_MID);
-        detailBookings = detailLine("Bookings: —", Theme.FONT_SMALL, Theme.ACCENT);
+        detailId = detailLine("ID: M0000", Theme.FONT_SMALL, Theme.TEXT_MID);
+        detailPhone = detailLine("Phone: 0000000000", Theme.FONT_SMALL, Theme.TEXT_MID);
+        detailBookings = detailLine("Bookings: 0", Theme.FONT_SMALL, Theme.ACCENT);
 
         card.add(detailName);
         card.add(Box.createVerticalStrut(Theme.SPACE_XS));
@@ -414,9 +414,9 @@ public class MemberScreen extends JPanel {
 
     private void clearDetail() {
         detailName.setText("Select a member");
-        detailId.setText("ID: —");
-        detailPhone.setText("Phone: —");
-        detailBookings.setText("Bookings: —");
+        detailId.setText("ID: M0000");
+        detailPhone.setText("Phone: 0000000000");
+        detailBookings.setText("Bookings: 0");
         editNameField.setText("");
         editPhoneField.setText("");
         saveBtn.setEnabled(false);
