@@ -49,11 +49,6 @@
       "memberId": "M010",
       "name": "Jack Wilson",
       "phone": "07700900010"
-    },
-    {
-      "memberId": "M011",
-      "name": "Nben Malla",
-      "phone": "07700900011"
     }
   ],
   "exerciseTypes": [
@@ -93,8 +88,7 @@
       "memberIds": [
         "M001",
         "M002",
-        "M003",
-        "M011"
+        "M003"
       ]
     },
     {
@@ -176,7 +170,9 @@
       "day": "SATURDAY",
       "timeSlot": "EVENING",
       "weekNumber": 2,
-      "memberIds": []
+      "memberIds": [
+        "M005"
+      ]
     },
     {
       "lessonId": "L02SUN1",
@@ -227,8 +223,7 @@
       "timeSlot": "AFTERNOON",
       "weekNumber": 3,
       "memberIds": [
-        "M003",
-        "M005"
+        "M003"
       ]
     },
     {
@@ -381,7 +376,9 @@
       "day": "SUNDAY",
       "timeSlot": "EVENING",
       "weekNumber": 5,
-      "memberIds": []
+      "memberIds": [
+        "M005"
+      ]
     },
     {
       "lessonId": "L06SAT1",
@@ -447,7 +444,9 @@
       "day": "SATURDAY",
       "timeSlot": "MORNING",
       "weekNumber": 7,
-      "memberIds": []
+      "memberIds": [
+        "M005"
+      ]
     },
     {
       "lessonId": "L07SAT2",
@@ -523,9 +522,7 @@
       "day": "SATURDAY",
       "timeSlot": "EVENING",
       "weekNumber": 8,
-      "memberIds": [
-        "M008"
-      ]
+      "memberIds": []
     },
     {
       "lessonId": "L08SUN1",
@@ -553,7 +550,9 @@
       "day": "SUNDAY",
       "timeSlot": "EVENING",
       "weekNumber": 8,
-      "memberIds": []
+      "memberIds": [
+        "M008"
+      ]
     }
   ],
   "bookings": [
@@ -626,6 +625,11 @@
       "bookingId": "B014",
       "memberId": "M004",
       "lessonId": "L02SUN2"
+    },
+    {
+      "bookingId": "B015",
+      "memberId": "M005",
+      "lessonId": "L02SAT3"
     },
     {
       "bookingId": "B016",
@@ -723,6 +727,11 @@
       "lessonId": "L05SAT2"
     },
     {
+      "bookingId": "B035",
+      "memberId": "M005",
+      "lessonId": "L05SUN3"
+    },
+    {
       "bookingId": "B036",
       "memberId": "M006",
       "lessonId": "L06SAT1"
@@ -770,7 +779,7 @@
     {
       "bookingId": "B045",
       "memberId": "M005",
-      "lessonId": "L03SAT2"
+      "lessonId": "L07SAT1"
     },
     {
       "bookingId": "B046",
@@ -785,7 +794,7 @@
     {
       "bookingId": "B048",
       "memberId": "M008",
-      "lessonId": "L08SAT3"
+      "lessonId": "L08SUN3"
     },
     {
       "bookingId": "B049",
@@ -796,11 +805,6 @@
       "bookingId": "B050",
       "memberId": "M010",
       "lessonId": "L08SUN2"
-    },
-    {
-      "bookingId": "B051",
-      "memberId": "M011",
-      "lessonId": "L01SAT1"
     }
   ],
   "reviews": [
@@ -957,13 +961,6 @@
       "lessonId": "L03SUN1",
       "rating": 3,
       "comment": "Aquacise was decent."
-    },
-    {
-      "reviewId": "R023",
-      "memberId": "M011",
-      "lessonId": "L01SAT1",
-      "rating": 5,
-      "comment": "123231"
     }
   ]
 }
