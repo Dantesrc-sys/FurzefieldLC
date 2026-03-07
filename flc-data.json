@@ -1,0 +1,966 @@
+{
+  "members": [
+    {
+      "memberId": "M001",
+      "name": "Alice Carter",
+      "phone": "07700900001"
+    },
+    {
+      "memberId": "M002",
+      "name": "Bob Hughes",
+      "phone": "07700900002"
+    },
+    {
+      "memberId": "M003",
+      "name": "Carol James",
+      "phone": "07700900003"
+    },
+    {
+      "memberId": "M004",
+      "name": "David Lee",
+      "phone": "07700900004"
+    },
+    {
+      "memberId": "M005",
+      "name": "Emma White",
+      "phone": "07700900005"
+    },
+    {
+      "memberId": "M006",
+      "name": "Frank Brown",
+      "phone": "07700900006"
+    },
+    {
+      "memberId": "M007",
+      "name": "Grace Kim",
+      "phone": "07700900007"
+    },
+    {
+      "memberId": "M008",
+      "name": "Harry Evans",
+      "phone": "07700900008"
+    },
+    {
+      "memberId": "M009",
+      "name": "Isla Martin",
+      "phone": "07700900009"
+    },
+    {
+      "memberId": "M010",
+      "name": "Jack Wilson",
+      "phone": "07700900010"
+    }
+  ],
+  "exerciseTypes": [
+    {
+      "exerciseId": "E001",
+      "name": "Yoga",
+      "price": 12.0
+    },
+    {
+      "exerciseId": "E002",
+      "name": "Zumba",
+      "price": 10.0
+    },
+    {
+      "exerciseId": "E003",
+      "name": "Aquacise",
+      "price": 9.0
+    },
+    {
+      "exerciseId": "E004",
+      "name": "Box Fit",
+      "price": 11.0
+    },
+    {
+      "exerciseId": "E005",
+      "name": "Body Blitz",
+      "price": 13.0
+    }
+  ],
+  "lessons": [
+    {
+      "lessonId": "L01SAT1",
+      "exerciseTypeId": "E001",
+      "day": "SATURDAY",
+      "timeSlot": "MORNING",
+      "weekNumber": 1,
+      "memberIds": [
+        "M001",
+        "M002",
+        "M003"
+      ]
+    },
+    {
+      "lessonId": "L01SAT2",
+      "exerciseTypeId": "E002",
+      "day": "SATURDAY",
+      "timeSlot": "AFTERNOON",
+      "weekNumber": 1,
+      "memberIds": [
+        "M004",
+        "M005"
+      ]
+    },
+    {
+      "lessonId": "L01SAT3",
+      "exerciseTypeId": "E004",
+      "day": "SATURDAY",
+      "timeSlot": "EVENING",
+      "weekNumber": 1,
+      "memberIds": [
+        "M006"
+      ]
+    },
+    {
+      "lessonId": "L01SUN1",
+      "exerciseTypeId": "E003",
+      "day": "SUNDAY",
+      "timeSlot": "MORNING",
+      "weekNumber": 1,
+      "memberIds": [
+        "M007",
+        "M008"
+      ]
+    },
+    {
+      "lessonId": "L01SUN2",
+      "exerciseTypeId": "E005",
+      "day": "SUNDAY",
+      "timeSlot": "AFTERNOON",
+      "weekNumber": 1,
+      "memberIds": [
+        "M009",
+        "M010"
+      ]
+    },
+    {
+      "lessonId": "L01SUN3",
+      "exerciseTypeId": "E001",
+      "day": "SUNDAY",
+      "timeSlot": "EVENING",
+      "weekNumber": 1,
+      "memberIds": []
+    },
+    {
+      "lessonId": "L02SAT1",
+      "exerciseTypeId": "E001",
+      "day": "SATURDAY",
+      "timeSlot": "MORNING",
+      "weekNumber": 2,
+      "memberIds": [
+        "M001",
+        "M007"
+      ]
+    },
+    {
+      "lessonId": "L02SAT2",
+      "exerciseTypeId": "E002",
+      "day": "SATURDAY",
+      "timeSlot": "AFTERNOON",
+      "weekNumber": 2,
+      "memberIds": [
+        "M002",
+        "M009"
+      ]
+    },
+    {
+      "lessonId": "L02SAT3",
+      "exerciseTypeId": "E004",
+      "day": "SATURDAY",
+      "timeSlot": "EVENING",
+      "weekNumber": 2,
+      "memberIds": [
+        "M005"
+      ]
+    },
+    {
+      "lessonId": "L02SUN1",
+      "exerciseTypeId": "E003",
+      "day": "SUNDAY",
+      "timeSlot": "MORNING",
+      "weekNumber": 2,
+      "memberIds": [
+        "M003",
+        "M006"
+      ]
+    },
+    {
+      "lessonId": "L02SUN2",
+      "exerciseTypeId": "E005",
+      "day": "SUNDAY",
+      "timeSlot": "AFTERNOON",
+      "weekNumber": 2,
+      "memberIds": [
+        "M004",
+        "M008"
+      ]
+    },
+    {
+      "lessonId": "L02SUN3",
+      "exerciseTypeId": "E001",
+      "day": "SUNDAY",
+      "timeSlot": "EVENING",
+      "weekNumber": 2,
+      "memberIds": [
+        "M010"
+      ]
+    },
+    {
+      "lessonId": "L03SAT1",
+      "exerciseTypeId": "E001",
+      "day": "SATURDAY",
+      "timeSlot": "MORNING",
+      "weekNumber": 3,
+      "memberIds": [
+        "M001"
+      ]
+    },
+    {
+      "lessonId": "L03SAT2",
+      "exerciseTypeId": "E002",
+      "day": "SATURDAY",
+      "timeSlot": "AFTERNOON",
+      "weekNumber": 3,
+      "memberIds": [
+        "M003"
+      ]
+    },
+    {
+      "lessonId": "L03SAT3",
+      "exerciseTypeId": "E004",
+      "day": "SATURDAY",
+      "timeSlot": "EVENING",
+      "weekNumber": 3,
+      "memberIds": [
+        "M005"
+      ]
+    },
+    {
+      "lessonId": "L03SUN1",
+      "exerciseTypeId": "E003",
+      "day": "SUNDAY",
+      "timeSlot": "MORNING",
+      "weekNumber": 3,
+      "memberIds": [
+        "M002"
+      ]
+    },
+    {
+      "lessonId": "L03SUN2",
+      "exerciseTypeId": "E005",
+      "day": "SUNDAY",
+      "timeSlot": "AFTERNOON",
+      "weekNumber": 3,
+      "memberIds": []
+    },
+    {
+      "lessonId": "L03SUN3",
+      "exerciseTypeId": "E001",
+      "day": "SUNDAY",
+      "timeSlot": "EVENING",
+      "weekNumber": 3,
+      "memberIds": [
+        "M004"
+      ]
+    },
+    {
+      "lessonId": "L04SAT1",
+      "exerciseTypeId": "E001",
+      "day": "SATURDAY",
+      "timeSlot": "MORNING",
+      "weekNumber": 4,
+      "memberIds": [
+        "M006"
+      ]
+    },
+    {
+      "lessonId": "L04SAT2",
+      "exerciseTypeId": "E002",
+      "day": "SATURDAY",
+      "timeSlot": "AFTERNOON",
+      "weekNumber": 4,
+      "memberIds": [
+        "M008"
+      ]
+    },
+    {
+      "lessonId": "L04SAT3",
+      "exerciseTypeId": "E004",
+      "day": "SATURDAY",
+      "timeSlot": "EVENING",
+      "weekNumber": 4,
+      "memberIds": [
+        "M010"
+      ]
+    },
+    {
+      "lessonId": "L04SUN1",
+      "exerciseTypeId": "E003",
+      "day": "SUNDAY",
+      "timeSlot": "MORNING",
+      "weekNumber": 4,
+      "memberIds": [
+        "M009"
+      ]
+    },
+    {
+      "lessonId": "L04SUN2",
+      "exerciseTypeId": "E005",
+      "day": "SUNDAY",
+      "timeSlot": "AFTERNOON",
+      "weekNumber": 4,
+      "memberIds": [
+        "M007"
+      ]
+    },
+    {
+      "lessonId": "L04SUN3",
+      "exerciseTypeId": "E001",
+      "day": "SUNDAY",
+      "timeSlot": "EVENING",
+      "weekNumber": 4,
+      "memberIds": []
+    },
+    {
+      "lessonId": "L05SAT1",
+      "exerciseTypeId": "E001",
+      "day": "SATURDAY",
+      "timeSlot": "MORNING",
+      "weekNumber": 5,
+      "memberIds": [
+        "M002"
+      ]
+    },
+    {
+      "lessonId": "L05SAT2",
+      "exerciseTypeId": "E002",
+      "day": "SATURDAY",
+      "timeSlot": "AFTERNOON",
+      "weekNumber": 5,
+      "memberIds": [
+        "M004"
+      ]
+    },
+    {
+      "lessonId": "L05SAT3",
+      "exerciseTypeId": "E004",
+      "day": "SATURDAY",
+      "timeSlot": "EVENING",
+      "weekNumber": 5,
+      "memberIds": []
+    },
+    {
+      "lessonId": "L05SUN1",
+      "exerciseTypeId": "E003",
+      "day": "SUNDAY",
+      "timeSlot": "MORNING",
+      "weekNumber": 5,
+      "memberIds": [
+        "M001"
+      ]
+    },
+    {
+      "lessonId": "L05SUN2",
+      "exerciseTypeId": "E005",
+      "day": "SUNDAY",
+      "timeSlot": "AFTERNOON",
+      "weekNumber": 5,
+      "memberIds": [
+        "M003"
+      ]
+    },
+    {
+      "lessonId": "L05SUN3",
+      "exerciseTypeId": "E001",
+      "day": "SUNDAY",
+      "timeSlot": "EVENING",
+      "weekNumber": 5,
+      "memberIds": [
+        "M005"
+      ]
+    },
+    {
+      "lessonId": "L06SAT1",
+      "exerciseTypeId": "E001",
+      "day": "SATURDAY",
+      "timeSlot": "MORNING",
+      "weekNumber": 6,
+      "memberIds": [
+        "M006"
+      ]
+    },
+    {
+      "lessonId": "L06SAT2",
+      "exerciseTypeId": "E002",
+      "day": "SATURDAY",
+      "timeSlot": "AFTERNOON",
+      "weekNumber": 6,
+      "memberIds": [
+        "M010"
+      ]
+    },
+    {
+      "lessonId": "L06SAT3",
+      "exerciseTypeId": "E004",
+      "day": "SATURDAY",
+      "timeSlot": "EVENING",
+      "weekNumber": 6,
+      "memberIds": [
+        "M008"
+      ]
+    },
+    {
+      "lessonId": "L06SUN1",
+      "exerciseTypeId": "E003",
+      "day": "SUNDAY",
+      "timeSlot": "MORNING",
+      "weekNumber": 6,
+      "memberIds": [
+        "M007"
+      ]
+    },
+    {
+      "lessonId": "L06SUN2",
+      "exerciseTypeId": "E005",
+      "day": "SUNDAY",
+      "timeSlot": "AFTERNOON",
+      "weekNumber": 6,
+      "memberIds": [
+        "M009"
+      ]
+    },
+    {
+      "lessonId": "L06SUN3",
+      "exerciseTypeId": "E001",
+      "day": "SUNDAY",
+      "timeSlot": "EVENING",
+      "weekNumber": 6,
+      "memberIds": []
+    },
+    {
+      "lessonId": "L07SAT1",
+      "exerciseTypeId": "E001",
+      "day": "SATURDAY",
+      "timeSlot": "MORNING",
+      "weekNumber": 7,
+      "memberIds": [
+        "M005"
+      ]
+    },
+    {
+      "lessonId": "L07SAT2",
+      "exerciseTypeId": "E002",
+      "day": "SATURDAY",
+      "timeSlot": "AFTERNOON",
+      "weekNumber": 7,
+      "memberIds": [
+        "M001"
+      ]
+    },
+    {
+      "lessonId": "L07SAT3",
+      "exerciseTypeId": "E004",
+      "day": "SATURDAY",
+      "timeSlot": "EVENING",
+      "weekNumber": 7,
+      "memberIds": [
+        "M003"
+      ]
+    },
+    {
+      "lessonId": "L07SUN1",
+      "exerciseTypeId": "E003",
+      "day": "SUNDAY",
+      "timeSlot": "MORNING",
+      "weekNumber": 7,
+      "memberIds": [
+        "M004"
+      ]
+    },
+    {
+      "lessonId": "L07SUN2",
+      "exerciseTypeId": "E005",
+      "day": "SUNDAY",
+      "timeSlot": "AFTERNOON",
+      "weekNumber": 7,
+      "memberIds": [
+        "M002"
+      ]
+    },
+    {
+      "lessonId": "L07SUN3",
+      "exerciseTypeId": "E001",
+      "day": "SUNDAY",
+      "timeSlot": "EVENING",
+      "weekNumber": 7,
+      "memberIds": []
+    },
+    {
+      "lessonId": "L08SAT1",
+      "exerciseTypeId": "E001",
+      "day": "SATURDAY",
+      "timeSlot": "MORNING",
+      "weekNumber": 8,
+      "memberIds": [
+        "M007"
+      ]
+    },
+    {
+      "lessonId": "L08SAT2",
+      "exerciseTypeId": "E002",
+      "day": "SATURDAY",
+      "timeSlot": "AFTERNOON",
+      "weekNumber": 8,
+      "memberIds": [
+        "M009"
+      ]
+    },
+    {
+      "lessonId": "L08SAT3",
+      "exerciseTypeId": "E004",
+      "day": "SATURDAY",
+      "timeSlot": "EVENING",
+      "weekNumber": 8,
+      "memberIds": []
+    },
+    {
+      "lessonId": "L08SUN1",
+      "exerciseTypeId": "E003",
+      "day": "SUNDAY",
+      "timeSlot": "MORNING",
+      "weekNumber": 8,
+      "memberIds": [
+        "M006"
+      ]
+    },
+    {
+      "lessonId": "L08SUN2",
+      "exerciseTypeId": "E005",
+      "day": "SUNDAY",
+      "timeSlot": "AFTERNOON",
+      "weekNumber": 8,
+      "memberIds": [
+        "M010"
+      ]
+    },
+    {
+      "lessonId": "L08SUN3",
+      "exerciseTypeId": "E001",
+      "day": "SUNDAY",
+      "timeSlot": "EVENING",
+      "weekNumber": 8,
+      "memberIds": [
+        "M008"
+      ]
+    }
+  ],
+  "bookings": [
+    {
+      "bookingId": "B001",
+      "memberId": "M001",
+      "lessonId": "L01SAT1"
+    },
+    {
+      "bookingId": "B002",
+      "memberId": "M002",
+      "lessonId": "L01SAT1"
+    },
+    {
+      "bookingId": "B003",
+      "memberId": "M003",
+      "lessonId": "L01SAT1"
+    },
+    {
+      "bookingId": "B004",
+      "memberId": "M004",
+      "lessonId": "L01SAT2"
+    },
+    {
+      "bookingId": "B005",
+      "memberId": "M005",
+      "lessonId": "L01SAT2"
+    },
+    {
+      "bookingId": "B006",
+      "memberId": "M006",
+      "lessonId": "L01SAT3"
+    },
+    {
+      "bookingId": "B007",
+      "memberId": "M007",
+      "lessonId": "L01SUN1"
+    },
+    {
+      "bookingId": "B008",
+      "memberId": "M008",
+      "lessonId": "L01SUN1"
+    },
+    {
+      "bookingId": "B009",
+      "memberId": "M009",
+      "lessonId": "L01SUN2"
+    },
+    {
+      "bookingId": "B010",
+      "memberId": "M010",
+      "lessonId": "L01SUN2"
+    },
+    {
+      "bookingId": "B011",
+      "memberId": "M001",
+      "lessonId": "L02SAT1"
+    },
+    {
+      "bookingId": "B012",
+      "memberId": "M002",
+      "lessonId": "L02SAT2"
+    },
+    {
+      "bookingId": "B013",
+      "memberId": "M003",
+      "lessonId": "L02SUN1"
+    },
+    {
+      "bookingId": "B014",
+      "memberId": "M004",
+      "lessonId": "L02SUN2"
+    },
+    {
+      "bookingId": "B015",
+      "memberId": "M005",
+      "lessonId": "L02SAT3"
+    },
+    {
+      "bookingId": "B016",
+      "memberId": "M006",
+      "lessonId": "L02SUN1"
+    },
+    {
+      "bookingId": "B017",
+      "memberId": "M007",
+      "lessonId": "L02SAT1"
+    },
+    {
+      "bookingId": "B018",
+      "memberId": "M008",
+      "lessonId": "L02SUN2"
+    },
+    {
+      "bookingId": "B019",
+      "memberId": "M009",
+      "lessonId": "L02SAT2"
+    },
+    {
+      "bookingId": "B020",
+      "memberId": "M010",
+      "lessonId": "L02SUN3"
+    },
+    {
+      "bookingId": "B021",
+      "memberId": "M001",
+      "lessonId": "L03SAT1"
+    },
+    {
+      "bookingId": "B022",
+      "memberId": "M002",
+      "lessonId": "L03SUN1"
+    },
+    {
+      "bookingId": "B023",
+      "memberId": "M003",
+      "lessonId": "L03SAT2"
+    },
+    {
+      "bookingId": "B024",
+      "memberId": "M004",
+      "lessonId": "L03SUN3"
+    },
+    {
+      "bookingId": "B025",
+      "memberId": "M005",
+      "lessonId": "L03SAT3"
+    },
+    {
+      "bookingId": "B026",
+      "memberId": "M006",
+      "lessonId": "L04SAT1"
+    },
+    {
+      "bookingId": "B027",
+      "memberId": "M007",
+      "lessonId": "L04SUN2"
+    },
+    {
+      "bookingId": "B028",
+      "memberId": "M008",
+      "lessonId": "L04SAT2"
+    },
+    {
+      "bookingId": "B029",
+      "memberId": "M009",
+      "lessonId": "L04SUN1"
+    },
+    {
+      "bookingId": "B030",
+      "memberId": "M010",
+      "lessonId": "L04SAT3"
+    },
+    {
+      "bookingId": "B031",
+      "memberId": "M001",
+      "lessonId": "L05SUN1"
+    },
+    {
+      "bookingId": "B032",
+      "memberId": "M002",
+      "lessonId": "L05SAT1"
+    },
+    {
+      "bookingId": "B033",
+      "memberId": "M003",
+      "lessonId": "L05SUN2"
+    },
+    {
+      "bookingId": "B034",
+      "memberId": "M004",
+      "lessonId": "L05SAT2"
+    },
+    {
+      "bookingId": "B035",
+      "memberId": "M005",
+      "lessonId": "L05SUN3"
+    },
+    {
+      "bookingId": "B036",
+      "memberId": "M006",
+      "lessonId": "L06SAT1"
+    },
+    {
+      "bookingId": "B037",
+      "memberId": "M007",
+      "lessonId": "L06SUN1"
+    },
+    {
+      "bookingId": "B038",
+      "memberId": "M008",
+      "lessonId": "L06SAT3"
+    },
+    {
+      "bookingId": "B039",
+      "memberId": "M009",
+      "lessonId": "L06SUN2"
+    },
+    {
+      "bookingId": "B040",
+      "memberId": "M010",
+      "lessonId": "L06SAT2"
+    },
+    {
+      "bookingId": "B041",
+      "memberId": "M001",
+      "lessonId": "L07SAT2"
+    },
+    {
+      "bookingId": "B042",
+      "memberId": "M002",
+      "lessonId": "L07SUN2"
+    },
+    {
+      "bookingId": "B043",
+      "memberId": "M003",
+      "lessonId": "L07SAT3"
+    },
+    {
+      "bookingId": "B044",
+      "memberId": "M004",
+      "lessonId": "L07SUN1"
+    },
+    {
+      "bookingId": "B045",
+      "memberId": "M005",
+      "lessonId": "L07SAT1"
+    },
+    {
+      "bookingId": "B046",
+      "memberId": "M006",
+      "lessonId": "L08SUN1"
+    },
+    {
+      "bookingId": "B047",
+      "memberId": "M007",
+      "lessonId": "L08SAT1"
+    },
+    {
+      "bookingId": "B048",
+      "memberId": "M008",
+      "lessonId": "L08SUN3"
+    },
+    {
+      "bookingId": "B049",
+      "memberId": "M009",
+      "lessonId": "L08SAT2"
+    },
+    {
+      "bookingId": "B050",
+      "memberId": "M010",
+      "lessonId": "L08SUN2"
+    }
+  ],
+  "reviews": [
+    {
+      "reviewId": "R001",
+      "memberId": "M001",
+      "lessonId": "L01SAT1",
+      "rating": 5,
+      "comment": "Fantastic yoga session, very relaxing!"
+    },
+    {
+      "reviewId": "R002",
+      "memberId": "M002",
+      "lessonId": "L01SAT1",
+      "rating": 4,
+      "comment": "Great instructor, good pace."
+    },
+    {
+      "reviewId": "R003",
+      "memberId": "M003",
+      "lessonId": "L01SAT1",
+      "rating": 5,
+      "comment": "Best yoga class I have attended."
+    },
+    {
+      "reviewId": "R004",
+      "memberId": "M004",
+      "lessonId": "L01SAT2",
+      "rating": 3,
+      "comment": "Zumba was okay, a bit fast for me."
+    },
+    {
+      "reviewId": "R005",
+      "memberId": "M005",
+      "lessonId": "L01SAT2",
+      "rating": 4,
+      "comment": "Really fun and energetic!"
+    },
+    {
+      "reviewId": "R006",
+      "memberId": "M006",
+      "lessonId": "L01SAT3",
+      "rating": 5,
+      "comment": "Box Fit was intense but brilliant."
+    },
+    {
+      "reviewId": "R007",
+      "memberId": "M007",
+      "lessonId": "L01SUN1",
+      "rating": 4,
+      "comment": "Aquacise was refreshing and well structured."
+    },
+    {
+      "reviewId": "R008",
+      "memberId": "M008",
+      "lessonId": "L01SUN1",
+      "rating": 2,
+      "comment": "A bit slow, expected more intensity."
+    },
+    {
+      "reviewId": "R009",
+      "memberId": "M009",
+      "lessonId": "L01SUN2",
+      "rating": 5,
+      "comment": "Body Blitz pushed me to my limits!"
+    },
+    {
+      "reviewId": "R010",
+      "memberId": "M010",
+      "lessonId": "L01SUN2",
+      "rating": 4,
+      "comment": "Excellent session, will book again."
+    },
+    {
+      "reviewId": "R011",
+      "memberId": "M001",
+      "lessonId": "L02SAT1",
+      "rating": 5,
+      "comment": "Second yoga session, even better."
+    },
+    {
+      "reviewId": "R012",
+      "memberId": "M002",
+      "lessonId": "L02SAT2",
+      "rating": 3,
+      "comment": "Zumba was fine, nothing special."
+    },
+    {
+      "reviewId": "R013",
+      "memberId": "M003",
+      "lessonId": "L02SUN1",
+      "rating": 4,
+      "comment": "Good aquacise class."
+    },
+    {
+      "reviewId": "R014",
+      "memberId": "M004",
+      "lessonId": "L02SUN2",
+      "rating": 5,
+      "comment": "Body Blitz is my favourite class now."
+    },
+    {
+      "reviewId": "R015",
+      "memberId": "M005",
+      "lessonId": "L02SAT3",
+      "rating": 1,
+      "comment": "Box Fit was too hard, I struggled."
+    },
+    {
+      "reviewId": "R016",
+      "memberId": "M006",
+      "lessonId": "L02SUN1",
+      "rating": 4,
+      "comment": "Loved the water exercises."
+    },
+    {
+      "reviewId": "R017",
+      "memberId": "M007",
+      "lessonId": "L02SAT1",
+      "rating": 5,
+      "comment": "Yoga helped with my back pain."
+    },
+    {
+      "reviewId": "R018",
+      "memberId": "M008",
+      "lessonId": "L02SUN2",
+      "rating": 3,
+      "comment": "Average session today."
+    },
+    {
+      "reviewId": "R019",
+      "memberId": "M009",
+      "lessonId": "L02SAT2",
+      "rating": 4,
+      "comment": "Zumba was very lively this week."
+    },
+    {
+      "reviewId": "R020",
+      "memberId": "M010",
+      "lessonId": "L02SUN3",
+      "rating": 5,
+      "comment": "Evening yoga was the perfect end to the weekend."
+    },
+    {
+      "reviewId": "R021",
+      "memberId": "M001",
+      "lessonId": "L03SAT1",
+      "rating": 4,
+      "comment": "Consistent quality every week."
+    },
+    {
+      "reviewId": "R022",
+      "memberId": "M002",
+      "lessonId": "L03SUN1",
+      "rating": 3,
+      "comment": "Aquacise was decent."
+    }
+  ]
+}
