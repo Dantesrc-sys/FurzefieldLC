@@ -3,8 +3,19 @@ package com.flc.model;
 import com.flc.validation.ValidationUtil;
 
 /**
- * Represents a type of group exercise offered at Furzefield Leisure Centre. Price stays the same regardless of time
- * slot or day.
+ * Represents a type of group exercise offered at Furzefield Leisure Centre.
+ *
+ * <p>Each exercise type has a unique immutable ID, a mutable name, and a
+ * mutable price per session. The price applies uniformly to every lesson of
+ * this type regardless of day or time slot.</p>
+ *
+ * <p>The five exercise types in the 2025/26 season are Yoga (£12.00),
+ * Zumba (£10.00), Aquacise (£9.00), Box Fit (£11.00), and Body Blitz
+ * (£13.00).</p>
+ *
+ * <p>Equality is based solely on {@code exerciseId}.</p>
+ *
+ * @see com.flc.model.Lesson
  */
 public class ExerciseType {
 

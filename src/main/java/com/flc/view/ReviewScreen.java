@@ -13,8 +13,19 @@ import java.awt.*;
 import java.awt.event.*;
 
 /**
- * Reviews screen - members write reviews for lessons they attended. Layout: left = write a review | right = all reviews
- * table
+ * Screen for submitting and viewing lesson reviews.
+ *
+ * <p>Layout: a left panel with a review submission form (member selector, lesson
+ * selector, interactive star rating, and optional comment), and a right panel
+ * showing all submitted reviews in a table.</p>
+ *
+ * <p>The lesson selector is populated dynamically based on the selected member,
+ * showing only lessons the member is enrolled in. Ratings are selected via
+ * clickable star buttons. Every successful submission triggers an automatic save
+ * via {@link com.flc.data.persistence.JsonStore#save()}.</p>
+ *
+ * <p>Business rules (enrolment check, one-review-per-lesson) are enforced by
+ * {@link com.flc.controller.ReviewController}.</p>
  */
 public class ReviewScreen extends JPanel {
 

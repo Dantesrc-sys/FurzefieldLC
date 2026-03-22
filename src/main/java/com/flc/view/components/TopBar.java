@@ -7,8 +7,14 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
- * Top bar shown above every screen inside the dashboard. Shows the screen title and a plain-text breadcrumb. No unicode
- * or special characters.
+ * Top bar displayed above every screen inside the dashboard.
+ *
+ * <p>Shows a breadcrumb label in small caps above the screen title in a larger
+ * bold font, both left-aligned. A tinted icon corresponding to the current
+ * screen is displayed on the right.</p>
+ *
+ * <p>The title and breadcrumb can be updated at runtime via {@link #setTitle(String)}
+ * and {@link #setBreadcrumb(String)}.</p>
  */
 public class TopBar extends JPanel {
 

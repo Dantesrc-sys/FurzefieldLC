@@ -14,8 +14,19 @@ import java.awt.*;
 import java.awt.event.*;
 
 /**
- * Members screen - view all members, add new ones, edit name/phone. Add member uses an inline panel - no JOptionPane
- * dialogs. Layout: left = member list | right = detail / edit / add panel
+ * Screen for viewing, adding, and editing member records.
+ *
+ * <p>Layout: a member list table on the left with a live search field, and a
+ * right panel that switches between a detail/edit card and an add-member card
+ * using {@link java.awt.CardLayout}.</p>
+ *
+ * <p>The add-member form appears inline - no dialog boxes are used. After a
+ * successful add, the form closes automatically after a short delay. Every
+ * successful save or add triggers an automatic save via
+ * {@link com.flc.data.persistence.JsonStore#save()}.</p>
+ *
+ * <p>Validation and uniqueness checks are delegated to
+ * {@link com.flc.controller.MemberController}.</p>
  */
 public class MemberScreen extends JPanel {
 

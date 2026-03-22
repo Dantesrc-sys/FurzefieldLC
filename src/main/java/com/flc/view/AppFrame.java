@@ -9,8 +9,14 @@ import java.awt.*;
 import java.net.URL;
 
 /**
- * Single application window. Uses CardLayout to swap between HomeScreen and DashboardScreen without ever opening a new
- * window.
+ * The single application window for Furzefield Leisure Centre.
+ *
+ * <p>Uses a {@link java.awt.CardLayout} to swap between {@link HomeScreen} and
+ * {@link DashboardScreen} without opening additional windows. The active card is
+ * controlled via {@link #showHome()} and {@link #showDashboard()}.</p>
+ *
+ * <p>A static singleton reference ({@link #get()}) allows any screen to trigger
+ * navigation without needing a direct reference to the frame.</p>
  */
 public class AppFrame extends JFrame {
 

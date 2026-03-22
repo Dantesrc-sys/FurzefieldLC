@@ -11,7 +11,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Left sidebar navigation panel. Uses PNG images from assets/ - no unicode or special characters.
+ * Left-hand navigation sidebar for the Furzefield Leisure Centre dashboard.
+ *
+ * <p>Displays the application logo and name at the top, followed by a vertical
+ * list of navigation items - one per screen. The active item is highlighted with
+ * a coloured accent bar. Hover effects are applied via mouse listeners.</p>
+ *
+ * <p>Navigation events are broadcast to registered {@link NavListener} callbacks.
+ * The active item is changed via {@link #setActiveItem(NavItem)}, which rebuilds
+ * the nav rows to reflect the new state.</p>
+ *
+ * <p>All icons are loaded and tinted via {@link com.flc.util.ImageUtil}.</p>
  */
 public class Sidebar extends JPanel {
 

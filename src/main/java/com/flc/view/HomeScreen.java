@@ -9,8 +9,18 @@ import java.awt.*;
 import java.awt.event.*;
 
 /**
- * Home screen - first impression when the app opens. Uses ImageUtil for all image loading and tinting. No special
- * characters, dashes, or emoji.
+ * The home screen displayed when the application first opens.
+ *
+ * <p>Presents the Furzefield Leisure Centre branding, a headline, a subtitle,
+ * and a call-to-action button that launches the dashboard. Feature chips at the
+ * bottom summarise the four main functions of the system.</p>
+ *
+ * <p>Clicking "Open Dashboard" maximises the window and switches to
+ * {@link DashboardScreen} via {@link AppFrame#showDashboard()}.</p>
+ *
+ * <p>All images are loaded via {@link com.flc.util.ImageUtil}. No Unicode
+ * symbols or emoji are used - all icons are PNG assets from
+ * {@code src/main/resources/assets/}.</p>
  */
 public class HomeScreen extends JPanel {
 

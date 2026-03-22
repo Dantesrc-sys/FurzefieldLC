@@ -1,9 +1,21 @@
 package com.flc.model;
 
 /**
- * Represents a booking made by a member for a specific lesson.
- * A booking is the link between a Member and a Lesson.
- * The lesson reference is mutable, allowing members to change their bookings.
+ * Represents a confirmed booking linking one member to one lesson.
+ *
+ * <p>A booking is the join between a {@link Member} and a {@link Lesson}.
+ * The member reference is immutable, but the lesson reference is mutable to
+ * allow the booking to be moved to a different lesson via
+ * {@link #changeLesson(Lesson)}.</p>
+ *
+ * <p>All business rules governing booking creation and changes are enforced
+ * by {@link com.flc.controller.BookingController}, not by this class directly.
+ * This class validates only structural constraints such as null checks and
+ * capacity on the new lesson.</p>
+ *
+ * <p>Equality is based solely on {@code bookingId}.</p>
+ *
+ * @see com.flc.controller.BookingController
  */
 public class Booking {
 

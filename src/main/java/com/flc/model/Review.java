@@ -3,9 +3,20 @@ package com.flc.model;
 import com.flc.config.AppConfig;
 
 /**
- * Represents a review written by a member after attending a lesson.
- * Ratings must be 1–5 as defined in AppConfig.RATING_MIN and AppConfig.RATING_MAX.
- * Comments are optional (default to empty string if null).
+ * Represents a star-rated review submitted by a member for a lesson they attended.
+ *
+ * <p>Ratings must be between {@link com.flc.config.AppConfig#RATING_MIN} (1) and
+ * {@link com.flc.config.AppConfig#RATING_MAX} (5) inclusive. The comment field is
+ * optional - a {@code null} comment is silently converted to an empty string and
+ * all comments are trimmed of leading and trailing whitespace on construction.</p>
+ *
+ * <p>Business rules such as the one-review-per-member-per-lesson constraint and
+ * the requirement that the reviewer be enrolled in the lesson are enforced by
+ * {@link com.flc.controller.ReviewController}.</p>
+ *
+ * <p>Equality is based solely on {@code reviewId}.</p>
+ *
+ * @see com.flc.controller.ReviewController
  */
 public class Review {
 

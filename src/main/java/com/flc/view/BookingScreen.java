@@ -14,8 +14,19 @@ import java.awt.event.*;
 import java.util.List;
 
 /**
- * Bookings screen - create a new booking, change an existing one, or cancel. Layout: left panel (select member +
- * lesson) | right panel (member's bookings)
+ * Screen for creating, changing, and cancelling lesson bookings.
+ *
+ * <p>Layout: a left panel for selecting a member and picking a lesson
+ * (with day and week filters), and a right panel showing the selected
+ * member's current bookings.</p>
+ *
+ * <p>The three action buttons (Book, Change, Cancel) are enabled or disabled
+ * based on the current selection state. Every successful operation triggers an
+ * automatic save via {@link com.flc.data.persistence.JsonStore#save()}.</p>
+ *
+ * <p>All business rules (capacity, time conflict, duplicate enrolment) are
+ * enforced by {@link com.flc.controller.BookingController}. This screen only
+ * calls the controller and displays the result or error message.</p>
  */
 public class BookingScreen extends JPanel {
 

@@ -2,9 +2,19 @@ package com.flc.config;
 
 /**
  * Application-wide configuration constants for Furzefield Leisure Centre.
- * All user-facing text lives here - change once, applies everywhere.
- * Also defines business rules like lesson capacity and rating ranges.
- * No instances are created (utility class).
+ *
+ * <p>All user-facing text, business rule thresholds, and structural constants
+ * live here. Changing a value in this class propagates automatically to every
+ * layer that references it - no other files need editing.</p>
+ *
+ * <p>Constants are grouped into the following sections:</p>
+ * <ul>
+ *   <li>Identity - application name and short labels</li>
+ *   <li>Footer - copyright and module text</li>
+ *   <li>Business rules - capacity limits and rating ranges</li>
+ * </ul>
+ *
+ * <p>This is a utility class. It cannot be instantiated.</p>
  */
 public final class AppConfig {
 

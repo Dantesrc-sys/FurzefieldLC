@@ -12,8 +12,15 @@ import java.awt.*;
 import java.util.List;
 
 /**
- * Timetable screen - browse lessons by Day or by Exercise name. Shows a filterable table of lessons with capacity
- * indicators.
+ * Read-only screen for browsing the full lesson timetable.
+ *
+ * <p>Lessons can be filtered by day (Saturday or Sunday) or by exercise type,
+ * with an additional week filter to narrow results further. The filter mode is
+ * toggled between "Day" and "Exercise" using styled toggle buttons.</p>
+ *
+ * <p>The table displays each lesson's week, day, time slot, exercise type,
+ * price, enrolled count with a capacity bar, and availability status. All data
+ * is read-only - bookings are made on {@link BookingScreen}.</p>
  */
 public class TimetableScreen extends JPanel {
 

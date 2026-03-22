@@ -7,10 +7,21 @@ import java.util.List;
 import com.flc.config.AppConfig;
 
 /**
- * Represents a single group exercise lesson at Furzefield Leisure Centre.
- * A lesson belongs to a specific weekend (weekNumber), day, and time slot.
- * Max capacity is defined in AppConfig.MAX_LESSON_CAPACITY (4 members).
- * Members can enroll, and capacity checks are enforced during booking operations.
+ * Represents a single scheduled group exercise session at Furzefield Leisure Centre.
+ *
+ * <p>A lesson belongs to a specific weekend ({@code weekNumber} 1 to 8), a
+ * {@link Day} (Saturday or Sunday), and a {@link TimeSlot} (Morning, Afternoon,
+ * or Evening). It offers exactly one {@link ExerciseType} and can enrol up to
+ * {@link com.flc.config.AppConfig#MAX_LESSON_CAPACITY} members (currently 4).</p>
+ *
+ * <p>Capacity checks are enforced in {@link #addMember(Member)}. The enrolled
+ * member list is exposed as an unmodifiable view via {@link #getMembers()} to
+ * prevent external mutation.</p>
+ *
+ * <p>Equality is based solely on {@code lessonId}.</p>
+ *
+ * @see com.flc.controller.BookingController
+ * @see com.flc.model.Booking
  */
 public class Lesson {
 

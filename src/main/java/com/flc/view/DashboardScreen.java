@@ -13,7 +13,17 @@ import java.awt.*;
 import java.awt.event.*;
 
 /**
- * Main dashboard screen - no unicode or special characters anywhere. All icons loaded from assets/ via ImageUtil.
+ * The main dashboard screen shown after the home screen.
+ *
+ * <p>Contains a {@link com.flc.view.components.Sidebar} on the left and a
+ * content area on the right. Navigation between the six screens (Dashboard,
+ * Timetable, Bookings, Members, Reviews, Reports) is handled by
+ * {@link #navigateTo(com.flc.view.components.Sidebar.NavItem)}, which swaps
+ * the content area and updates the sidebar's active state.</p>
+ *
+ * <p>On construction, attempts to load persisted data from {@code flc-data.json}
+ * via {@link com.flc.data.persistence.JsonStore}. If no save file exists, sample
+ * data is loaded from {@link com.flc.data.SampleData} and immediately saved.</p>
  */
 public class DashboardScreen extends JPanel {
 

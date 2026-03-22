@@ -3,8 +3,19 @@ package com.flc.config;
 import java.awt.*;
 
 /**
- * Central theme configuration for Furzefield Leisure Centre. Every colour, font, size, spacing, shadow, and border
- * lives here. Never hardcode a visual value anywhere else - always reference this class.
+ * Central visual theme for the Furzefield Leisure Centre application.
+ *
+ * <p>Every colour, font, size, spacing value, border radius, stroke weight,
+ * and animation duration is defined here as a named constant. No visual value
+ * is hardcoded anywhere else in the codebase - all Swing components reference
+ * this class directly.</p>
+ *
+ * <p>Constants are grouped into sections: colours (backgrounds, brand, text,
+ * buttons, status, stars, borders), fonts (display, title, body, UI elements,
+ * utility, numeric), spacing (multiples of 4 for grid alignment), border radii,
+ * strokes, dimensions, animation timings, and opacity values.</p>
+ *
+ * <p>This is a utility class. It cannot be instantiated.</p>
  */
 public final class Theme {
 
