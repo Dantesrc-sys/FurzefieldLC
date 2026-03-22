@@ -1,0 +1,177 @@
+@startuml use-case-diagram
+
+' ═══════════════════════════════════════════════════════════════
+' Furzefield Leisure Centre — Use Case Diagram
+' Module  : 7COM1025
+' Actor   : Staff member (single user role — desktop app)
+' Scope   : All six screens mapped to use cases
+' ═══════════════════════════════════════════════════════════════
+
+skinparam style strictuml
+skinparam backgroundColor   #FFFFFF
+skinparam defaultFontName   SansSerif
+skinparam defaultFontSize   12
+
+skinparam usecase {
+    BackgroundColor         #F5F5F3
+    BorderColor             #2D6A4F
+    BorderThickness         1.5
+    ArrowColor              #2D6A4F
+    ArrowThickness          1.5
+}
+
+skinparam actor {
+    BackgroundColor         #E8F5EE
+    BorderColor             #2D6A4F
+    BorderThickness         1.5
+    FontColor               #1B4332
+    FontStyle               Bold
+}
+
+skinparam rectangle {
+    BackgroundColor         #F0FAF4
+    BorderColor             #52B788
+    BorderThickness         1.5
+    FontColor               #1B4332
+    FontStyle               Bold
+}
+
+skinparam note {
+    BackgroundColor         #FFFDE7
+    BorderColor             #F4C430
+}
+
+' ═══════════════════════════════════════════════════════════════
+' ACTOR
+' ═══════════════════════════════════════════════════════════════
+
+actor "Staff Member" as Staff
+
+' ═══════════════════════════════════════════════════════════════
+' SYSTEM BOUNDARY — one rectangle per screen group
+' Stacking groups vertically forces top-to-bottom layout
+' ═══════════════════════════════════════════════════════════════
+
+rectangle "Timetable" {
+    usecase "Browse timetable"        as UC_BROWSE
+    usecase "Filter by day"           as UC_FILTER_DAY
+    usecase "Filter by exercise type" as UC_FILTER_EX
+    usecase "Filter by week"          as UC_FILTER_WK
+}
+
+rectangle "Bookings" {
+    usecase "Manage bookings"         as UC_BOOK_MGR
+    usecase "Create booking"          as UC_CREATE
+    usecase "Change booking"          as UC_CHANGE
+    usecase "Cancel booking"          as UC_CANCEL
+}
+
+rectangle "Members" {
+    usecase "Manage members"          as UC_MEM_MGR
+    usecase "View all members"        as UC_VIEW_MEM
+    usecase "Add new member"          as UC_ADD_MEM
+    usecase "Edit member details"     as UC_EDIT_MEM
+    usecase "Search members"          as UC_SEARCH
+}
+
+rectangle "Reviews" {
+    usecase "Submit review"           as UC_REVIEW
+    usecase "View all reviews"        as UC_VIEW_REV
+}
+
+rectangle "Reports" {
+    usecase "View reports"            as UC_REPORTS
+    usecase "View attendance report"  as UC_ATTEND
+    usecase "View income report"      as UC_INCOME
+}
+
+rectangle "System (automatic)" {
+    usecase "Save data to file"       as UC_SAVE
+}
+
+' ═══════════════════════════════════════════════════════════════
+' ACTOR TO TOP-LEVEL USE CASES
+' ═══════════════════════════════════════════════════════════════
+
+Staff --> UC_BROWSE
+Staff --> UC_BOOK_MGR
+Staff --> UC_MEM_MGR
+Staff --> UC_REVIEW
+Staff --> UC_VIEW_REV
+Staff --> UC_REPORTS
+
+' ═══════════════════════════════════════════════════════════════
+' TIMETABLE — filters are optional
+' ═══════════════════════════════════════════════════════════════
+
+UC_FILTER_DAY ..> UC_BROWSE   : <<extend>>
+UC_FILTER_EX  ..> UC_BROWSE   : <<extend>>
+UC_FILTER_WK  ..> UC_BROWSE   : <<extend>>
+
+' ═══════════════════════════════════════════════════════════════
+' BOOKINGS — each operation is an optional choice
+' ═══════════════════════════════════════════════════════════════
+
+UC_CREATE ..> UC_BOOK_MGR     : <<extend>>
+UC_CHANGE ..> UC_BOOK_MGR     : <<extend>>
+UC_CANCEL ..> UC_BOOK_MGR     : <<extend>>
+
+UC_CREATE ..> UC_SAVE         : <<include>>
+UC_CHANGE ..> UC_SAVE         : <<include>>
+UC_CANCEL ..> UC_SAVE         : <<include>>
+
+' ═══════════════════════════════════════════════════════════════
+' MEMBERS — list always loads, operations are optional
+' ═══════════════════════════════════════════════════════════════
+
+UC_MEM_MGR  ..> UC_VIEW_MEM   : <<include>>
+UC_ADD_MEM  ..> UC_MEM_MGR    : <<extend>>
+UC_EDIT_MEM ..> UC_MEM_MGR    : <<extend>>
+UC_SEARCH   ..> UC_MEM_MGR    : <<extend>>
+
+UC_ADD_MEM  ..> UC_SAVE       : <<include>>
+UC_EDIT_MEM ..> UC_SAVE       : <<include>>
+
+' ═══════════════════════════════════════════════════════════════
+' REVIEWS
+' ═══════════════════════════════════════════════════════════════
+
+UC_REVIEW ..> UC_SAVE         : <<include>>
+
+' ═══════════════════════════════════════════════════════════════
+' REPORTS — both sub-reports always shown together
+' ═══════════════════════════════════════════════════════════════
+
+UC_REPORTS ..> UC_ATTEND      : <<include>>
+UC_REPORTS ..> UC_INCOME      : <<include>>
+
+' ═══════════════════════════════════════════════════════════════
+' BUSINESS RULE NOTES
+' ═══════════════════════════════════════════════════════════════
+
+note right of UC_CREATE
+  Validates:
+  - lesson not full (max 4)
+  - no time conflict
+  - member not already booked
+end note
+
+note right of UC_REVIEW
+  Member must be enrolled
+  in the lesson to review it.
+  One review per member
+  per lesson.
+end note
+
+note bottom of UC_SAVE
+  Writes flc-data.json
+  automatically — no manual
+  save action required.
+end note
+
+note right of UC_INCOME
+  Sorted highest income first.
+  Highlights top earner.
+end note
+
+@enduml
