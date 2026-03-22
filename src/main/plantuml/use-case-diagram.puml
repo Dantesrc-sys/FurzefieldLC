@@ -1,16 +1,18 @@
 @startuml use-case-diagram
 
-' ═══════════════════════════════════════════════════════════════
+' ===============================================================
 ' Furzefield Leisure Centre - Use Case Diagram
 ' Module  : 7COM1025
 ' Actor   : Staff member (single user role - desktop app)
 ' Scope   : All six screens mapped to use cases
-' ═══════════════════════════════════════════════════════════════
+' ===============================================================
 
 skinparam style strictuml
 skinparam backgroundColor   #FFFFFF
 skinparam defaultFontName   SansSerif
 skinparam defaultFontSize   12
+
+title Furzefield Leisure Centre\nUse Case Diagram - Module 7COM1025
 
 skinparam usecase {
     BackgroundColor         #F5F5F3
@@ -18,6 +20,8 @@ skinparam usecase {
     BorderThickness         1.5
     ArrowColor              #2D6A4F
     ArrowThickness          1.5
+    StereotypeFontColor     #2D6A4F
+    StereotypeFontSize      10
 }
 
 skinparam actor {
@@ -26,13 +30,57 @@ skinparam actor {
     BorderThickness         1.5
     FontColor               #1B4332
     FontStyle               Bold
+    StereotypeFontColor     #1B4332
+    StereotypeFontSize      10
 }
 
-skinparam rectangle {
-    BackgroundColor         #F0FAF4
-    BorderColor             #52B788
+' ── Per-group rectangle colours via stereotypes ─────────────────
+skinparam rectangle<<timetable>> {
+    BackgroundColor         #EAF4FB
+    BorderColor             #2980B9
+    BorderThickness         1.5
+    FontColor               #1A5276
+    FontStyle               Bold
+}
+
+skinparam rectangle<<bookings>> {
+    BackgroundColor         #F3EFFD
+    BorderColor             #6C63FF
+    BorderThickness         1.5
+    FontColor               #3B1F8C
+    FontStyle               Bold
+}
+
+skinparam rectangle<<members>> {
+    BackgroundColor         #EAF5EE
+    BorderColor             #2D6A4F
     BorderThickness         1.5
     FontColor               #1B4332
+    FontStyle               Bold
+}
+
+skinparam rectangle<<reviews>> {
+    BackgroundColor         #FEF9E7
+    BorderColor             #D4A017
+    BorderThickness         1.5
+    FontColor               #7D5A00
+    FontStyle               Bold
+}
+
+skinparam rectangle<<reports>> {
+    BackgroundColor         #E8FAF5
+    BorderColor             #1ABC9C
+    BorderThickness         1.5
+    FontColor               #0E6655
+    FontStyle               Bold
+}
+
+skinparam rectangle<<system>> {
+    BackgroundColor         #F4F4F2
+    BorderColor             #888780
+    BorderThickness         1.5
+    BorderStyle             Dashed
+    FontColor               #5F5E5A
     FontStyle               Bold
 }
 
@@ -41,32 +89,32 @@ skinparam note {
     BorderColor             #F4C430
 }
 
-' ═══════════════════════════════════════════════════════════════
+' ===============================================================
 ' ACTOR
-' ═══════════════════════════════════════════════════════════════
+' ===============================================================
 
-actor "Staff Member" as Staff
+actor "Staff Member" <<human>> as Staff
 
-' ═══════════════════════════════════════════════════════════════
+' ===============================================================
 ' SYSTEM BOUNDARY - one rectangle per screen group
-' Stacking groups vertically forces top-to-bottom layout
-' ═══════════════════════════════════════════════════════════════
+' Each group has a distinct colour and stereotype
+' ===============================================================
 
-rectangle "Timetable" {
+rectangle "Timetable" <<timetable>> {
     usecase "Browse timetable"        as UC_BROWSE
     usecase "Filter by day"           as UC_FILTER_DAY
     usecase "Filter by exercise type" as UC_FILTER_EX
     usecase "Filter by week"          as UC_FILTER_WK
 }
 
-rectangle "Bookings" {
+rectangle "Bookings" <<bookings>> {
     usecase "Manage bookings"         as UC_BOOK_MGR
     usecase "Create booking"          as UC_CREATE
     usecase "Change booking"          as UC_CHANGE
     usecase "Cancel booking"          as UC_CANCEL
 }
 
-rectangle "Members" {
+rectangle "Members" <<members>> {
     usecase "Manage members"          as UC_MEM_MGR
     usecase "View all members"        as UC_VIEW_MEM
     usecase "Add new member"          as UC_ADD_MEM
@@ -74,24 +122,24 @@ rectangle "Members" {
     usecase "Search members"          as UC_SEARCH
 }
 
-rectangle "Reviews" {
+rectangle "Reviews" <<reviews>> {
     usecase "Submit review"           as UC_REVIEW
     usecase "View all reviews"        as UC_VIEW_REV
 }
 
-rectangle "Reports" {
+rectangle "Reports" <<reports>> {
     usecase "View reports"            as UC_REPORTS
     usecase "View attendance report"  as UC_ATTEND
     usecase "View income report"      as UC_INCOME
 }
 
-rectangle "System (automatic)" {
+rectangle "System (automatic)" <<system>> {
     usecase "Save data to file"       as UC_SAVE
 }
 
-' ═══════════════════════════════════════════════════════════════
+' ===============================================================
 ' ACTOR TO TOP-LEVEL USE CASES
-' ═══════════════════════════════════════════════════════════════
+' ===============================================================
 
 Staff --> UC_BROWSE
 Staff --> UC_BOOK_MGR
@@ -100,17 +148,17 @@ Staff --> UC_REVIEW
 Staff --> UC_VIEW_REV
 Staff --> UC_REPORTS
 
-' ═══════════════════════════════════════════════════════════════
+' ===============================================================
 ' TIMETABLE - filters are optional
-' ═══════════════════════════════════════════════════════════════
+' ===============================================================
 
 UC_FILTER_DAY ..> UC_BROWSE   : <<extend>>
 UC_FILTER_EX  ..> UC_BROWSE   : <<extend>>
 UC_FILTER_WK  ..> UC_BROWSE   : <<extend>>
 
-' ═══════════════════════════════════════════════════════════════
+' ===============================================================
 ' BOOKINGS - each operation is an optional choice
-' ═══════════════════════════════════════════════════════════════
+' ===============================================================
 
 UC_CREATE ..> UC_BOOK_MGR     : <<extend>>
 UC_CHANGE ..> UC_BOOK_MGR     : <<extend>>
@@ -120,9 +168,9 @@ UC_CREATE ..> UC_SAVE         : <<include>>
 UC_CHANGE ..> UC_SAVE         : <<include>>
 UC_CANCEL ..> UC_SAVE         : <<include>>
 
-' ═══════════════════════════════════════════════════════════════
+' ===============================================================
 ' MEMBERS - list always loads, operations are optional
-' ═══════════════════════════════════════════════════════════════
+' ===============================================================
 
 UC_MEM_MGR  ..> UC_VIEW_MEM   : <<include>>
 UC_ADD_MEM  ..> UC_MEM_MGR    : <<extend>>
@@ -132,22 +180,22 @@ UC_SEARCH   ..> UC_MEM_MGR    : <<extend>>
 UC_ADD_MEM  ..> UC_SAVE       : <<include>>
 UC_EDIT_MEM ..> UC_SAVE       : <<include>>
 
-' ═══════════════════════════════════════════════════════════════
+' ===============================================================
 ' REVIEWS
-' ═══════════════════════════════════════════════════════════════
+' ===============================================================
 
 UC_REVIEW ..> UC_SAVE         : <<include>>
 
-' ═══════════════════════════════════════════════════════════════
+' ===============================================================
 ' REPORTS - both sub-reports always shown together
-' ═══════════════════════════════════════════════════════════════
+' ===============================================================
 
 UC_REPORTS ..> UC_ATTEND      : <<include>>
 UC_REPORTS ..> UC_INCOME      : <<include>>
 
-' ═══════════════════════════════════════════════════════════════
+' ===============================================================
 ' BUSINESS RULE NOTES
-' ═══════════════════════════════════════════════════════════════
+' ===============================================================
 
 note right of UC_CREATE
   Validates:
@@ -173,5 +221,15 @@ note right of UC_INCOME
   Sorted highest income first.
   Highlights top earner.
 end note
+
+' ===============================================================
+' LEGEND
+' ===============================================================
+
+legend right
+  Relationship notation
+  <<extend>>  : optional behaviour
+  <<include>> : always executed
+endlegend
 
 @enduml
