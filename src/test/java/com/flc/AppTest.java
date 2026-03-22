@@ -36,7 +36,6 @@ class AppTest {
     private BookingController bookingController;
     private MemberController memberController;
     private ReportController reportController;
-    private ReviewController reviewController;
 
     @BeforeEach
     void setUp() {
@@ -45,7 +44,6 @@ class AppTest {
         bookingController = new BookingController();
         memberController  = new MemberController();
         reportController  = new ReportController();
-        reviewController  = new ReviewController();
     }
 
     /**
