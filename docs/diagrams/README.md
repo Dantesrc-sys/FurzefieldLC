@@ -50,7 +50,7 @@ Staff member interactions across all six screens
 **[Sequence diagram](sequence.md)**
 
 <a href="sequence.md">
-  <img src="sequence.svg" alt="Sequence diagram" width="100%"/>
+  <img src="sequence-diagram.svg" alt="Sequence diagram" width="100%"/>
 </a>
 
 BookingScreen, Controller, DataStore, JsonStore

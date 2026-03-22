@@ -4,7 +4,7 @@
 
 ---
 
-![Sequence diagram](sequence.svg)
+![Sequence diagram](sequence-diagram.svg)
 
 ---
 

@@ -1,0 +1,200 @@
+@startuml sequence-diagram
+
+' ═══════════════════════════════════════════════════════════════
+' Furzefield Leisure Centre — Sequence Diagram
+' Module  : 7COM1025
+' Flow    : Create booking — end-to-end through all layers
+' Source  : BookingScreen.onBook() and BookingController.createBooking()
+' ═══════════════════════════════════════════════════════════════
+
+skinparam style strictuml
+skinparam backgroundColor    #FFFFFF
+skinparam defaultFontName    SansSerif
+skinparam defaultFontSize    12
+skinparam sequenceArrowThickness 1.5
+
+skinparam participant {
+    BackgroundColor          #F5F5F3
+    BorderColor              #2D6A4F
+    BorderThickness          1.5
+    FontColor                #1A1A18
+    FontStyle                Bold
+}
+
+skinparam sequence {
+    ArrowColor               #2D6A4F
+    LifeLineBorderColor      #52B788
+    LifeLineBorderThickness  1.5
+    LifeLineBackgroundColor  #E8F5EE
+    BoxBackgroundColor       #F0FAF4
+    BoxBorderColor           #52B788
+    DividerBackgroundColor   #F5F5F3
+    DividerBorderColor       #2D6A4F
+    GroupBackgroundColor     #F0FAF4
+    GroupBorderColor         #2D6A4F
+    GroupHeaderFontColor     #1B4332
+    GroupBodyBackgroundColor #FAFAFA
+    NoteBackgroundColor      #FFFDE7
+    NoteBorderColor          #F4C430
+}
+
+' ═══════════════════════════════════════════════════════════════
+' PARTICIPANTS — declared in layer order
+' ═══════════════════════════════════════════════════════════════
+
+box "View layer" #EAF3F8
+    participant "BookingScreen" as BS
+end box
+
+box "Controller layer" #F0FAF4
+    participant "BookingController" as BC
+end box
+
+box "Model layer" #FFF8E8
+    participant "Lesson" as L
+end box
+
+box "Data layer" #F8F0FA
+    participant "DataStore" as DS
+end box
+
+box "Persistence layer" #FFF0F0
+    participant "JsonStore" as JS
+end box
+
+' ═══════════════════════════════════════════════════════════════
+' TRIGGER
+' ═══════════════════════════════════════════════════════════════
+
+[-> BS : onBook()
+note right of BS : Staff clicks Book button.\nGuard: selectedMember != null\nand selectedLesson != null.
+
+activate BS
+
+' ═══════════════════════════════════════════════════════════════
+' MAIN SUCCESS FLOW
+' ═══════════════════════════════════════════════════════════════
+
+BS -> BC : createBooking(member, lesson)
+activate BC
+
+note right of BC : ValidationUtil.requireNonNull(member)\nValidationUtil.requireNonNull(lesson)
+
+BC -> L : isFull()
+activate L
+L --> BC : false
+deactivate L
+
+BC -> L : hasMember(member)
+activate L
+L --> BC : false
+deactivate L
+
+BC -> DS : findBookingsByMember(member)
+activate DS
+DS --> BC : List<Booking>
+deactivate DS
+
+note right of BC : Stream — checks week, day,\nand timeSlot match.\nNo conflict found.
+
+BC -> L : addMember(member)
+activate L
+L --> BC : void
+deactivate L
+
+note right of BC : generateBookingId()\nnew Booking(id, member, lesson)
+
+BC -> DS : addBooking(booking)
+activate DS
+DS --> BC : void
+deactivate DS
+
+BC --> BS : Booking
+deactivate BC
+
+BS -> JS : save()
+activate JS
+
+JS -> DS : getMembers()
+activate DS
+DS --> JS : List<Member>
+deactivate DS
+
+JS -> DS : getExerciseTypes()
+activate DS
+DS --> JS : List<ExerciseType>
+deactivate DS
+
+JS -> DS : getLessons()
+activate DS
+DS --> JS : List<Lesson>
+deactivate DS
+
+JS -> DS : getBookings()
+activate DS
+DS --> JS : List<Booking>
+deactivate DS
+
+JS -> DS : getReviews()
+activate DS
+DS --> JS : List<Review>
+deactivate DS
+
+note right of JS : Serialises all DTOs to\nflc-data.json via Gson.
+
+JS --> BS : void
+deactivate JS
+
+BS -> BS : setStatus("Booked [exercise] - Week [n]", SUCCESS)
+BS -> BS : refreshAll()
+
+[<-- BS : UI updated
+
+' ═══════════════════════════════════════════════════════════════
+' ALTERNATIVE FLOWS — all three validations that can fail
+' Shown as a single alt/else/end combined fragment per UML spec
+' ═══════════════════════════════════════════════════════════════
+
+== Alternative flows — validation failures ==
+
+alt Lesson is full
+
+    BS -> BC : createBooking(member, lesson)
+    activate BC
+    BC -> L : isFull()
+    activate L
+    L --> BC : true
+    deactivate L
+    BC --> BS : IllegalStateException("Lesson is full: " + lessonId)
+    deactivate BC
+    BS -> BS : setStatus(ex.getMessage(), ERROR)
+
+else Member already booked in this lesson
+
+    BS -> BC : createBooking(member, lesson)
+    activate BC
+    BC -> L : hasMember(member)
+    activate L
+    L --> BC : true
+    deactivate L
+    BC --> BS : IllegalStateException("Member already booked in this lesson")
+    deactivate BC
+    BS -> BS : setStatus(ex.getMessage(), ERROR)
+
+else Time conflict on same week, day, and time slot
+
+    BS -> BC : createBooking(member, lesson)
+    activate BC
+    BC -> DS : findBookingsByMember(member)
+    activate DS
+    DS --> BC : List<Booking>
+    deactivate DS
+    BC --> BS : IllegalStateException("Time conflict: member already has a booking on...")
+    deactivate BC
+    BS -> BS : setStatus(ex.getMessage(), ERROR)
+
+end
+
+deactivate BS
+
+@enduml
