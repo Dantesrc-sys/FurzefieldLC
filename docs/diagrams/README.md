@@ -17,58 +17,45 @@
 
 ---
 
-## Thumbnail gallery
+## Diagrams
 
-<table>
-<tr>
-<td align="center" width="50%">
+### Class diagram
 
-**[Class diagram](class-diagram.md)**
+All model classes, fields, methods, and relationships.
 
-<a href="class-diagram.md">
-  <img src="class-diagram.svg" alt="Class diagram" width="100%"/>
-</a>
+[![Class diagram](class-diagram.svg)](class-diagram.md)
 
-Member, Lesson, Booking, Review, ExerciseType
+[View full page](class-diagram.md)
 
-</td>
-<td align="center" width="50%">
+---
 
-**[Use case diagram](use-case.md)**
+### Use case diagram
 
-<a href="use-case.md">
-  <img src="use-case-diagram.svg" alt="Use case diagram" width="100%"/>
-</a>
+System scope and actor interactions across all six screens.
 
-Staff member interactions across all six screens
+[![Use case diagram](use-case-diagram.svg)](use-case.md)
 
-</td>
-</tr>
-<tr>
-<td align="center" width="50%">
+[View full page](use-case.md)
 
-**[Sequence diagram](sequence.md)**
+---
 
-<a href="sequence.md">
-  <img src="sequence-diagram.svg" alt="Sequence diagram" width="100%"/>
-</a>
+### Sequence diagram
 
-BookingScreen, Controller, DataStore, JsonStore
+Create-booking flow traced end-to-end through all layers.
 
-</td>
-<td align="center" width="50%">
+[![Sequence diagram](sequence-diagram.svg)](sequence.md)
 
-**[Package diagram](package.md)**
+[View full page](sequence.md)
 
-<a href="package.md">
-  <img src="package-diagram.svg" alt="Package diagram" width="100%"/>
-</a>
+---
 
-model, controller, data, view, config, util
+### Package diagram
 
-</td>
-</tr>
-</table>
+Layered architecture and inter-package dependencies.
+
+[![Package diagram](package-diagram.svg)](package.md)
+
+[View full page](package.md)
 
 ---
 
