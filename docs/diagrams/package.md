@@ -4,7 +4,7 @@
 
 ---
 
-![Package diagram](package.svg)
+![Package diagram](package-diagram.svg)
 
 ---
 

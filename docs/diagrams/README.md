@@ -61,7 +61,7 @@ BookingScreen, Controller, DataStore, JsonStore
 **[Package diagram](package.md)**
 
 <a href="package.md">
-  <img src="package.svg" alt="Package diagram" width="100%"/>
+  <img src="package-diagram.svg" alt="Package diagram" width="100%"/>
 </a>
 
 model, controller, data, view, config, util

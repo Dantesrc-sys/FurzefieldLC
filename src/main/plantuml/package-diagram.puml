@@ -1,0 +1,189 @@
+@startuml package-diagram
+
+' ═══════════════════════════════════════════════════════════════
+' Furzefield Leisure Centre — Package Diagram
+' Module  : 7COM1025
+' Shows   : All 10 packages, class membership, and verified
+'           dependencies sourced from import statements
+' ═══════════════════════════════════════════════════════════════
+
+skinparam style strictuml
+skinparam backgroundColor     #FFFFFF
+skinparam defaultFontName     SansSerif
+skinparam defaultFontSize     12
+
+skinparam ArrowColor          #2D6A4F
+skinparam ArrowThickness      1.5
+
+skinparam package {
+    BackgroundColor           #F5F5F3
+    BorderColor               #2D6A4F
+    BorderThickness           1.5
+    FontColor                 #1B4332
+    FontStyle                 Bold
+    ArrowColor                #2D6A4F
+}
+
+skinparam note {
+    BackgroundColor           #FFFDE7
+    BorderColor               #F4C430
+}
+
+' ═══════════════════════════════════════════════════════════════
+' ENTRY POINT
+' ═══════════════════════════════════════════════════════════════
+
+package "com.flc" {
+    class Main
+}
+
+' ═══════════════════════════════════════════════════════════════
+' VIEW LAYER — depends on controller, model, data,
+'              data.persistence, config, util
+' ═══════════════════════════════════════════════════════════════
+
+package "com.flc.view" {
+    class AppFrame
+    class HomeScreen
+    class DashboardScreen
+    class BookingScreen
+    class MemberScreen
+    class ReviewScreen
+    class TimetableScreen
+    class ReportScreen
+
+    package "com.flc.view.components" {
+        class Sidebar
+        class TopBar
+    }
+}
+
+' ═══════════════════════════════════════════════════════════════
+' CONTROLLER LAYER — depends on model, data, validation
+' ═══════════════════════════════════════════════════════════════
+
+package "com.flc.controller" {
+    class BookingController
+    class MemberController
+    class ReviewController
+    class ReportController
+}
+
+' ═══════════════════════════════════════════════════════════════
+' MODEL LAYER — depends on config, validation (partial)
+' ═══════════════════════════════════════════════════════════════
+
+package "com.flc.model" {
+    class Member
+    class Lesson
+    class Booking
+    class Review
+    class ExerciseType
+    enum  Day
+    enum  TimeSlot
+}
+
+' ═══════════════════════════════════════════════════════════════
+' DATA LAYER — depends on model
+' data.persistence is a sub-package: depends on data and model
+' ═══════════════════════════════════════════════════════════════
+
+package "com.flc.data" {
+    class DataStore
+    class SampleData
+
+    package "com.flc.data.persistence" {
+        class JsonStore
+        class AppData
+    }
+}
+
+' ═══════════════════════════════════════════════════════════════
+' CONFIG LAYER — no internal dependencies
+' ═══════════════════════════════════════════════════════════════
+
+package "com.flc.config" {
+    class AppConfig
+    class Theme
+}
+
+' ═══════════════════════════════════════════════════════════════
+' VALIDATION LAYER — no internal dependencies
+' ═══════════════════════════════════════════════════════════════
+
+package "com.flc.validation" {
+    class ValidationUtil
+}
+
+' ═══════════════════════════════════════════════════════════════
+' UTIL LAYER — depends on config
+' ═══════════════════════════════════════════════════════════════
+
+package "com.flc.util" {
+    class ImageUtil
+    class ModernTable
+}
+
+' ═══════════════════════════════════════════════════════════════
+' DEPENDENCIES — verified from import statements in source files
+' ═══════════════════════════════════════════════════════════════
+
+' Entry point
+"com.flc"                  ..> "com.flc.view"                : uses
+
+' View layer
+"com.flc.view"             ..> "com.flc.controller"          : uses
+"com.flc.view"             ..> "com.flc.model"               : uses
+"com.flc.view"             ..> "com.flc.data"                : uses
+"com.flc.view"             ..> "com.flc.data.persistence"    : uses
+"com.flc.view"             ..> "com.flc.config"              : uses
+"com.flc.view"             ..> "com.flc.util"                : uses
+"com.flc.view.components"  ..> "com.flc.config"              : uses
+"com.flc.view.components"  ..> "com.flc.util"                : uses
+
+' Controller layer
+"com.flc.controller"       ..> "com.flc.model"               : uses
+"com.flc.controller"       ..> "com.flc.data"                : uses
+"com.flc.controller"       ..> "com.flc.validation"          : uses
+
+' Data layer
+"com.flc.data"             ..> "com.flc.model"               : uses
+"com.flc.data.persistence" ..> "com.flc.data"                : uses
+"com.flc.data.persistence" ..> "com.flc.model"               : uses
+
+' Model layer
+"com.flc.model"            ..> "com.flc.config"              : uses
+"com.flc.model"            ..> "com.flc.validation"          : uses
+
+' Util layer
+"com.flc.util"             ..> "com.flc.config"              : uses
+
+' ═══════════════════════════════════════════════════════════════
+' NOTES
+' ═══════════════════════════════════════════════════════════════
+
+note bottom of "com.flc.config"
+  No internal dependencies.
+  AppConfig holds business rules.
+  Theme holds all visual constants.
+end note
+
+note bottom of "com.flc.validation"
+  No internal dependencies.
+  ValidationUtil is a static
+  utility class only.
+end note
+
+note right of "com.flc.data.persistence"
+  JsonStore calls DataStore to read
+  all data, then writes flc-data.json
+  via Gson. AppData holds flat DTOs.
+end note
+
+note right of "com.flc"
+  Entry point only.
+  Main.java launches AppFrame
+  via SwingUtilities.invokeLater.
+end note
+
+@enduml
