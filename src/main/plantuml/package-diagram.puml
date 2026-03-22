@@ -1,27 +1,112 @@
 @startuml package-diagram
 
-' ═══════════════════════════════════════════════════════════════
+' ===============================================================
 ' Furzefield Leisure Centre - Package Diagram
 ' Module  : 7COM1025
 ' Shows   : All 10 packages, class membership, and verified
 '           dependencies sourced from import statements
-' ═══════════════════════════════════════════════════════════════
+' ===============================================================
 
 skinparam style strictuml
 skinparam backgroundColor     #FFFFFF
 skinparam defaultFontName     SansSerif
 skinparam defaultFontSize     12
 
+title Furzefield Leisure Centre\nPackage Diagram - Module 7COM1025
+
+left to right direction
+
 skinparam ArrowColor          #2D6A4F
 skinparam ArrowThickness      1.5
 
-skinparam package {
-    BackgroundColor           #F5F5F3
+' ===============================================================
+' PER-LAYER PACKAGE COLOURS via stereotypes
+' entry  - grey   : application entry point
+' view   - blue   : user interface layer
+' ctrl   - purple : business logic layer
+' model  - amber  : domain object layer (stable core)
+' data   - teal   : data and persistence layer
+' support- green  : config, validation, util (no outward deps)
+' ===============================================================
+
+skinparam package<<entry>> {
+    BackgroundColor           #F4F4F2
+    BorderColor               #888780
+    BorderThickness           1.5
+    FontColor                 #444441
+    FontStyle                 Bold
+    StereotypeFontColor       #888780
+    StereotypeFontSize        10
+}
+
+skinparam package<<view>> {
+    BackgroundColor           #EAF4FB
+    BorderColor               #2980B9
+    BorderThickness           1.5
+    FontColor                 #1A5276
+    FontStyle                 Bold
+    StereotypeFontColor       #2980B9
+    StereotypeFontSize        10
+}
+
+skinparam package<<viewsub>> {
+    BackgroundColor           #D6EAF8
+    BorderColor               #2980B9
+    BorderThickness           1.5
+    FontColor                 #1A5276
+    FontStyle                 Bold
+    StereotypeFontColor       #2980B9
+    StereotypeFontSize        10
+}
+
+skinparam package<<ctrl>> {
+    BackgroundColor           #F3EFFD
+    BorderColor               #6C63FF
+    BorderThickness           1.5
+    FontColor                 #3B1F8C
+    FontStyle                 Bold
+    StereotypeFontColor       #6C63FF
+    StereotypeFontSize        10
+}
+
+skinparam package<<model>> {
+    BackgroundColor           #FEF9E7
+    BorderColor               #D4A017
+    BorderThickness           1.5
+    FontColor                 #7D5A00
+    FontStyle                 Bold
+    StereotypeFontColor       #D4A017
+    StereotypeFontSize        10
+}
+
+skinparam package<<data>> {
+    BackgroundColor           #E8FAF5
+    BorderColor               #1ABC9C
+    BorderThickness           1.5
+    FontColor                 #0E6655
+    FontStyle                 Bold
+    StereotypeFontColor       #1ABC9C
+    StereotypeFontSize        10
+}
+
+skinparam package<<datasub>> {
+    BackgroundColor           #D1F2EB
+    BorderColor               #1ABC9C
+    BorderThickness           1.5
+    FontColor                 #0E6655
+    FontStyle                 Bold
+    StereotypeFontColor       #1ABC9C
+    StereotypeFontSize        10
+}
+
+skinparam package<<support>> {
+    BackgroundColor           #EAF5EE
     BorderColor               #2D6A4F
     BorderThickness           1.5
     FontColor                 #1B4332
     FontStyle                 Bold
-    ArrowColor                #2D6A4F
+    StereotypeFontColor       #2D6A4F
+    StereotypeFontSize        10
 }
 
 skinparam note {
@@ -29,20 +114,20 @@ skinparam note {
     BorderColor               #F4C430
 }
 
-' ═══════════════════════════════════════════════════════════════
+' ===============================================================
 ' ENTRY POINT
-' ═══════════════════════════════════════════════════════════════
+' ===============================================================
 
-package "com.flc" {
+package "com.flc" <<entry>> {
     class Main
 }
 
-' ═══════════════════════════════════════════════════════════════
+' ===============================================================
 ' VIEW LAYER - depends on controller, model, data,
 '              data.persistence, config, util
-' ═══════════════════════════════════════════════════════════════
+' ===============================================================
 
-package "com.flc.view" {
+package "com.flc.view" <<view>> {
     class AppFrame
     class HomeScreen
     class DashboardScreen
@@ -52,28 +137,28 @@ package "com.flc.view" {
     class TimetableScreen
     class ReportScreen
 
-    package "com.flc.view.components" {
+    package "com.flc.view.components" <<viewsub>> {
         class Sidebar
         class TopBar
     }
 }
 
-' ═══════════════════════════════════════════════════════════════
+' ===============================================================
 ' CONTROLLER LAYER - depends on model, data, validation
-' ═══════════════════════════════════════════════════════════════
+' ===============================================================
 
-package "com.flc.controller" {
+package "com.flc.controller" <<ctrl>> {
     class BookingController
     class MemberController
     class ReviewController
     class ReportController
 }
 
-' ═══════════════════════════════════════════════════════════════
+' ===============================================================
 ' MODEL LAYER - depends on config, validation (partial)
-' ═══════════════════════════════════════════════════════════════
+' ===============================================================
 
-package "com.flc.model" {
+package "com.flc.model" <<model>> {
     class Member
     class Lesson
     class Booking
@@ -83,50 +168,43 @@ package "com.flc.model" {
     enum  TimeSlot
 }
 
-' ═══════════════════════════════════════════════════════════════
+' ===============================================================
 ' DATA LAYER - depends on model
 ' data.persistence is a sub-package: depends on data and model
-' ═══════════════════════════════════════════════════════════════
+' ===============================================================
 
-package "com.flc.data" {
+package "com.flc.data" <<data>> {
     class DataStore
     class SampleData
 
-    package "com.flc.data.persistence" {
+    package "com.flc.data.persistence" <<datasub>> {
         class JsonStore
         class AppData
     }
 }
 
-' ═══════════════════════════════════════════════════════════════
-' CONFIG LAYER - no internal dependencies
-' ═══════════════════════════════════════════════════════════════
+' ===============================================================
+' SUPPORT PACKAGES - no outward dependencies
+' config, validation, util share green to signal this grouping
+' ===============================================================
 
-package "com.flc.config" {
+package "com.flc.config" <<support>> {
     class AppConfig
     class Theme
 }
 
-' ═══════════════════════════════════════════════════════════════
-' VALIDATION LAYER - no internal dependencies
-' ═══════════════════════════════════════════════════════════════
-
-package "com.flc.validation" {
+package "com.flc.validation" <<support>> {
     class ValidationUtil
 }
 
-' ═══════════════════════════════════════════════════════════════
-' UTIL LAYER - depends on config
-' ═══════════════════════════════════════════════════════════════
-
-package "com.flc.util" {
+package "com.flc.util" <<support>> {
     class ImageUtil
     class ModernTable
 }
 
-' ═══════════════════════════════════════════════════════════════
+' ===============================================================
 ' DEPENDENCIES - verified from import statements in source files
-' ═══════════════════════════════════════════════════════════════
+' ===============================================================
 
 ' Entry point
 "com.flc"                  ..> "com.flc.view"                : uses
@@ -158,9 +236,9 @@ package "com.flc.util" {
 ' Util layer
 "com.flc.util"             ..> "com.flc.config"              : uses
 
-' ═══════════════════════════════════════════════════════════════
+' ===============================================================
 ' NOTES
-' ═══════════════════════════════════════════════════════════════
+' ===============================================================
 
 note bottom of "com.flc.config"
   No internal dependencies.
@@ -175,9 +253,10 @@ note bottom of "com.flc.validation"
 end note
 
 note right of "com.flc.data.persistence"
-  JsonStore calls DataStore to read
-  all data, then writes flc-data.json
-  via Gson. AppData holds flat DTOs.
+  JsonStore reads all collections
+  from DataStore then writes
+  flc-data.json via Gson.
+  AppData holds flat DTOs.
 end note
 
 note right of "com.flc"
@@ -185,5 +264,19 @@ note right of "com.flc"
   Main.java launches AppFrame
   via SwingUtilities.invokeLater.
 end note
+
+' ===============================================================
+' LEGEND
+' ===============================================================
+
+legend right
+  Colour coding by architectural layer
+  Blue   : view - user interface
+  Purple : controller - business logic
+  Amber  : model - domain objects (stable core)
+  Teal   : data and persistence
+  Green  : config, validation, util (support)
+  Grey   : application entry point
+endlegend
 
 @enduml
