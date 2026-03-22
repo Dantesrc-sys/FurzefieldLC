@@ -7,7 +7,20 @@ import com.flc.validation.ValidationUtil;
 import java.util.List;
 
 /**
- * Handles all member-related business logic. - Add a new member - Find members by id or name - List all members
+ * Handles all member-related business logic.
+ *
+ * <p>Responsibilities:</p>
+ * <ul>
+ *   <li>Add a new member with validated and normalised name and phone</li>
+ *   <li>Find members by ID or name</li>
+ *   <li>Update member name and phone number</li>
+ *   <li>List all members</li>
+ * </ul>
+ *
+ * <p>Phone numbers are normalised before validation and storage using
+ * {@link ValidationUtil#normalisePhone(String)}, which removes spaces,
+ * hyphens, and parentheses. This ensures consistent storage regardless
+ * of the format entered by the user.</p>
  */
 public class MemberController {
 
@@ -26,22 +39,27 @@ public class MemberController {
     /**
      * Adds a new member to the system.
      *
-     * @throws IllegalArgumentException
-     *             if name or phone is invalid
-     * @throws IllegalStateException
-     *             if a member with the same name already exists
+     * <p>The phone number is normalised before validation and storage —
+     * spaces, hyphens, and parentheses are removed automatically. The name
+     * is trimmed of leading and trailing whitespace.</p>
      *
-     * @return the created Member
+     * @param name  the member's full name
+     * @param phone the member's phone number (raw format accepted)
+     * @return the created {@link Member}
+     * @throws IllegalArgumentException if name or phone fails validation
+     * @throws IllegalStateException    if a member with the same name already exists
      */
     public Member addMember(String name, String phone) {
         ValidationUtil.validateName(name);
         ValidationUtil.validatePhone(phone);
 
         if (store.findMemberByName(name.trim()) != null)
-            throw new IllegalStateException("A member with the name '" + name.trim() + "' already exists");
+            throw new IllegalStateException(
+                "A member with the name '" + name.trim() + "' already exists");
 
         String memberId = generateMemberId();
-        Member member = new Member(memberId, name.trim(), phone.trim());
+        String normalisedPhone = ValidationUtil.normalisePhone(phone);
+        Member member = new Member(memberId, name.trim(), normalisedPhone);
         store.addMember(member);
         return member;
     }
@@ -53,7 +71,7 @@ public class MemberController {
     /**
      * Retrieves all members in the system.
      *
-     * @return a list of all members (may be empty)
+     * @return an unmodifiable list of all members (may be empty)
      */
     public List<Member> getAllMembers() {
         return store.getMembers();
@@ -63,7 +81,7 @@ public class MemberController {
      * Finds a member by their unique ID.
      *
      * @param id the member's unique identifier
-     * @return the member, or null if not found
+     * @return the member, or {@code null} if not found
      * @throws IllegalArgumentException if id is null or blank
      */
     public Member findById(String id) {
@@ -72,10 +90,10 @@ public class MemberController {
     }
 
     /**
-     * Finds a member by their exact name (case-sensitive).
+     * Finds a member by their exact name (case-insensitive).
      *
      * @param name the member's name
-     * @return the first member with this exact name, or null if not found
+     * @return the first member with this name, or {@code null} if not found
      * @throws IllegalArgumentException if name is null or blank
      */
     public Member findByName(String name) {
@@ -89,20 +107,29 @@ public class MemberController {
 
     /**
      * Updates a member's phone number.
+     *
+     * <p>The phone is normalised before storage — spaces, hyphens, and
+     * parentheses are removed automatically.</p>
+     *
+     * @param member   the member to update
+     * @param newPhone the new phone number (raw format accepted)
+     * @throws IllegalArgumentException if member is null or phone is blank
      */
     public void updatePhone(Member member, String newPhone) {
         if (member == null)
             throw new IllegalArgumentException("Member cannot be null");
         if (newPhone == null || newPhone.isBlank())
             throw new IllegalArgumentException("Phone cannot be empty");
-        member.setPhone(newPhone.trim());
+        member.setPhone(ValidationUtil.normalisePhone(newPhone));
     }
 
     /**
      * Updates a member's name.
      *
-     * @throws IllegalStateException
-     *             if another member already has that name
+     * @param member  the member to update
+     * @param newName the new name
+     * @throws IllegalArgumentException if member is null or name is blank
+     * @throws IllegalStateException    if another member already has that name
      */
     public void updateName(Member member, String newName) {
         if (member == null)

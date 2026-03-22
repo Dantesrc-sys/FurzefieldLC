@@ -36,18 +36,21 @@ class MemberControllerTest {
 
     @Test
     void shouldThrowWhenNameIsBlank() {
-        assertThrows(IllegalArgumentException.class, () -> controller.addMember("", "07700900001"));
+        assertThrows(IllegalArgumentException.class,
+            () -> controller.addMember("", "07700900001"));
     }
 
     @Test
     void shouldThrowWhenPhoneIsBlank() {
-        assertThrows(IllegalArgumentException.class, () -> controller.addMember("Alice", ""));
+        assertThrows(IllegalArgumentException.class,
+            () -> controller.addMember("Alice", ""));
     }
 
     @Test
     void shouldThrowWhenDuplicateName() {
         controller.addMember("Alice", "07700900001");
-        assertThrows(IllegalStateException.class, () -> controller.addMember("Alice", "07700900002"));
+        assertThrows(IllegalStateException.class,
+            () -> controller.addMember("Alice", "07700900002"));
     }
 
     @Test
@@ -55,6 +58,38 @@ class MemberControllerTest {
         Member m = controller.addMember("  Alice  ", "  07700900001  ");
         assertEquals("Alice", m.getName());
         assertEquals("07700900001", m.getPhone());
+    }
+
+    // ── Phone normalisation ───────────────────────────────────────────────────
+    @Test
+    void shouldNormalisePhoneWithInternalSpaces() {
+        Member m = controller.addMember("Alice", "07700 900001");
+        assertEquals("07700900001", m.getPhone());
+    }
+
+    @Test
+    void shouldNormalisePhoneWithHyphens() {
+        Member m = controller.addMember("Alice", "07700-900001");
+        assertEquals("07700900001", m.getPhone());
+    }
+
+    @Test
+    void shouldNormalisePhoneWithParentheses() {
+        Member m = controller.addMember("Alice", "(07700)900001");
+        assertEquals("07700900001", m.getPhone());
+    }
+
+    @Test
+    void shouldNormalisePhoneWithMixedFormatting() {
+        Member m = controller.addMember("Alice", "(077) 009-00001");
+        assertEquals("07700900001", m.getPhone());
+    }
+
+    @Test
+    void shouldNormalisePhoneOnUpdate() {
+        Member m = controller.addMember("Alice", "07700900001");
+        controller.updatePhone(m, "07700-999999");
+        assertEquals("07700999999", m.getPhone());
     }
 
     // ── Find member ───────────────────────────────────────────────────────────
@@ -99,7 +134,8 @@ class MemberControllerTest {
     @Test
     void shouldThrowWhenUpdatingPhoneToBlank() {
         Member m = controller.addMember("Alice", "07700900001");
-        assertThrows(IllegalArgumentException.class, () -> controller.updatePhone(m, ""));
+        assertThrows(IllegalArgumentException.class,
+            () -> controller.updatePhone(m, ""));
     }
 
     @Test
@@ -113,6 +149,7 @@ class MemberControllerTest {
     void shouldThrowWhenUpdatingNameToDuplicate() {
         Member alice = controller.addMember("Alice", "07700900001");
         controller.addMember("Bob", "07700900002");
-        assertThrows(IllegalStateException.class, () -> controller.updateName(alice, "Bob"));
+        assertThrows(IllegalStateException.class,
+            () -> controller.updateName(alice, "Bob"));
     }
 }
