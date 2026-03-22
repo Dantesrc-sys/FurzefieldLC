@@ -4,7 +4,7 @@
 
 ---
 
-![Use case diagram](use-case.svg)
+![Use case diagram](use-case-diagram.svg)
 
 ---
 

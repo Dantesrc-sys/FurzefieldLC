@@ -37,7 +37,7 @@ Member, Lesson, Booking, Review, ExerciseType
 **[Use case diagram](use-case.md)**
 
 <a href="use-case.md">
-  <img src="use-case.svg" alt="Use case diagram" width="100%"/>
+  <img src="use-case-diagram.svg" alt="Use case diagram" width="100%"/>
 </a>
 
 Staff member interactions across all six screens
