@@ -63,3 +63,12 @@ target/failsafe-reports/
 
 # Ignore Maven wrapper if you don't want it in version control (but it's common to keep it)
 !.mvn/wrapper/maven-wrapper.jar
+
+# PlantUML source files
+!src/main/plantuml/
+!src/main/plantuml/**/*.puml
+ 
+# Generated diagrams in docs/
+!docs/
+!docs/diagrams/
+!docs/diagrams/**/*.svg

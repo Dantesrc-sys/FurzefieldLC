@@ -63,6 +63,7 @@ FurzefieldLC/
 │   │   │   ├── model/           # Member, Lesson, Booking, Review, etc.
 │   │   │   ├── util/            # ModernTable, ImageUtil
 │   │   │   └── view/            # All Swing screens
+│   │   ├── plantuml/            # PlantUML 
 │   │   └── resources/
 │   │       └── assets/          # PNG icons (logo, nav, feature chips)
 │   └── test/                    # JUnit 5 unit tests
@@ -139,6 +140,15 @@ This file is created in whichever directory you run the JAR from. Every change (
 All dependencies are fetched automatically by Maven on first build.
 
 ---
+
+## UML Diagrams
+
+Full design documentation covering class structure, use cases, sequence flow, and package architecture.
+
+**[View all diagrams →](docs/diagrams/README.md)**
+
+> Diagrams are generated from PlantUML source files in `src/main/plantuml/`.  
+> Run `mvn generate-resources` to regenerate after editing a `.puml` file.
 
 ## Version
 

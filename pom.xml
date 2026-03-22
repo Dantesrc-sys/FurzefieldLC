@@ -42,7 +42,6 @@
 
   <build>
     <plugins>
-
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
@@ -61,6 +60,33 @@
           <useModulePath>false</useModulePath>
         </configuration>
       </plugin>
+
+      <plugin>
+        <groupId>com.github.davidmoten</groupId>
+        <artifactId>plantuml-maven-plugin</artifactId>
+        <version>0.2.14</version>
+        <executions>
+            <execution>
+                <id>generate-diagrams</id>
+                <phase>generate-resources</phase>
+                <goals>
+                    <goal>generate</goal>
+                </goals>
+            </execution>
+        </executions>
+        <configuration>
+            <sources>
+                <directory>${basedir}/src/main/plantuml</directory>
+                <includes>
+                    <include>**/*.puml</include>
+                </includes>
+            </sources>
+            <outputDirectory>${basedir}/docs/diagrams</outputDirectory>
+            <formats>
+                <format>svg</format>
+            </formats>
+        </configuration>
+    </plugin>
 
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>

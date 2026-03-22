@@ -1,0 +1,218 @@
+@startuml class-diagram
+
+' ═══════════════════════════════════════════════════════════════
+' Furzefield Leisure Centre — Class Diagram
+' Module  : 7COM1025
+' Covers  : All model classes, enumerations, and relationships
+' ═══════════════════════════════════════════════════════════════
+
+skinparam style strictuml
+
+' ── Global style ────────────────────────────────────────────────
+skinparam backgroundColor #FFFFFF
+skinparam defaultFontName  SansSerif
+skinparam defaultFontSize  12
+
+skinparam class {
+    BackgroundColor       #F5F5F3
+    BorderColor           #2D6A4F
+    BorderThickness       1.5
+    HeaderBackgroundColor #2D6A4F
+    HeaderFontColor       #FFFFFF
+    HeaderFontStyle       Bold
+    AttributeFontSize     11
+    AttributeFontColor    #1A1A18
+    ArrowColor            #2D6A4F
+    ArrowThickness        1.5
+}
+
+skinparam enum {
+    BackgroundColor       #E8F5EE
+    BorderColor           #52B788
+    BorderThickness       1.5
+    HeaderBackgroundColor #52B788
+    HeaderFontColor       #FFFFFF
+    HeaderFontStyle       Bold
+}
+
+skinparam note {
+    BackgroundColor #FFFDE7
+    BorderColor     #F4C430
+}
+
+' ═══════════════════════════════════════════════════════════════
+' ENUMERATIONS
+' ═══════════════════════════════════════════════════════════════
+
+enum Day {
+    SATURDAY
+    SUNDAY
+    --
+    - displayName : String
+    --
+    + getDisplayName() : String
+    + toString() : String
+}
+
+enum TimeSlot {
+    MORNING
+    AFTERNOON
+    EVENING
+    --
+    - displayName : String
+    - time        : String
+    --
+    + getDisplayName() : String
+    + getTime() : String
+    + toString() : String
+}
+
+' ═══════════════════════════════════════════════════════════════
+' CORE MODEL CLASSES
+' ═══════════════════════════════════════════════════════════════
+
+class Member {
+    - memberId : String  {readOnly}
+    - name     : String
+    - phone    : String
+    --
+    + Member(memberId, name, phone)
+    + getMemberId() : String
+    + getName()     : String
+    + getPhone()    : String
+    + setName(name : String)  : void
+    + setPhone(phone : String) : void
+    + equals(o : Object) : boolean
+    + hashCode()    : int
+    + toString()    : String
+}
+
+class ExerciseType {
+    - exerciseId : String  {readOnly}
+    - name       : String
+    - price      : double
+    --
+    + ExerciseType(exerciseId, name, price)
+    + getExerciseId() : String
+    + getName()       : String
+    + getPrice()      : double
+    + setName(name : String)   : void
+    + setPrice(price : double) : void
+    + equals(o : Object) : boolean
+    + hashCode()    : int
+    + toString()    : String
+}
+
+class Lesson {
+    - lessonId    : String       {readOnly}
+    - exerciseType : ExerciseType {readOnly}
+    - day         : Day          {readOnly}
+    - timeSlot    : TimeSlot     {readOnly}
+    - weekNumber  : int          {readOnly}
+    - members     : List<Member>
+    --
+    + Lesson(lessonId, exerciseType, day, timeSlot, weekNumber)
+    + getLessonId()      : String
+    + getExerciseType()  : ExerciseType
+    + getDay()           : Day
+    + getTimeSlot()      : TimeSlot
+    + getWeekNumber()    : int
+    + getPrice()         : double
+    + getMembers()       : List<Member>
+    + getEnrolledCount() : int
+    + getAvailableSpaces() : int
+    + isFull()           : boolean
+    + isEmpty()          : boolean
+    + addMember(member : Member)    : void
+    + removeMember(member : Member) : void
+    + hasMember(member : Member)    : boolean
+    + getTotalIncome()   : double
+    + equals(o : Object) : boolean
+    + hashCode()         : int
+    + toString()         : String
+}
+
+class Booking {
+    - bookingId : String  {readOnly}
+    - member    : Member  {readOnly}
+    - lesson    : Lesson
+    --
+    + Booking(bookingId, member, lesson)
+    + getBookingId() : String
+    + getMember()    : Member
+    + getLesson()    : Lesson
+    + changeLesson(newLesson : Lesson) : void
+    + equals(o : Object) : boolean
+    + hashCode()     : int
+    + toString()     : String
+}
+
+class Review {
+    - reviewId : String  {readOnly}
+    - member   : Member  {readOnly}
+    - lesson   : Lesson  {readOnly}
+    - rating   : int
+    - comment  : String
+    --
+    + Review(reviewId, member, lesson, rating, comment)
+    + getReviewId()    : String
+    + getMember()      : Member
+    + getLesson()      : Lesson
+    + getRating()      : int
+    + getComment()     : String
+    + getRatingLabel() : String
+    + setRating(rating : int)      : void
+    + setComment(comment : String) : void
+    + equals(o : Object) : boolean
+    + hashCode()       : int
+    + toString()       : String
+    - validateRating(rating : int) : void
+}
+
+' ═══════════════════════════════════════════════════════════════
+' RELATIONSHIPS
+' ═══════════════════════════════════════════════════════════════
+
+' Lesson uses Day and TimeSlot enums (dependency / use)
+Lesson  ..>  Day      : uses >
+Lesson  ..>  TimeSlot : uses >
+
+' ExerciseType objects live independently in DataStore and are shared
+' across many lessons — this is aggregation, not composition
+Lesson "1" o-- "1" ExerciseType : uses >
+
+' Lesson enrolls 0..MAX_CAPACITY Members (aggregation — Members exist independently)
+Lesson "1" o-- "0..4" Member : enrolls >
+
+' Booking links one Member to one Lesson (association — both exist independently)
+Booking "0..*" --> "1" Member : made by >
+Booking "0..*" --> "1" Lesson : for >
+
+' Review links one Member to one Lesson (association)
+Review "0..*" --> "1" Member : written by >
+Review "0..*" --> "1" Lesson : about >
+
+' ═══════════════════════════════════════════════════════════════
+' BUSINESS RULE NOTES
+' ═══════════════════════════════════════════════════════════════
+
+note right of Lesson
+  MAX_LESSON_CAPACITY = 4
+  (defined in AppConfig)
+  weekNumber range: 1 – 8
+end note
+
+note right of Review
+  rating range: 1 – 5
+  (RATING_MIN / RATING_MAX
+  defined in AppConfig)
+end note
+
+note bottom of Booking
+  changeLesson() validates:
+  - new lesson not full
+  - no time conflict
+  - not same lesson
+end note
+
+@enduml
