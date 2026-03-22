@@ -1,4 +1,17 @@
-# Sequence diagram
+<div align="center">
+  <img src="../../src/main/resources/assets/logo.png" alt="Furzefield LC Logo" width="72" height="72"/>
+  <h1>Furzefield Leisure Centre</h1>
+  <p><em>Group exercise booking management system</em></p>
+
+  ![Java](https://img.shields.io/badge/Java-25.0.2-orange?style=flat-square)
+  ![Maven](https://img.shields.io/badge/Maven-3.9.12-red?style=flat-square)
+  ![Gson](https://img.shields.io/badge/Gson-2.10.1-blue?style=flat-square)
+  ![Module](https://img.shields.io/badge/7COM1025-University%20of%20Hertfordshire-green?style=flat-square)
+</div>
+
+---
+
+## Sequence diagram
 
 **What this shows:** The create-booking flow traced end-to-end through all layers — from the user clicking Book in `BookingScreen`, through `BookingController` validation, into `DataStore`, and finally persisted by `JsonStore`.
 
