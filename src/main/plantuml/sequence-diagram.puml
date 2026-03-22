@@ -1,17 +1,21 @@
 @startuml sequence-diagram
 
-' ═══════════════════════════════════════════════════════════════
+' ===============================================================
 ' Furzefield Leisure Centre - Sequence Diagram
 ' Module  : 7COM1025
 ' Flow    : Create booking - end-to-end through all layers
 ' Source  : BookingScreen.onBook() and BookingController.createBooking()
-' ═══════════════════════════════════════════════════════════════
+' ===============================================================
 
 skinparam style strictuml
 skinparam backgroundColor    #FFFFFF
 skinparam defaultFontName    SansSerif
 skinparam defaultFontSize    12
 skinparam sequenceArrowThickness 1.5
+
+title Furzefield Leisure Centre\nSequence Diagram - Create Booking Flow\nModule 7COM1025
+
+autonumber
 
 skinparam participant {
     BackgroundColor          #F5F5F3
@@ -38,9 +42,9 @@ skinparam sequence {
     NoteBorderColor          #F4C430
 }
 
-' ═══════════════════════════════════════════════════════════════
+' ===============================================================
 ' PARTICIPANTS - declared in layer order
-' ═══════════════════════════════════════════════════════════════
+' ===============================================================
 
 box "View layer" #EAF3F8
     participant "BookingScreen" as BS
@@ -62,23 +66,30 @@ box "Persistence layer" #FFF0F0
     participant "JsonStore" as JS
 end box
 
-' ═══════════════════════════════════════════════════════════════
+' ===============================================================
 ' TRIGGER
-' ═══════════════════════════════════════════════════════════════
+' ===============================================================
 
 [-> BS : onBook()
-note right of BS : Staff clicks Book button.\nGuard: selectedMember != null\nand selectedLesson != null.
+note right of BS
+  Staff clicks Book button.
+  Guard: selectedMember != null
+  and selectedLesson != null.
+end note
 
 activate BS
 
-' ═══════════════════════════════════════════════════════════════
+' ===============================================================
 ' MAIN SUCCESS FLOW
-' ═══════════════════════════════════════════════════════════════
+' ===============================================================
 
 BS -> BC : createBooking(member, lesson)
 activate BC
 
-note right of BC : ValidationUtil.requireNonNull(member)\nValidationUtil.requireNonNull(lesson)
+note right of BC
+  ValidationUtil.requireNonNull(member)
+  ValidationUtil.requireNonNull(lesson)
+end note
 
 BC -> L : isFull()
 activate L
@@ -95,14 +106,21 @@ activate DS
 DS --> BC : List<Booking>
 deactivate DS
 
-note right of BC : Stream - checks week, day,\nand timeSlot match.\nNo conflict found.
+note right of BC
+  Stream checks week, day,
+  and timeSlot match.
+  No conflict found.
+end note
 
 BC -> L : addMember(member)
 activate L
 L --> BC : void
 deactivate L
 
-note right of BC : generateBookingId()\nnew Booking(id, member, lesson)
+note right of BC
+  generateBookingId()
+  new Booking(id, member, lesson)
+end note
 
 BC -> DS : addBooking(booking)
 activate DS
@@ -112,35 +130,24 @@ deactivate DS
 BC --> BS : Booking
 deactivate BC
 
+' ===============================================================
+' PERSISTENCE - JsonStore reads all collections then writes file
+' ===============================================================
+
 BS -> JS : save()
 activate JS
 
-JS -> DS : getMembers()
-activate DS
-DS --> JS : List<Member>
-deactivate DS
+loop for each collection [Members, ExerciseTypes, Lessons, Bookings, Reviews]
+    JS -> DS : get<Collection>()
+    activate DS
+    DS --> JS : List<T>
+    deactivate DS
+end
 
-JS -> DS : getExerciseTypes()
-activate DS
-DS --> JS : List<ExerciseType>
-deactivate DS
-
-JS -> DS : getLessons()
-activate DS
-DS --> JS : List<Lesson>
-deactivate DS
-
-JS -> DS : getBookings()
-activate DS
-DS --> JS : List<Booking>
-deactivate DS
-
-JS -> DS : getReviews()
-activate DS
-DS --> JS : List<Review>
-deactivate DS
-
-note right of JS : Serialises all DTOs to\nflc-data.json via Gson.
+note right of JS
+  Serialises all DTOs to
+  flc-data.json via Gson.
+end note
 
 JS --> BS : void
 deactivate JS
@@ -150,10 +157,10 @@ BS -> BS : refreshAll()
 
 [<-- BS : UI updated
 
-' ═══════════════════════════════════════════════════════════════
+' ===============================================================
 ' ALTERNATIVE FLOWS - all three validations that can fail
 ' Shown as a single alt/else/end combined fragment per UML spec
-' ═══════════════════════════════════════════════════════════════
+' ===============================================================
 
 == Alternative flows - validation failures ==
 
