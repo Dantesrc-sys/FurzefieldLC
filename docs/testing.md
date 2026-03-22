@@ -25,7 +25,7 @@
 | Metric | Value |
 |---|---|
 | Test classes | 15 |
-| Total test methods | 164 |
+| Total test methods | 167 |
 | Test framework | JUnit 5 (junit-jupiter 5.10.0) |
 | Scope | Unit tests only - no integration or UI tests |
 | Isolation | Each test class calls `DataStore.clearAll()` in `@BeforeEach` to guarantee a clean state |
