@@ -8,31 +8,41 @@
 
 skinparam style strictuml
 
+title Furzefield Leisure Centre\nClass Diagram - Module 7COM1025
+
+left to right direction
+
 ' ── Global style ────────────────────────────────────────────────
 skinparam backgroundColor #FFFFFF
 skinparam defaultFontName  SansSerif
 skinparam defaultFontSize  12
 
 skinparam class {
-    BackgroundColor       #F5F5F3
-    BorderColor           #2D6A4F
-    BorderThickness       1.5
-    HeaderBackgroundColor #2D6A4F
-    HeaderFontColor       #FFFFFF
-    HeaderFontStyle       Bold
-    AttributeFontSize     11
-    AttributeFontColor    #1A1A18
-    ArrowColor            #2D6A4F
-    ArrowThickness        1.5
+    BackgroundColor         #F5F5F3
+    BorderColor             #2D6A4F
+    BorderThickness         1.5
+    HeaderBackgroundColor   #2D6A4F
+    HeaderFontColor         #FFFFFF
+    HeaderFontStyle         Bold
+    AttributeFontSize       11
+    AttributeFontColor      #1A1A18
+    ArrowColor              #2D6A4F
+    ArrowThickness          1.5
+    StereotypeFontColor     #FFFFFF
+    StereotypeFontSize      10
+    StereotypeFontStyle     Italic
 }
 
 skinparam enum {
-    BackgroundColor       #E8F5EE
-    BorderColor           #52B788
-    BorderThickness       1.5
-    HeaderBackgroundColor #52B788
-    HeaderFontColor       #FFFFFF
-    HeaderFontStyle       Bold
+    BackgroundColor         #E8F5EE
+    BorderColor             #52B788
+    BorderThickness         1.5
+    HeaderBackgroundColor   #52B788
+    HeaderFontColor         #FFFFFF
+    HeaderFontStyle         Bold
+    StereotypeFontColor     #FFFFFF
+    StereotypeFontSize      10
+    StereotypeFontStyle     Italic
 }
 
 skinparam note {
@@ -44,7 +54,7 @@ skinparam note {
 ' ENUMERATIONS
 ' ═══════════════════════════════════════════════════════════════
 
-enum Day {
+enum Day <<enumeration>> {
     SATURDAY
     SUNDAY
     --
@@ -55,7 +65,7 @@ enum Day {
     + toString() : String
 }
 
-enum TimeSlot {
+enum TimeSlot <<enumeration>> {
     MORNING
     AFTERNOON
     EVENING
@@ -73,7 +83,7 @@ enum TimeSlot {
 ' CORE MODEL CLASSES
 ' ═══════════════════════════════════════════════════════════════
 
-class Member {
+class Member <<entity>> {
     - memberId : String  {readOnly}
     - name     : String
     - phone    : String
@@ -82,14 +92,14 @@ class Member {
     + getMemberId() : String
     + getName()     : String
     + getPhone()    : String
-    + setName(name : String)  : void
+    + setName(name : String)   : void
     + setPhone(phone : String) : void
     + equals(o : Object) : boolean
     + hashCode()    : int
     + toString()    : String
 }
 
-class ExerciseType {
+class ExerciseType <<entity>> {
     - exerciseId : String  {readOnly}
     - name       : String
     - price      : double
@@ -105,36 +115,36 @@ class ExerciseType {
     + toString()    : String
 }
 
-class Lesson {
-    - lessonId    : String       {readOnly}
+class Lesson <<entity>> {
+    - lessonId     : String       {readOnly}
     - exerciseType : ExerciseType {readOnly}
-    - day         : Day          {readOnly}
-    - timeSlot    : TimeSlot     {readOnly}
-    - weekNumber  : int          {readOnly}
-    - members     : List<Member>
+    - day          : Day          {readOnly}
+    - timeSlot     : TimeSlot     {readOnly}
+    - weekNumber   : int          {readOnly}
+    - members      : List<Member>
     --
     + Lesson(lessonId, exerciseType, day, timeSlot, weekNumber)
-    + getLessonId()      : String
-    + getExerciseType()  : ExerciseType
-    + getDay()           : Day
-    + getTimeSlot()      : TimeSlot
-    + getWeekNumber()    : int
-    + getPrice()         : double
-    + getMembers()       : List<Member>
-    + getEnrolledCount() : int
+    + getLessonId()        : String
+    + getExerciseType()    : ExerciseType
+    + getDay()             : Day
+    + getTimeSlot()        : TimeSlot
+    + getWeekNumber()      : int
+    + getPrice()           : double
+    + getMembers()         : List<Member>
+    + getEnrolledCount()   : int
     + getAvailableSpaces() : int
-    + isFull()           : boolean
-    + isEmpty()          : boolean
+    + isFull()             : boolean
+    + isEmpty()            : boolean
     + addMember(member : Member)    : void
     + removeMember(member : Member) : void
     + hasMember(member : Member)    : boolean
-    + getTotalIncome()   : double
-    + equals(o : Object) : boolean
-    + hashCode()         : int
-    + toString()         : String
+    + getTotalIncome()     : double
+    + equals(o : Object)   : boolean
+    + hashCode()           : int
+    + toString()           : String
 }
 
-class Booking {
+class Booking <<entity>> {
     - bookingId : String  {readOnly}
     - member    : Member  {readOnly}
     - lesson    : Lesson
@@ -149,7 +159,7 @@ class Booking {
     + toString()     : String
 }
 
-class Review {
+class Review <<entity>> {
     - reviewId : String  {readOnly}
     - member   : Member  {readOnly}
     - lesson   : Lesson  {readOnly}
@@ -175,22 +185,22 @@ class Review {
 ' RELATIONSHIPS
 ' ═══════════════════════════════════════════════════════════════
 
-' Lesson uses Day and TimeSlot enums (dependency / use)
+' Lesson uses Day and TimeSlot enums (dependency)
 Lesson  ..>  Day      : uses >
 Lesson  ..>  TimeSlot : uses >
 
 ' ExerciseType objects live independently in DataStore and are shared
-' across many lessons - this is aggregation, not composition
-Lesson "1" o-- "1" ExerciseType : references >
+' across many lessons - aggregation, not composition
+Lesson "1" o-- "1"    ExerciseType : references >
 
-' Lesson enrolls 0..MAX_CAPACITY Members (aggregation - Members exist independently)
-Lesson "1" o-- "0..4" Member : enrolls >
+' Lesson enrolls 0..MAX_CAPACITY Members - aggregation
+Lesson "1" o-- "0..4" Member       : enrolls >
 
-' Booking links one Member to one Lesson (association - both exist independently)
+' Booking links one Member to one Lesson - association
 Booking "0..*" --> "1" Member : made by >
 Booking "0..*" --> "1" Lesson : for >
 
-' Review links one Member to one Lesson (association)
+' Review links one Member to one Lesson - association
 Review "0..*" --> "1" Member : written by >
 Review "0..*" --> "1" Lesson : about >
 
@@ -201,11 +211,11 @@ Review "0..*" --> "1" Lesson : about >
 note right of Lesson
   MAX_LESSON_CAPACITY = 4
   (defined in AppConfig)
-  weekNumber range: 1 – 8
+  weekNumber range: 1 to 8
 end note
 
 note right of Review
-  rating range: 1 – 5
+  rating range: 1 to 5
   (RATING_MIN / RATING_MAX
   defined in AppConfig)
 end note
@@ -216,5 +226,16 @@ note bottom of Booking
   - no time conflict
   - not same lesson
 end note
+
+' ═══════════════════════════════════════════════════════════════
+' LEGEND
+' ═══════════════════════════════════════════════════════════════
+
+legend right
+  Relationship notation
+  ..>   Dependency (uses)
+  o--   Aggregation
+  -->   Association
+endlegend
 
 @enduml
