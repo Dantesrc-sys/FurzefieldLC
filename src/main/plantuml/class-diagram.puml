@@ -50,6 +50,7 @@ enum Day {
     --
     - displayName : String
     --
+    + Day(displayName : String)
     + getDisplayName() : String
     + toString() : String
 }
@@ -62,6 +63,7 @@ enum TimeSlot {
     - displayName : String
     - time        : String
     --
+    + TimeSlot(displayName : String, time : String)
     + getDisplayName() : String
     + getTime() : String
     + toString() : String
@@ -163,10 +165,10 @@ class Review {
     + getRatingLabel() : String
     + setRating(rating : int)      : void
     + setComment(comment : String) : void
+    - validateRating(rating : int) : void
     + equals(o : Object) : boolean
     + hashCode()       : int
     + toString()       : String
-    - validateRating(rating : int) : void
 }
 
 ' ═══════════════════════════════════════════════════════════════
@@ -179,7 +181,7 @@ Lesson  ..>  TimeSlot : uses >
 
 ' ExerciseType objects live independently in DataStore and are shared
 ' across many lessons — this is aggregation, not composition
-Lesson "1" o-- "1" ExerciseType : uses >
+Lesson "1" o-- "1" ExerciseType : references >
 
 ' Lesson enrolls 0..MAX_CAPACITY Members (aggregation — Members exist independently)
 Lesson "1" o-- "0..4" Member : enrolls >
