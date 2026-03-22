@@ -14,7 +14,7 @@ import java.awt.event.*;
 import java.util.List;
 
 /**
- * Bookings screen — create a new booking, change an existing one, or cancel. Layout: left panel (select member +
+ * Bookings screen - create a new booking, change an existing one, or cancel. Layout: left panel (select member +
  * lesson) | right panel (member's bookings)
  */
 public class BookingScreen extends JPanel {
@@ -50,7 +50,7 @@ public class BookingScreen extends JPanel {
     }
 
     // ═══════════════════════════════════════════════════════════════════════
-    // LEFT PANEL — member selector + lesson picker
+    // LEFT PANEL - member selector + lesson picker
     // ═══════════════════════════════════════════════════════════════════════
 
     private JPanel buildLeftPanel() {
@@ -71,7 +71,7 @@ public class BookingScreen extends JPanel {
                     boolean focus) {
                 super.getListCellRendererComponent(list, val, idx, sel, focus);
                 if (val instanceof Member m)
-                    setText(m.getMemberId() + "  —  " + m.getName());
+                    setText(m.getMemberId() + "  -  " + m.getName());
                 return this;
             }
         });
@@ -146,10 +146,10 @@ public class BookingScreen extends JPanel {
         lessonTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
         ModernTable.setColumnWidths(lessonTable, 120, 160, 90, 130);
-        ModernTable.setTimeColumn(lessonTable, 0); // Time — dot
-        ModernTable.setExerciseColumn(lessonTable, 1); // Exercise — dot
-        ModernTable.setPriceColumn(lessonTable, 2); // Price — green
-        ModernTable.setCapacityColumn(lessonTable, 3); // Spaces — bar
+        ModernTable.setTimeColumn(lessonTable, 0); // Time - dot
+        ModernTable.setExerciseColumn(lessonTable, 1); // Exercise - dot
+        ModernTable.setPriceColumn(lessonTable, 2); // Price - green
+        ModernTable.setCapacityColumn(lessonTable, 3); // Spaces - bar
         lessonTable.getSelectionModel().addListSelectionListener(e -> {
             if (!e.getValueIsAdjusting())
                 onLessonSelected();
@@ -186,7 +186,7 @@ public class BookingScreen extends JPanel {
     }
 
     // ═══════════════════════════════════════════════════════════════════════
-    // RIGHT PANEL — member's current bookings
+    // RIGHT PANEL - member's current bookings
     // ═══════════════════════════════════════════════════════════════════════
 
     private JPanel buildRightPanel() {

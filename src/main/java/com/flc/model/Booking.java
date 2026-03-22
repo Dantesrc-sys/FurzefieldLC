@@ -10,7 +10,7 @@ public class Booking {
     // ── Fields ────────────────────────────────────────────────────────────────
     private final String bookingId;
     private final Member member;
-    private Lesson lesson; // mutable — member can change their booking
+    private Lesson lesson; // mutable - member can change their booking
 
     // ── Constructor ───────────────────────────────────────────────────────────
     /**

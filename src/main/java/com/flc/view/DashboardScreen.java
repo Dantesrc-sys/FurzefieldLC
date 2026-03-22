@@ -13,7 +13,7 @@ import java.awt.*;
 import java.awt.event.*;
 
 /**
- * Main dashboard screen — no unicode or special characters anywhere. All icons loaded from assets/ via ImageUtil.
+ * Main dashboard screen - no unicode or special characters anywhere. All icons loaded from assets/ via ImageUtil.
  */
 public class DashboardScreen extends JPanel {
 

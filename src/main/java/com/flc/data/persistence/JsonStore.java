@@ -135,15 +135,15 @@ public class JsonStore {
             DataStore store = DataStore.getInstance();
             store.clearAll();
 
-            // 1 — Members
+            // 1 - Members
             for (AppData.MemberDto dto : data.members)
                 store.addMember(new Member(dto.memberId, dto.name, dto.phone));
 
-            // 2 — Exercise types
+            // 2 - Exercise types
             for (AppData.ExerciseTypeDto dto : data.exerciseTypes)
                 store.addExerciseType(new ExerciseType(dto.exerciseId, dto.name, dto.price));
 
-            // 3 — Lessons (re-link exercise type + enrolled members)
+            // 3 - Lessons (re-link exercise type + enrolled members)
             for (AppData.LessonDto dto : data.lessons) {
                 ExerciseType type = store.findExerciseTypeById(dto.exerciseTypeId);
                 if (type == null)
@@ -161,7 +161,7 @@ public class JsonStore {
                 store.addLesson(lesson);
             }
 
-            // 4 — Bookings
+            // 4 - Bookings
             for (AppData.BookingDto dto : data.bookings) {
                 Member m = store.findMemberById(dto.memberId);
                 Lesson l = store.findLessonById(dto.lessonId);
@@ -169,7 +169,7 @@ public class JsonStore {
                     store.addBooking(new Booking(dto.bookingId, m, l));
             }
 
-            // 5 — Reviews
+            // 5 - Reviews
             for (AppData.ReviewDto dto : data.reviews) {
                 Member m = store.findMemberById(dto.memberId);
                 Lesson l = store.findLessonById(dto.lessonId);
@@ -177,7 +177,7 @@ public class JsonStore {
                     store.addReview(new Review(dto.reviewId, m, l, dto.rating, dto.comment));
             }
 
-            System.out.println("[JsonStore] Loaded from " + FILE_NAME + " — " + store.getTotalMembers() + " members, "
+            System.out.println("[JsonStore] Loaded from " + FILE_NAME + " - " + store.getTotalMembers() + " members, "
                     + store.getTotalLessons() + " lessons, " + store.getTotalBookings() + " bookings, "
                     + store.getTotalReviews() + " reviews");
             return true;

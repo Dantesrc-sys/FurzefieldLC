@@ -1,9 +1,9 @@
 @startuml sequence-diagram
 
 ' ═══════════════════════════════════════════════════════════════
-' Furzefield Leisure Centre — Sequence Diagram
+' Furzefield Leisure Centre - Sequence Diagram
 ' Module  : 7COM1025
-' Flow    : Create booking — end-to-end through all layers
+' Flow    : Create booking - end-to-end through all layers
 ' Source  : BookingScreen.onBook() and BookingController.createBooking()
 ' ═══════════════════════════════════════════════════════════════
 
@@ -39,7 +39,7 @@ skinparam sequence {
 }
 
 ' ═══════════════════════════════════════════════════════════════
-' PARTICIPANTS — declared in layer order
+' PARTICIPANTS - declared in layer order
 ' ═══════════════════════════════════════════════════════════════
 
 box "View layer" #EAF3F8
@@ -95,7 +95,7 @@ activate DS
 DS --> BC : List<Booking>
 deactivate DS
 
-note right of BC : Stream — checks week, day,\nand timeSlot match.\nNo conflict found.
+note right of BC : Stream - checks week, day,\nand timeSlot match.\nNo conflict found.
 
 BC -> L : addMember(member)
 activate L
@@ -151,11 +151,11 @@ BS -> BS : refreshAll()
 [<-- BS : UI updated
 
 ' ═══════════════════════════════════════════════════════════════
-' ALTERNATIVE FLOWS — all three validations that can fail
+' ALTERNATIVE FLOWS - all three validations that can fail
 ' Shown as a single alt/else/end combined fragment per UML spec
 ' ═══════════════════════════════════════════════════════════════
 
-== Alternative flows — validation failures ==
+== Alternative flows - validation failures ==
 
 alt Lesson is full
 

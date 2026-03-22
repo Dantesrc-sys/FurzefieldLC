@@ -4,12 +4,12 @@ import java.awt.*;
 
 /**
  * Central theme configuration for Furzefield Leisure Centre. Every colour, font, size, spacing, shadow, and border
- * lives here. Never hardcode a visual value anywhere else — always reference this class.
+ * lives here. Never hardcode a visual value anywhere else - always reference this class.
  */
 public final class Theme {
 
     private Theme() {
-    } // utility class — no instances
+    } // utility class - no instances
 
     // ═══════════════════════════════════════════════════════════════════════
     // COLOURS
@@ -143,7 +143,7 @@ public final class Theme {
     public static final Font FONT_MONO = new Font("Monospaced", Font.PLAIN, 13);
 
     // ═══════════════════════════════════════════════════════════════════════
-    // SPACING (multiples of 4 — keeps everything on a grid)
+    // SPACING (multiples of 4 - keeps everything on a grid)
     // ═══════════════════════════════════════════════════════════════════════
 
     public static final int SPACE_XXS = 4;

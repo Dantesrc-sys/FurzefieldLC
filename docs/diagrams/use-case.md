@@ -13,7 +13,7 @@
 
 ## Use case diagram
 
-**What this shows:** The system from the outside — one actor (the staff member) and every action they can perform across all six screens. Includes include relationships showing sub-cases and automatic system behaviours.
+**What this shows:** The system from the outside - one actor (the staff member) and every action they can perform across all six screens. Includes include relationships showing sub-cases and automatic system behaviours.
 
 ---
 
@@ -25,7 +25,7 @@
 
 | Actor | Description |
 |---|---|
-| Staff member | The single user role. Operates the desktop application directly at the leisure centre. No login or authentication — single-user local application. |
+| Staff member | The single user role. Operates the desktop application directly at the leisure centre. No login or authentication - single-user local application. |
 
 ## Use cases by screen
 
@@ -36,7 +36,7 @@
 | Members | View all members, add new member, edit member details, search members |
 | Reviews | Submit review (1 to 5 stars), view all reviews |
 | Reports | View attendance and rating report, view income by exercise report |
-| System (automatic) | Save data to file — triggered automatically after every mutating action |
+| System (automatic) | Save data to file - triggered automatically after every mutating action |
 
 ## Key constraints
 
@@ -49,9 +49,9 @@
 **Submit review** requires:
 
 - The member must be enrolled in the lesson they are reviewing
-- One review per member per lesson — duplicate submissions are rejected
+- One review per member per lesson - duplicate submissions are rejected
 
-**Save data to file** is an include relationship on every write operation — create booking, change booking, cancel booking, add member, edit member, and submit review. The user never triggers a save manually; it happens automatically.
+**Save data to file** is an include relationship on every write operation - create booking, change booking, cancel booking, add member, edit member, and submit review. The user never triggers a save manually; it happens automatically.
 
 ---
 

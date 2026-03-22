@@ -14,7 +14,7 @@ import java.awt.*;
 import java.awt.event.*;
 
 /**
- * Members screen — view all members, add new ones, edit name/phone. Add member uses an inline panel — no JOptionPane
+ * Members screen - view all members, add new ones, edit name/phone. Add member uses an inline panel - no JOptionPane
  * dialogs. Layout: left = member list | right = detail / edit / add panel
  */
 public class MemberScreen extends JPanel {
@@ -59,7 +59,7 @@ public class MemberScreen extends JPanel {
     }
 
     // ═══════════════════════════════════════════════════════════════════════
-    // LEFT — member list
+    // LEFT - member list
     // ═══════════════════════════════════════════════════════════════════════
 
     private JPanel buildLeftPanel() {
@@ -104,7 +104,7 @@ public class MemberScreen extends JPanel {
         ModernTable.setBoldColumn(memberTable, 1); // Name
         ModernTable.setCodeColumn(memberTable, 0); // ID chip
 
-        // Bookings count — pill: 0=grey, else green
+        // Bookings count - pill: 0=grey, else green
         java.util.Map<String, Color> bkBg = new java.util.HashMap<>();
         java.util.Map<String, Color> bkFg = new java.util.HashMap<>();
         bkBg.put("0", Theme.BG_ALT);
@@ -130,7 +130,7 @@ public class MemberScreen extends JPanel {
     }
 
     // ═══════════════════════════════════════════════════════════════════════
-    // RIGHT — CardLayout: DETAIL card + ADD card
+    // RIGHT - CardLayout: DETAIL card + ADD card
     // ═══════════════════════════════════════════════════════════════════════
 
     private JPanel buildRightPanel() {
@@ -286,7 +286,7 @@ public class MemberScreen extends JPanel {
         panel.add(addPhoneField);
         panel.add(Box.createVerticalStrut(Theme.SPACE_XL));
 
-        // Submit button — full width feel
+        // Submit button - full width feel
         JButton confirmBtn = buildBtn("Add Member", Theme.ACCENT, Theme.ACCENT_DARK);
         confirmBtn.addActionListener(e -> onAddMember());
         panel.add(confirmBtn);

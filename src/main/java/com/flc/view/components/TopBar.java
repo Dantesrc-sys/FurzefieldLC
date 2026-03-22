@@ -22,7 +22,7 @@ public class TopBar extends JPanel {
         setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Theme.BORDER_LIGHT),
                 BorderFactory.createEmptyBorder(0, Theme.SPACE_XL, 0, Theme.SPACE_XL)));
 
-        // Left — breadcrumb above title
+        // Left - breadcrumb above title
         JPanel left = new JPanel();
         left.setLayout(new BoxLayout(left, BoxLayout.Y_AXIS));
         left.setOpaque(false);
@@ -42,7 +42,7 @@ public class TopBar extends JPanel {
 
         add(left, BorderLayout.WEST);
 
-        // Right — screen icon
+        // Right - screen icon
         String iconPath = "assets/" + (breadcrumb.toLowerCase().equals("home") ? "dashboard" : breadcrumb.toLowerCase())
                 + ".png";
         ImageIcon icon = ImageUtil.loadTinted(iconPath, 20, 20, Theme.TEXT_LIGHT);

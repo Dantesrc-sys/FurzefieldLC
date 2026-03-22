@@ -1,9 +1,9 @@
 @startuml use-case-diagram
 
 ' ═══════════════════════════════════════════════════════════════
-' Furzefield Leisure Centre — Use Case Diagram
+' Furzefield Leisure Centre - Use Case Diagram
 ' Module  : 7COM1025
-' Actor   : Staff member (single user role — desktop app)
+' Actor   : Staff member (single user role - desktop app)
 ' Scope   : All six screens mapped to use cases
 ' ═══════════════════════════════════════════════════════════════
 
@@ -48,7 +48,7 @@ skinparam note {
 actor "Staff Member" as Staff
 
 ' ═══════════════════════════════════════════════════════════════
-' SYSTEM BOUNDARY — one rectangle per screen group
+' SYSTEM BOUNDARY - one rectangle per screen group
 ' Stacking groups vertically forces top-to-bottom layout
 ' ═══════════════════════════════════════════════════════════════
 
@@ -101,7 +101,7 @@ Staff --> UC_VIEW_REV
 Staff --> UC_REPORTS
 
 ' ═══════════════════════════════════════════════════════════════
-' TIMETABLE — filters are optional
+' TIMETABLE - filters are optional
 ' ═══════════════════════════════════════════════════════════════
 
 UC_FILTER_DAY ..> UC_BROWSE   : <<extend>>
@@ -109,7 +109,7 @@ UC_FILTER_EX  ..> UC_BROWSE   : <<extend>>
 UC_FILTER_WK  ..> UC_BROWSE   : <<extend>>
 
 ' ═══════════════════════════════════════════════════════════════
-' BOOKINGS — each operation is an optional choice
+' BOOKINGS - each operation is an optional choice
 ' ═══════════════════════════════════════════════════════════════
 
 UC_CREATE ..> UC_BOOK_MGR     : <<extend>>
@@ -121,7 +121,7 @@ UC_CHANGE ..> UC_SAVE         : <<include>>
 UC_CANCEL ..> UC_SAVE         : <<include>>
 
 ' ═══════════════════════════════════════════════════════════════
-' MEMBERS — list always loads, operations are optional
+' MEMBERS - list always loads, operations are optional
 ' ═══════════════════════════════════════════════════════════════
 
 UC_MEM_MGR  ..> UC_VIEW_MEM   : <<include>>
@@ -139,7 +139,7 @@ UC_EDIT_MEM ..> UC_SAVE       : <<include>>
 UC_REVIEW ..> UC_SAVE         : <<include>>
 
 ' ═══════════════════════════════════════════════════════════════
-' REPORTS — both sub-reports always shown together
+' REPORTS - both sub-reports always shown together
 ' ═══════════════════════════════════════════════════════════════
 
 UC_REPORTS ..> UC_ATTEND      : <<include>>
@@ -165,7 +165,7 @@ end note
 
 note bottom of UC_SAVE
   Writes flc-data.json
-  automatically — no manual
+  automatically - no manual
   save action required.
 end note
 

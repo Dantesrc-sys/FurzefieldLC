@@ -8,9 +8,9 @@ import java.util.*;
 /**
  * Generates the two reports required by the coursework:
  *
- * Report 1 — Attendance & Rating Report: For each lesson on each day, show number of members enrolled + average rating.
+ * Report 1 - Attendance & Rating Report: For each lesson on each day, show number of members enrolled + average rating.
  *
- * Report 2 — Highest Income Report: Which exercise type generated the most total income across all lessons.
+ * Report 2 - Highest Income Report: Which exercise type generated the most total income across all lessons.
  */
 public class ReportController {
 
@@ -23,11 +23,11 @@ public class ReportController {
     }
 
     // ═══════════════════════════════════════════════════════════════════════
-    // REPORT 1 — Attendance & Average Rating per lesson
+    // REPORT 1 - Attendance & Average Rating per lesson
     // ═══════════════════════════════════════════════════════════════════════
 
     /**
-     * Returns a list of AttendanceRow — one per lesson, sorted by week → day → timeslot.
+     * Returns a list of AttendanceRow - one per lesson, sorted by week → day → timeslot.
      */
     public List<AttendanceRow> getAttendanceReport() {
         List<AttendanceRow> rows = new ArrayList<>();
@@ -46,11 +46,11 @@ public class ReportController {
     }
 
     // ═══════════════════════════════════════════════════════════════════════
-    // REPORT 2 — Highest Income by Exercise Type
+    // REPORT 2 - Highest Income by Exercise Type
     // ═══════════════════════════════════════════════════════════════════════
 
     /**
-     * Returns a list of IncomeRow — one per exercise type, sorted highest income first.
+     * Returns a list of IncomeRow - one per exercise type, sorted highest income first.
      */
     public List<IncomeRow> getIncomeReport() {
         // Map: exerciseName → total income

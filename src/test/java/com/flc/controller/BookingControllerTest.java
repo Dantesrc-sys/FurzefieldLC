@@ -122,7 +122,7 @@ class BookingControllerTest {
         controller.createBooking(bob, conflict);
 
         Booking aliceBooking = store.findBookingsByMember(alice).get(0);
-        // try to move alice to conflict — should fail and alice stays in satMorning
+        // try to move alice to conflict - should fail and alice stays in satMorning
         assertThrows(IllegalStateException.class, () -> controller.changeBooking(aliceBooking, conflict));
         assertTrue(satMorning.hasMember(alice)); // restored
     }

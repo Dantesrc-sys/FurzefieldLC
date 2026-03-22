@@ -93,7 +93,7 @@ public class BookingController {
         oldLesson.removeMember(member);
 
         if (hasTimeConflict(member, newLesson)) {
-            // Roll back — put member back in old lesson
+            // Roll back - put member back in old lesson
             oldLesson.addMember(member);
             throw new IllegalStateException(
                     "Time conflict: member already has a booking on " + newLesson.getDay().getDisplayName() + " "

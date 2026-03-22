@@ -53,7 +53,7 @@ public class SampleData {
     }
 
     // ═══════════════════════════════════════════════════════════════════════
-    // LESSONS — 8 weekends × 2 days × 3 slots = 48 lessons
+    // LESSONS - 8 weekends × 2 days × 3 slots = 48 lessons
     // Pattern per day: MORNING=Yoga, AFTERNOON=Zumba, EVENING=BoxFit (Sat)
     // MORNING=Aquacise, AFTERNOON=BodyBlitz, EVENING=Yoga (Sun)
     // ═══════════════════════════════════════════════════════════════════════
@@ -82,7 +82,7 @@ public class SampleData {
     }
 
     // ═══════════════════════════════════════════════════════════════════════
-    // BOOKINGS — spread members across lessons
+    // BOOKINGS - spread members across lessons
     // ═══════════════════════════════════════════════════════════════════════
 
     private static void loadBookings(DataStore store) {
@@ -175,7 +175,7 @@ public class SampleData {
     }
 
     // ═══════════════════════════════════════════════════════════════════════
-    // REVIEWS — 20+ reviews with ratings 1–5
+    // REVIEWS - 20+ reviews with ratings 1–5
     // ═══════════════════════════════════════════════════════════════════════
 
     private static void loadReviews(DataStore store) {

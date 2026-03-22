@@ -13,7 +13,7 @@
 
 ## Overview
 
-Furzefield Leisure Centre (FLC) is a self-contained desktop application for managing group exercise bookings across an 8-weekend season. Everything runs locally — no server, no login, no internet connection required.
+Furzefield Leisure Centre (FLC) is a self-contained desktop application for managing group exercise bookings across an 8-weekend season. Everything runs locally - no server, no login, no internet connection required.
 
 **What it does:**
 
@@ -75,7 +75,7 @@ FurzefieldLC/
 
 ## How to Run
 
-### Option 1 — Run directly with Maven (development)
+### Option 1 - Run directly with Maven (development)
 
 ```powershell
 # Make sure to comple beforehand
@@ -87,9 +87,9 @@ mvn exec:java
 
 This compiles and launches the app in one step. No JAR needed.
 
-### Option 2 — Build a fat JAR and run it
+### Option 2 - Build a fat JAR and run it
 
-**Step 1 — Package:**
+**Step 1 - Package:**
 
 ```powershell
 mvn package -DskipTests
@@ -104,13 +104,13 @@ target/FurzefieldLC.jar
 
 All dependencies (Gson) are bundled inside via the Maven Shade plugin.
 
-**Step 2 — Run:**
+**Step 2 - Run:**
 
 ```powershell
 java -jar target/FurzefieldLC.jar
 ```
 
-### Option 3 — Run tests only
+### Option 3 - Run tests only
 
 ```powershell
 mvn test

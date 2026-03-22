@@ -13,7 +13,7 @@ import java.awt.*;
 import java.awt.event.*;
 
 /**
- * Reviews screen — members write reviews for lessons they attended. Layout: left = write a review | right = all reviews
+ * Reviews screen - members write reviews for lessons they attended. Layout: left = write a review | right = all reviews
  * table
  */
 public class ReviewScreen extends JPanel {
@@ -44,7 +44,7 @@ public class ReviewScreen extends JPanel {
     }
 
     // ═══════════════════════════════════════════════════════════════════════
-    // LEFT — write a review
+    // LEFT - write a review
     // ═══════════════════════════════════════════════════════════════════════
 
     private JPanel buildLeftPanel() {
@@ -199,7 +199,7 @@ public class ReviewScreen extends JPanel {
     }
 
     // ═══════════════════════════════════════════════════════════════════════
-    // RIGHT — all reviews table
+    // RIGHT - all reviews table
     // ═══════════════════════════════════════════════════════════════════════
 
     private JPanel buildRightPanel() {

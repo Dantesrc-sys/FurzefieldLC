@@ -12,12 +12,12 @@ import java.util.Map;
 /**
  * Modern table factory.
  *
- * Every renderer paints itself entirely — no DefaultTableCellRenderer background bleed, no clipping issues. Each cell
+ * Every renderer paints itself entirely - no DefaultTableCellRenderer background bleed, no clipping issues. Each cell
  * owns its background.
  *
- * Renderers: default — padded text, hover, alternating rows bold — bold font, dark text pill — rounded badge with
- * colour map (status, availability) dot — coloured circle prefix + bold text (exercise, day) capacity — "N / 4" with
- * mini fill bar + colour price — green monospaced right-aligned stars — gold star rating week — "Week N" with subtle
+ * Renderers: default - padded text, hover, alternating rows bold - bold font, dark text pill - rounded badge with
+ * colour map (status, availability) dot - coloured circle prefix + bold text (exercise, day) capacity - "N / 4" with
+ * mini fill bar + colour price - green monospaced right-aligned stars - gold star rating week - "Week N" with subtle
  * accent chip
  */
 public final class ModernTable {
@@ -51,7 +51,7 @@ public final class ModernTable {
         TIME_COLOURS.put("Night", new Color(0x264653)); // deep night blue
     }
 
-    // ── Uniform visual constants — same across every renderer ─────────────────
+    // ── Uniform visual constants - same across every renderer ─────────────────
     private static final int PILL_H = 22; // pill badge height
     private static final int PILL_PAD = 12; // pill horizontal padding
     private static final int DOT_D = 9; // coloured dot diameter
@@ -260,7 +260,7 @@ public final class ModernTable {
     }
 
     /**
-     * Redistributes column widths proportionally to fill the viewport. If viewport is smaller than sum of min widths —
+     * Redistributes column widths proportionally to fill the viewport. If viewport is smaller than sum of min widths -
      * keeps min widths and lets the horizontal scrollbar handle it.
      */
     public static void redistributeColumns(JTable t, int viewportWidth) {
@@ -276,7 +276,7 @@ public final class ModernTable {
             return;
 
         if (viewportWidth <= totalMin) {
-            // Not enough space — each column gets its min width, scrollbar appears
+            // Not enough space - each column gets its min width, scrollbar appears
             for (int i = 0; i < colCount; i++) {
                 TableColumn col = t.getColumnModel().getColumn(i);
                 col.setPreferredWidth(col.getMinWidth());
@@ -299,7 +299,7 @@ public final class ModernTable {
     }
 
     // ═══════════════════════════════════════════════════════════════════════
-    // HELPER — row background colour
+    // HELPER - row background colour
     // ═══════════════════════════════════════════════════════════════════════
 
     static Color rowBg(JTable t, int row) {

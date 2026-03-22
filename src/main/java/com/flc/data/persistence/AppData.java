@@ -16,7 +16,7 @@ public class AppData {
     public List<ReviewDto> reviews;
 
     // ═══════════════════════════════════════════════════════════════════════
-    // DTOs (Data Transfer Objects — plain fields only, no behaviour)
+    // DTOs (Data Transfer Objects - plain fields only, no behaviour)
     // ═══════════════════════════════════════════════════════════════════════
 
     public static class MemberDto {

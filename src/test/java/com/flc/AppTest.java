@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
- * Placeholder test — will be replaced with real FLC tests as features are built.
+ * Placeholder test - will be replaced with real FLC tests as features are built.
  */
 public class AppTest {
 

@@ -9,7 +9,7 @@ import java.awt.*;
 import java.awt.event.*;
 
 /**
- * Home screen — first impression when the app opens. Uses ImageUtil for all image loading and tinting. No special
+ * Home screen - first impression when the app opens. Uses ImageUtil for all image loading and tinting. No special
  * characters, dashes, or emoji.
  */
 public class HomeScreen extends JPanel {
@@ -37,18 +37,18 @@ public class HomeScreen extends JPanel {
                 g2.setColor(Theme.BG);
                 g2.fillRect(0, 0, getWidth(), getHeight());
 
-                // Soft decorative arc — top right
+                // Soft decorative arc - top right
                 g2.setColor(new Color(Theme.ACCENT_MID.getRed(), Theme.ACCENT_MID.getGreen(),
                         Theme.ACCENT_MID.getBlue(), Theme.OPACITY_DECO_CIRCLE));
                 int arc = 500;
                 g2.fillOval(getWidth() - arc + 120, -arc / 2 + 20, arc, arc);
 
-                // Inner arc — layered depth
+                // Inner arc - layered depth
                 g2.setColor(new Color(Theme.ACCENT.getRed(), Theme.ACCENT.getGreen(), Theme.ACCENT.getBlue(), 12));
                 int arc2 = 320;
                 g2.fillOval(getWidth() - arc2 + 60, -arc2 / 3, arc2, arc2);
 
-                // Dot grid — bottom left
+                // Dot grid - bottom left
                 g2.setColor(Theme.DOT_GRID);
                 for (int x = 48; x < 300; x += 20)
                     for (int y = getHeight() - 260; y < getHeight() - 40; y += 20)
@@ -98,7 +98,7 @@ public class HomeScreen extends JPanel {
             l.setPreferredSize(new Dimension(36, 36));
             return l;
         }
-        // Fallback — painted green circle
+        // Fallback - painted green circle
         return new JLabel() {
             @Override
             public void paintComponent(Graphics g) {
@@ -266,7 +266,7 @@ public class HomeScreen extends JPanel {
         return l;
     }
 
-    // ── Feature chips — icon + label via ImageUtil ─────────────────────────
+    // ── Feature chips - icon + label via ImageUtil ─────────────────────────
     private JPanel buildFeatureRow() {
         JPanel row = new JPanel(new FlowLayout(FlowLayout.CENTER, Theme.SPACE_SM, 0));
         row.setOpaque(false);
@@ -296,7 +296,7 @@ public class HomeScreen extends JPanel {
         chip.setLayout(new FlowLayout(FlowLayout.CENTER, Theme.SPACE_XS, 0));
         chip.setBorder(BorderFactory.createEmptyBorder(8, 14, 8, 14));
 
-        // Load and tint via ImageUtil — no local image methods needed
+        // Load and tint via ImageUtil - no local image methods needed
         JLabel iconLabel = ImageUtil.tintedLabel("assets/" + iconFile, 18, 18, Theme.ACCENT);
         chip.add(iconLabel);
 

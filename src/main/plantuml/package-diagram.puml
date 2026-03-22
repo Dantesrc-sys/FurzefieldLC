@@ -1,7 +1,7 @@
 @startuml package-diagram
 
 ' ═══════════════════════════════════════════════════════════════
-' Furzefield Leisure Centre — Package Diagram
+' Furzefield Leisure Centre - Package Diagram
 ' Module  : 7COM1025
 ' Shows   : All 10 packages, class membership, and verified
 '           dependencies sourced from import statements
@@ -38,7 +38,7 @@ package "com.flc" {
 }
 
 ' ═══════════════════════════════════════════════════════════════
-' VIEW LAYER — depends on controller, model, data,
+' VIEW LAYER - depends on controller, model, data,
 '              data.persistence, config, util
 ' ═══════════════════════════════════════════════════════════════
 
@@ -59,7 +59,7 @@ package "com.flc.view" {
 }
 
 ' ═══════════════════════════════════════════════════════════════
-' CONTROLLER LAYER — depends on model, data, validation
+' CONTROLLER LAYER - depends on model, data, validation
 ' ═══════════════════════════════════════════════════════════════
 
 package "com.flc.controller" {
@@ -70,7 +70,7 @@ package "com.flc.controller" {
 }
 
 ' ═══════════════════════════════════════════════════════════════
-' MODEL LAYER — depends on config, validation (partial)
+' MODEL LAYER - depends on config, validation (partial)
 ' ═══════════════════════════════════════════════════════════════
 
 package "com.flc.model" {
@@ -84,7 +84,7 @@ package "com.flc.model" {
 }
 
 ' ═══════════════════════════════════════════════════════════════
-' DATA LAYER — depends on model
+' DATA LAYER - depends on model
 ' data.persistence is a sub-package: depends on data and model
 ' ═══════════════════════════════════════════════════════════════
 
@@ -99,7 +99,7 @@ package "com.flc.data" {
 }
 
 ' ═══════════════════════════════════════════════════════════════
-' CONFIG LAYER — no internal dependencies
+' CONFIG LAYER - no internal dependencies
 ' ═══════════════════════════════════════════════════════════════
 
 package "com.flc.config" {
@@ -108,7 +108,7 @@ package "com.flc.config" {
 }
 
 ' ═══════════════════════════════════════════════════════════════
-' VALIDATION LAYER — no internal dependencies
+' VALIDATION LAYER - no internal dependencies
 ' ═══════════════════════════════════════════════════════════════
 
 package "com.flc.validation" {
@@ -116,7 +116,7 @@ package "com.flc.validation" {
 }
 
 ' ═══════════════════════════════════════════════════════════════
-' UTIL LAYER — depends on config
+' UTIL LAYER - depends on config
 ' ═══════════════════════════════════════════════════════════════
 
 package "com.flc.util" {
@@ -125,7 +125,7 @@ package "com.flc.util" {
 }
 
 ' ═══════════════════════════════════════════════════════════════
-' DEPENDENCIES — verified from import statements in source files
+' DEPENDENCIES - verified from import statements in source files
 ' ═══════════════════════════════════════════════════════════════
 
 ' Entry point

@@ -56,7 +56,7 @@ class ReportControllerTest {
     @Test
     void shouldShowNoReviewsWhenLessonHasNone() {
         List<ReportController.AttendanceRow> rows = reportController.getAttendanceReport();
-        // Find a lesson with no reviews — week 8 lessons have none
+        // Find a lesson with no reviews - week 8 lessons have none
         ReportController.AttendanceRow noReview = rows.stream()
                 .filter(r -> r.weekNumber() == 8 && r.averageRating() == 0.0).findFirst().orElse(null);
         assertNotNull(noReview);

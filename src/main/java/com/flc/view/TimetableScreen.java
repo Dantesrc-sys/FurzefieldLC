@@ -12,7 +12,7 @@ import java.awt.*;
 import java.util.List;
 
 /**
- * Timetable screen — browse lessons by Day or by Exercise name. Shows a filterable table of lessons with capacity
+ * Timetable screen - browse lessons by Day or by Exercise name. Shows a filterable table of lessons with capacity
  * indicators.
  */
 public class TimetableScreen extends JPanel {
@@ -155,13 +155,13 @@ public class TimetableScreen extends JPanel {
         tableModel = new DefaultTableModel(cols, 0);
         table = ModernTable.create(tableModel);
         ModernTable.setColumnWidths(table, 72, 100, 110, 130, 72, 120, 0, 120);
-        ModernTable.hideColumn(table, 6); // hide raw spaces — capacity replaces it
-        ModernTable.setWeekColumn(table, 0); // Week — chip
-        ModernTable.setDayColumn(table, 1); // Day — coloured dot
-        ModernTable.setTimeColumn(table, 2); // Time — coloured dot
-        ModernTable.setExerciseColumn(table, 3); // Exercise — coloured dot
-        ModernTable.setPriceColumn(table, 4); // Price — green mono
-        ModernTable.setCapacityColumn(table, 5); // Enrolled — bar
+        ModernTable.hideColumn(table, 6); // hide raw spaces - capacity replaces it
+        ModernTable.setWeekColumn(table, 0); // Week - chip
+        ModernTable.setDayColumn(table, 1); // Day - coloured dot
+        ModernTable.setTimeColumn(table, 2); // Time - coloured dot
+        ModernTable.setExerciseColumn(table, 3); // Exercise - coloured dot
+        ModernTable.setPriceColumn(table, 4); // Price - green mono
+        ModernTable.setCapacityColumn(table, 5); // Enrolled - bar
         // Status pill
         java.util.Map<String, Color> pillBg = new java.util.HashMap<>();
         java.util.Map<String, Color> pillFg = new java.util.HashMap<>();

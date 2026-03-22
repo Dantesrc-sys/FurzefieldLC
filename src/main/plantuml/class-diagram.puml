@@ -1,7 +1,7 @@
 @startuml class-diagram
 
 ' ═══════════════════════════════════════════════════════════════
-' Furzefield Leisure Centre — Class Diagram
+' Furzefield Leisure Centre - Class Diagram
 ' Module  : 7COM1025
 ' Covers  : All model classes, enumerations, and relationships
 ' ═══════════════════════════════════════════════════════════════
@@ -180,13 +180,13 @@ Lesson  ..>  Day      : uses >
 Lesson  ..>  TimeSlot : uses >
 
 ' ExerciseType objects live independently in DataStore and are shared
-' across many lessons — this is aggregation, not composition
+' across many lessons - this is aggregation, not composition
 Lesson "1" o-- "1" ExerciseType : references >
 
-' Lesson enrolls 0..MAX_CAPACITY Members (aggregation — Members exist independently)
+' Lesson enrolls 0..MAX_CAPACITY Members (aggregation - Members exist independently)
 Lesson "1" o-- "0..4" Member : enrolls >
 
-' Booking links one Member to one Lesson (association — both exist independently)
+' Booking links one Member to one Lesson (association - both exist independently)
 Booking "0..*" --> "1" Member : made by >
 Booking "0..*" --> "1" Lesson : for >
 

@@ -167,7 +167,7 @@ public class DataStore {
     }
 
     // ── Utility ───────────────────────────────────────────────────────────────
-    /** Clears all data — used in tests to reset state between runs */
+    /** Clears all data - used in tests to reset state between runs */
     public void clearAll() {
         members.clear();
         exerciseTypes.clear();

@@ -12,7 +12,7 @@ import java.awt.*;
 import java.util.List;
 
 /**
- * Reports screen — two side-by-side reports using ModernTable. Left → Attendance and Rating (per lesson) Right → Income
+ * Reports screen - two side-by-side reports using ModernTable. Left → Attendance and Rating (per lesson) Right → Income
  * (per exercise, highest first)
  */
 public class ReportScreen extends JPanel {
@@ -88,7 +88,7 @@ public class ReportScreen extends JPanel {
     }
 
     // ═══════════════════════════════════════════════════════════════════════
-    // REPORTS — side by side
+    // REPORTS - side by side
     // ═══════════════════════════════════════════════════════════════════════
 
     private JPanel buildReports() {
@@ -129,7 +129,7 @@ public class ReportScreen extends JPanel {
         ModernTable.setExerciseColumn(table, 3); // coloured dot
         ModernTable.setCapacityColumn(table, 4); // mini bar
 
-        // Avg Rating — green / amber / red based on value
+        // Avg Rating - green / amber / red based on value
         java.util.Map<String, Color> ratingBg = new java.util.HashMap<>();
         java.util.Map<String, Color> ratingFg = new java.util.HashMap<>();
         ratingBg.put("No reviews", Theme.BG_ALT);

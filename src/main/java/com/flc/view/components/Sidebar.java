@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Left sidebar navigation panel. Uses PNG images from assets/ — no unicode or special characters.
+ * Left sidebar navigation panel. Uses PNG images from assets/ - no unicode or special characters.
  */
 public class Sidebar extends JPanel {
 
@@ -127,7 +127,7 @@ public class Sidebar extends JPanel {
         textLabel.setFont(active ? Theme.FONT_MENU_BOLD : Theme.FONT_MENU);
         textLabel.setForeground(iconColour);
 
-        // Row panel — fixed height, items vertically centred via FlowLayout CENTER_Y
+        // Row panel - fixed height, items vertically centred via FlowLayout CENTER_Y
         JPanel row = new JPanel(new FlowLayout(FlowLayout.LEFT, Theme.SPACE_SM, 13)) {
             @Override
             protected void paintComponent(Graphics g) {

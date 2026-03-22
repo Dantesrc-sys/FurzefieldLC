@@ -26,7 +26,7 @@ public final class ImageUtil {
     // ═══════════════════════════════════════════════════════════════════════
 
     /**
-     * Loads an image from the classpath and scales it to w x h. Returns null gracefully if the file is not found —
+     * Loads an image from the classpath and scales it to w x h. Returns null gracefully if the file is not found -
      * callers should handle this.
      */
     public static ImageIcon load(String path, int w, int h) {
@@ -44,7 +44,7 @@ public final class ImageUtil {
     // ═══════════════════════════════════════════════════════════════════════
 
     /**
-     * Tints a transparent-background PNG icon to the given colour. Uses SrcAtop compositing — preserves alpha, replaces
+     * Tints a transparent-background PNG icon to the given colour. Uses SrcAtop compositing - preserves alpha, replaces
      * colour. Works best with white or grey icons on transparent backgrounds.
      */
     public static ImageIcon tint(ImageIcon source, Color colour) {
