@@ -9,6 +9,7 @@ import com.flc.data.SampleData;
 import com.flc.model.Booking;
 import com.flc.model.Lesson;
 import com.flc.model.Member;
+import com.flc.model.Review;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -36,6 +37,7 @@ class AppTest {
     private BookingController bookingController;
     private MemberController memberController;
     private ReportController reportController;
+    private ReviewController reviewController;
 
     @BeforeEach
     void setUp() {
@@ -44,7 +46,12 @@ class AppTest {
         bookingController = new BookingController();
         memberController  = new MemberController();
         reportController  = new ReportController();
+        reviewController  = new ReviewController();
     }
+
+    // ═══════════════════════════════════════════════════════════════════════
+    // TEST 1 — full booking lifecycle across all layers
+    // ═══════════════════════════════════════════════════════════════════════
 
     /**
      * Verifies that a full booking lifecycle works end-to-end:
@@ -63,6 +70,7 @@ class AppTest {
         assertNotNull(newMember, "New member should be created");
         assertEquals("07700000099", newMember.getPhone());
 
+        // L01SUN3 is Week 1 Sunday Evening Yoga — empty in sample data
         Lesson emptyLesson = store.findLessonById("L01SUN3");
         assertNotNull(emptyLesson, "L01SUN3 should exist in sample data");
         assertEquals(0, emptyLesson.getEnrolledCount(),
@@ -82,6 +90,10 @@ class AppTest {
         assertTrue(emptyLesson.hasMember(newMember),
             "Lesson should contain the newly enrolled member");
     }
+
+    // ═══════════════════════════════════════════════════════════════════════
+    // TEST 2 — DataStore singleton shared across all controllers
+    // ═══════════════════════════════════════════════════════════════════════
 
     /**
      * Verifies that all controllers share the same {@link DataStore} singleton.
@@ -104,6 +116,10 @@ class AppTest {
         assertEquals("Singleton Test", found.getName(),
             "Member name retrieved from DataStore should match what was added");
     }
+
+    // ═══════════════════════════════════════════════════════════════════════
+    // TEST 3 — income report reflects actual booking data
+    // ═══════════════════════════════════════════════════════════════════════
 
     /**
      * Verifies that the income report is generated correctly from real sample
@@ -144,8 +160,12 @@ class AppTest {
         ReportController.IncomeRow top = reportController.getHighestIncomeExercise();
         assertNotNull(top, "Top earner should not be null when data is loaded");
         assertEquals(rows.get(0).exerciseName(), top.exerciseName(),
-            "getHighestIncomeExercise should return the exercise with highest income");
+            "getHighestIncomeExercise should return the exercise with the highest income");
     }
+
+    // ═══════════════════════════════════════════════════════════════════════
+    // TEST 4 — cancelling a booking removes member from lesson and store
+    // ═══════════════════════════════════════════════════════════════════════
 
     /**
      * Verifies that cancelling a booking removes the member from the lesson's
@@ -181,5 +201,61 @@ class AppTest {
             "Booking B006 should not exist in DataStore after cancellation");
         assertEquals(bookingsBefore - 1, store.getTotalBookings(),
             "Total booking count should decrease by 1 after cancellation");
+    }
+
+    // ═══════════════════════════════════════════════════════════════════════
+    // TEST 5 — submitting a review updates average rating in real data
+    // ═══════════════════════════════════════════════════════════════════════
+
+    /**
+     * Verifies that submitting a review via {@link ReviewController} is correctly
+     * stored in {@link DataStore} and immediately reflected in the average rating
+     * calculation.
+     *
+     * <p>Uses Frank (M006) and lesson L04SAT1 (Week 4, Saturday, Morning, Yoga).
+     * Frank is enrolled in L04SAT1 via booking B026 and has no existing review
+     * for this lesson in the sample data, making it a valid submission target.</p>
+     *
+     * <p>Crosses: SampleData, DataStore, ReviewController.</p>
+     */
+    @Test
+    void submitReviewUpdatesAverageRatingInRealData() {
+        SampleData.load();
+        reviewController = new ReviewController();
+
+        Member frank  = store.findMemberById("M006");
+        Lesson lesson = store.findLessonById("L04SAT1");
+
+        assertNotNull(frank,  "Frank (M006) should exist in sample data");
+        assertNotNull(lesson, "L04SAT1 should exist in sample data");
+        assertTrue(lesson.hasMember(frank),
+            "Frank should be enrolled in L04SAT1 via booking B026");
+
+        // L04SAT1 has no reviews in sample data
+        assertEquals(0.0, reviewController.getAverageRating(lesson), 0.001,
+            "L04SAT1 should have no reviews before submission");
+        assertFalse(reviewController.hasReviewed(frank, lesson),
+            "Frank should not have reviewed L04SAT1 yet");
+
+        int reviewsBefore = store.getTotalReviews();
+
+        // Submit a review
+        Review review = reviewController.addReview(frank, lesson, 4, "Good session.");
+        assertNotNull(review, "Review should be created successfully");
+        assertEquals(4, review.getRating(), "Review rating should be 4");
+
+        // Verify stored in DataStore
+        assertEquals(reviewsBefore + 1, store.getTotalReviews(),
+            "Review count should increase by 1");
+        assertNotNull(store.findReviewById(review.getReviewId()),
+            "Review should be retrievable from DataStore by ID");
+
+        // Verify average rating reflects the new submission
+        assertEquals(4.0, reviewController.getAverageRating(lesson), 0.001,
+            "Average rating for L04SAT1 should be 4.0 after Frank's review");
+
+        // Verify duplicate submission is rejected
+        assertTrue(reviewController.hasReviewed(frank, lesson),
+            "hasReviewed should return true after submission");
     }
 }
