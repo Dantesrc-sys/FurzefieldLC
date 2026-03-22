@@ -25,6 +25,21 @@ Furzefield Leisure Centre (FLC) is a self-contained desktop application for mana
 
 ---
 
+## Documentation
+
+| Document | Description |
+|---|---|
+| [UML Diagrams](docs/diagrams/README.md) | Class, use case, sequence, and package diagrams |
+| [Data Dictionary](docs/data-dictionary.md) | All entities, fields, types, constraints, and valid values |
+| [Business Rules](docs/business-rules.md) | All booking, member, review, and persistence rules |
+| [Testing](docs/testing.md) | 159 tests across 15 classes - what is tested and why |
+| [Data Persistence](docs/data-persistence.md) | JSON save/load strategy, DTO design, and file format |
+
+> Diagrams are generated from PlantUML source files in `src/main/plantuml/`.
+> Run `mvn generate-resources` to regenerate after editing a `.puml` file.
+
+---
+
 ## Requirements
 
 | Tool  | Version        | Notes                          |
@@ -63,10 +78,16 @@ FurzefieldLC/
 │   │   │   ├── model/           # Member, Lesson, Booking, Review, etc.
 │   │   │   ├── util/            # ModernTable, ImageUtil
 │   │   │   └── view/            # All Swing screens
-│   │   ├── plantuml/            # PlantUML 
+│   │   ├── plantuml/            # PlantUML source files
 │   │   └── resources/
 │   │       └── assets/          # PNG icons (logo, nav, feature chips)
 │   └── test/                    # JUnit 5 unit tests
+├── docs/
+│   ├── diagrams/                # UML diagrams (SVG) and dedicated pages
+│   ├── data-dictionary.md       # Entity fields, types, and constraints
+│   ├── business-rules.md        # All enforced business rules
+│   ├── testing.md               # Test coverage documentation
+│   └── data-persistence.md      # JSON persistence design
 ├── pom.xml
 └── README.md
 ```
@@ -78,14 +99,12 @@ FurzefieldLC/
 ### Option 1 - Run directly with Maven (development)
 
 ```powershell
-# Make sure to comple beforehand
-mvn compile exec:java
+# Compile first
+mvn compile
 
 # Run
 mvn exec:java
 ```
-
-This compiles and launches the app in one step. No JAR needed.
 
 ### Option 2 - Build a fat JAR and run it
 
@@ -128,6 +147,8 @@ flc-data.json
 
 This file is created in whichever directory you run the JAR from. Every change (new booking, member edit, review submission) is saved immediately. Delete the file to reset back to sample data.
 
+See [docs/data-persistence.md](docs/data-persistence.md) for full details on the save/load strategy and file format.
+
 ---
 
 ## Dependencies
@@ -140,15 +161,6 @@ This file is created in whichever directory you run the JAR from. Every change (
 All dependencies are fetched automatically by Maven on first build.
 
 ---
-
-## UML Diagrams
-
-Full design documentation covering class structure, use cases, sequence flow, and package architecture.
-
-**[View all diagrams →](docs/diagrams/README.md)**
-
-> Diagrams are generated from PlantUML source files in `src/main/plantuml/`.  
-> Run `mvn generate-resources` to regenerate after editing a `.puml` file.
 
 ## Version
 
