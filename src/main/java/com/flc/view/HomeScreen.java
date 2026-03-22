@@ -18,8 +18,7 @@ import java.awt.event.*;
  * <p>Clicking "Open Dashboard" maximises the window and switches to
  * {@link DashboardScreen} via {@link AppFrame#showDashboard()}.</p>
  *
- * <p>All images are loaded via {@link com.flc.util.ImageUtil}. No Unicode
- * symbols or emoji are used - all icons are PNG assets from
+ * <p>All images are loaded via {@link com.flc.util.ImageUtil}. All icons are PNG assets from
  * {@code src/main/resources/assets/}.</p>
  */
 public class HomeScreen extends JPanel {
