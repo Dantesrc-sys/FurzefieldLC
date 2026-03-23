@@ -1,0 +1,60 @@
+# Release
+# Builds the fat JAR and attaches it to the GitHub Release page
+# whenever a version tag (e.g. v1.0.0) is pushed.
+#
+# How to trigger:
+#   git tag v1.0.0
+#   git push origin v1.0.0
+# Then create a release on GitHub from that tag, or let this workflow
+# upload the JAR automatically via softprops/action-gh-release.
+
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+jobs:
+  release:
+    name: Build and Release JAR
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 25
+        uses: actions/setup-java@v4
+        with:
+          java-version: '25'
+          distribution: 'oracle'
+          cache: maven
+
+      - name: Run tests
+        run: mvn -B test --file pom.xml
+
+      - name: Build fat JAR
+        run: mvn -B package -DskipTests --file pom.xml
+
+      - name: Upload JAR to GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: target/FurzefieldLC.jar
+          name: Furzefield Leisure Centre ${{ github.ref_name }}
+          body: |
+            ## Furzefield Leisure Centre ${{ github.ref_name }}
+
+            ### Download and run
+            Requires Java 25 or later.
+
+            ```
+            java -jar FurzefieldLC.jar
+            ```
+
+            ### What is included
+            Self-contained JAR with all dependencies bundled.
+            No Maven or internet connection required to run.
