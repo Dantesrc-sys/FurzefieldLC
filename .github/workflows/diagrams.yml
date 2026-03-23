@@ -1,0 +1,52 @@
+# Diagrams
+# Regenerates PlantUML SVG diagrams automatically whenever a .puml source
+# file is changed and pushed to main. The updated SVGs are committed back
+# to docs/diagrams/ so the repository always stays in sync.
+
+name: Diagrams
+
+on:
+  push:
+    branches: [ "main" ]
+    paths:
+      - 'src/main/plantuml/**/*.puml'
+
+  # Allow manual trigger from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  regenerate-diagrams:
+    name: Regenerate PlantUML Diagrams
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          # Full history needed so the commit-back step works correctly
+          fetch-depth: 0
+
+      - name: Set up JDK 25
+        uses: actions/setup-java@v4
+        with:
+          java-version: '25'
+          distribution: 'oracle'
+          cache: maven
+
+      - name: Generate SVG diagrams
+        run: mvn -B generate-resources --file pom.xml
+
+      - name: Commit updated SVGs
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add docs/diagrams/*.svg
+          if git diff --staged --quiet; then
+            echo "No SVG changes to commit"
+          else
+            git commit -m "chore: regenerate UML diagrams from updated .puml source"
+            git push
+          fi
